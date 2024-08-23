@@ -21,4 +21,7 @@ app.use(cookieParser());
 //routes
 app.use("/api/users", userRoutes);
 
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname + "/uploads")));
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

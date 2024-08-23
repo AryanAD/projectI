@@ -1,4 +1,4 @@
-import User from "../models/UserModel.js";
+import User from "../models/userModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
@@ -33,4 +33,9 @@ const createUser = asyncHandler(async (req, res) => {
   throw new Error("Invalid user data");
 });
 
-export { createUser };
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
+});
+
+export { createUser, getAllUsers };
