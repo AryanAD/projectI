@@ -1,38 +1,32 @@
 import express from "express";
-
 import {
-  createUser,
-  getAllUsers,
+  registerUser,
   loginUser,
-  logoutCurrentUser,
-  getCurrentUserProfile,
-  updateCurrentUserProfile,
-  deleteUserById,
+  logoutUser,
+  getUsers,
   getUserById,
-  updateUserById,
+  updateUser,
+  deleteUser,
+  getUserProfile,
+  updateUserProfile,
 } from "../controllers/userController.js";
-
-import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
+import { protect, admin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router
-  .route("/")
-  .post(createUser)
-  .get(authenticate, authorizeAdmin, getAllUsers);
-
+// Public routes
+router.post("/", registerUser);
 router.post("/login", loginUser);
-router.post("/logout", logoutCurrentUser);
+router.post("/logout", protect, logoutUser);
 
-router
-  .route("/profile")
-  .get(authenticate, getCurrentUserProfile)
-  .put(authenticate, updateCurrentUserProfile);
+// Protected routes
+router.get("/profile", protect, getUserProfile);
+router.put("/profile", protect, updateUserProfile);
 
-router
-  .route("/:id")
-  .delete(authenticate, authorizeAdmin, deleteUserById)
-  .get(authenticate, authorizeAdmin, getUserById)
-  .put(authenticate, authorizeAdmin, updateUserById);
+// Admin routes
+router.get("/", protect, admin, getUsers);
+router.get("/:id", protect, admin, getUserById);
+router.put("/:id", protect, admin, updateUser);
+router.delete("/:id", protect, admin, deleteUser);
 
 export default router;

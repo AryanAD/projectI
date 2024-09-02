@@ -1,14 +1,14 @@
-import { Outlet } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
 
 function App() {
   return (
     <>
-      <ToastContainer />
-      <main className="py-3">
-        <Outlet />
-      </main>
+      <h1 className="text-red-500 text-xl flex justify-center items-center">
+        Testing
+      </h1>
     </>
   );
 }
