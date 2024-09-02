@@ -1,8 +1,9 @@
 import express from "express";
+const app = express();
+
 import path from "path";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import sequelize from "./config/db.js";
+import sequelize from "./config/database.js";
 
 // Routes
 import userRoutes from "./routes/userRoutes.js";
@@ -10,10 +11,7 @@ import userRoutes from "./routes/userRoutes.js";
 // import orderRoutes from "./routes/orderRoutes.js";
 // import categoryRoutes from "./routes/categoryRoutes.js";
 
-dotenv.config();
 const PORT = process.env.PORT || 5000;
-
-const app = express();
 
 // Middleware
 app.use(express.json());
@@ -21,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Test DB Connection
+
 sequelize
   .authenticate()
   .then(() => console.log("Database connected..."))
