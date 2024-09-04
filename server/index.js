@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 const app = express();
 
@@ -7,7 +10,7 @@ import sequelize from "./config/database.js";
 
 // Routes
 import userRoutes from "./routes/userRoutes.js";
-// import productRoutes from "./routes/productRoutes.js";
+import clientRoutes from "./routes/clientRoutes.js";
 // import orderRoutes from "./routes/orderRoutes.js";
 // import categoryRoutes from "./routes/categoryRoutes.js";
 
@@ -33,16 +36,12 @@ sequelize
 
 // Routes
 app.use("/api/users", userRoutes);
-// app.use("/api/products", productRoutes);
+app.use("/api/clients", clientRoutes);
 // app.use("/api/orders", orderRoutes);
 // app.use("/api/categories", categoryRoutes);
 
 // Static Files
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
-
-// Error Handling Middleware (optional)
-// app.use(notFound);
-// app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
