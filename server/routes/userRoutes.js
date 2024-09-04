@@ -17,11 +17,12 @@ const router = express.Router();
 // Public routes
 router.post("/", registerUser);
 router.post("/login", loginUser);
-router.post("/logout", protect, logoutUser);
+router.post("/logout", logoutUser);
 
 // Protected routes
-router.get("/profile", protect, getUserProfile);
-router.put("/profile", protect, updateUserProfile);
+router
+  .get("/profile", protect, getUserProfile)
+  .put("/profile", protect, updateUserProfile);
 
 // Admin routes
 router.get("/", protect, admin, getUsers);
