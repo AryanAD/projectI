@@ -12,7 +12,7 @@ import sequelize from "./config/database.js";
 import userRoutes from "./routes/userRoutes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
-// import categoryRoutes from "./routes/categoryRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -38,7 +38,7 @@ sequelize
 app.use("/api/users", userRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/projects", projectRoutes);
-// app.use("/api/categories", categoryRoutes);
+app.use("/api/tasks", taskRoutes);
 
 // Static Files
 const __dirname = path.resolve();

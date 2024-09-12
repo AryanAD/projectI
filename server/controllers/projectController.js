@@ -26,6 +26,7 @@ const fetchProductById = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Project not found");
   }
+
   res.json(project);
 });
 
