@@ -1,14 +1,18 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { Outlet } from "react-router-dom";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import Navigation from "./pages/home/Navigation";
 
 function App() {
   return (
     <>
-      <h1 className="text-red-500 text-xl flex justify-center items-center">
-        Testing
-      </h1>
+      <ToastContainer />
+      <Navigation />
+      <main className="py-3">
+        <Outlet />
+      </main>
     </>
   );
 }
