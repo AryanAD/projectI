@@ -43,6 +43,10 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: "staff",
     },
+    profilePicture: {
+      type: DataTypes.STRING, // Assuming you store the image path or URL
+      allowNull: true, // Profile picture is optional
+    },
   },
   {
     timestamps: true,

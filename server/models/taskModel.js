@@ -38,7 +38,7 @@ const Task = sequelize.define(
     status: {
       type: DataTypes.ENUM("todo", "doing", "done"),
       allowNull: false,
-      defaultValue: "todo", // Default status is "todo"
+      defaultValue: "todo",
     },
   },
   {

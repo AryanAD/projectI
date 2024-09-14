@@ -31,34 +31,14 @@ const Project = sequelize.define(
       },
     },
     status: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("todo", "doing", "done"),
       allowNull: false,
-      validate: {
-        isIn: {
-          args: [["todo", "doing", "done"]],
-          msg: "Status must be either 'todo', 'doing', or 'done'",
-        },
-        notEmpty: { msg: "Project status is required" },
-      },
+      defaultValue: "todo",
     },
   },
   {
     timestamps: true,
     tableName: "projects",
-  },
-  {
-    hooks: {
-      beforeCreate: (project) => {
-        if (project.status) {
-          project.status = project.status.toLowerCase().trim();
-        }
-      },
-      beforeUpdate: (project) => {
-        if (project.status) {
-          project.status = project.status.toLowerCase().trim();
-        }
-      },
-    },
   }
 );
 
