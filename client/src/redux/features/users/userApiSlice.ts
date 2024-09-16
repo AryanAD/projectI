@@ -6,7 +6,6 @@ interface RegisterOrUpdatePayload {
   username?: string;
   email?: string;
   password?: string;
-  profilePicture?: File;
 }
 
 interface LoginPayload {
@@ -17,24 +16,12 @@ interface LoginPayload {
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<User, RegisterOrUpdatePayload>({
-      query: (data) => {
-        const formData = new FormData();
-        if (data.username) formData.append("username", data.username);
-        if (data.email) formData.append("email", data.email);
-        if (data.password) formData.append("password", data.password);
-        if (data.profilePicture)
-          formData.append("profilePicture", data.profilePicture);
-
-        return {
-          url: `${USERS_URL}`,
-          method: "POST",
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          providesTags: ["Users"],
-        };
-      },
+      query: (data) => ({
+        url: `${USERS_URL}`,
+        method: "POST",
+        body: data,
+        providesTags: ["Users"],
+      }),
     }),
 
     login: builder.mutation<User, LoginPayload>({
@@ -60,24 +47,12 @@ const userApiSlice = apiSlice.injectEndpoints({
     }),
 
     updateProfile: builder.mutation<User, RegisterOrUpdatePayload>({
-      query: (data) => {
-        const formData = new FormData();
-        if (data.username) formData.append("username", data.username);
-        if (data.email) formData.append("email", data.email);
-        if (data.password) formData.append("password", data.password);
-        if (data.profilePicture)
-          formData.append("profilePicture", data.profilePicture);
-
-        return {
-          url: `${USERS_URL}/profile`,
-          method: "PUT",
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          providesTags: ["Users"],
-        };
-      },
+      query: (data) => ({
+        url: `${USERS_URL}/profile`,
+        method: "PUT",
+        body: data,
+        providesTags: ["Users"],
+      }),
     }),
 
     getAllUsers: builder.query<User[], void>({
@@ -100,23 +75,11 @@ const userApiSlice = apiSlice.injectEndpoints({
       User,
       { id: number; data: RegisterOrUpdatePayload }
     >({
-      query: ({ id, data }) => {
-        const formData = new FormData();
-        if (data.username) formData.append("username", data.username);
-        if (data.email) formData.append("email", data.email);
-        if (data.password) formData.append("password", data.password);
-        if (data.profilePicture)
-          formData.append("profilePicture", data.profilePicture);
-
-        return {
-          url: `${USERS_URL}/${id}`,
-          method: "PUT",
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        };
-      },
+      query: ({ id, data }) => ({
+        url: `${USERS_URL}/${id}`,
+        method: "PUT",
+        body: data,
+      }),
       invalidatesTags: ["Users"],
     }),
 

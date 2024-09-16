@@ -1,9 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Project } from "../../../types/projectTypes";
 
-const initialState = {
-  name: [],
-  description: [],
-  status: [],
+interface ProjectState {
+  project: Project | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: ProjectState = {
+  project: null,
+  loading: false,
+  error: null,
 };
 
 const projectSlice = createSlice({
@@ -11,18 +18,18 @@ const projectSlice = createSlice({
   initialState,
 
   reducers: {
-    setName: (state, action) => {
-      state.name = action.payload;
+    setProject: (state, action: PayloadAction<Project | null>) => {
+      state.project = action.payload;
     },
-    setDescription: (state, action) => {
-      state.description = action.payload;
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
     },
-    setStatus: (state, action) => {
-      state.status = action.payload;
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
     },
   },
 });
 
-export const { setName, setDescription, setStatus } = projectSlice.actions;
+export const { setProject, setLoading, setError } = projectSlice.actions;
 
 export default projectSlice.reducer;

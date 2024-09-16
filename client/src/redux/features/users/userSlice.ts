@@ -14,7 +14,7 @@ const initialState: UserState = {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: "users",
   initialState,
 
   reducers: {
@@ -27,15 +27,9 @@ const userSlice = createSlice({
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
-    updateProfilePicture: (state, action: PayloadAction<string>) => {
-      if (state.user) {
-        state.user.profilePicture = action.payload;
-      }
-    },
   },
 });
 
-export const { setUser, setLoading, setError, updateProfilePicture } =
-  userSlice.actions;
+export const { setUser, setLoading, setError } = userSlice.actions;
 
 export default userSlice.reducer;

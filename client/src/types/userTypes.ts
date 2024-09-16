@@ -5,5 +5,4 @@ export interface User {
   role: "staff" | "admin";
   createdAt?: Date;
   updatedAt?: Date;
-  profilePicture?: string;
 }

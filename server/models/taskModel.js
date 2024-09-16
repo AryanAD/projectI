@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
-import User from "./userModel.js"; // Import the User model for associations
+import User from "./userModel.js";
 
 const Task = sequelize.define(
   "Task",
@@ -47,7 +47,7 @@ const Task = sequelize.define(
   }
 );
 
-// Define the association with User
 Task.belongsTo(User, { foreignKey: "assignedTo", as: "assignedUser" });
+Task.belongsTo(Project, { foreignKey: "projectId", as: "project" });
 
 export default Task;
