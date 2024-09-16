@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
-import User from "./userModel.js";
 
 const Task = sequelize.define(
   "Task",
@@ -27,10 +26,6 @@ const Task = sequelize.define(
     assignedTo: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: User,
-        key: "id",
-      },
       validate: {
         notEmpty: { msg: "Task must be assigned to a staff" },
       },
@@ -46,8 +41,5 @@ const Task = sequelize.define(
     tableName: "tasks",
   }
 );
-
-Task.belongsTo(User, { foreignKey: "assignedTo", as: "assignedUser" });
-Task.belongsTo(Project, { foreignKey: "projectId", as: "project" });
 
 export default Task;
