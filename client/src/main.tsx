@@ -17,11 +17,12 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/auth/Login.tsx";
 import Register from "./pages/auth/Register.tsx";
 import Homepage from "./pages/home/Homepage.tsx";
+import ErrorDisplay from "./pages/error/ErrorDisplay.tsx";
 
 // Create Routes
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route errorElement={<ErrorDisplay />} path="/" element={<App />}>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route index={true} path="/" element={<Homepage />} />
