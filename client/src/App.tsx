@@ -1,20 +1,20 @@
-import { Outlet } from "react-router-dom";
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Navigation from "./pages/home/Navigation";
+import { Router } from "./router/Route";
+import { HashRouter } from "react-router-dom";
 
-function App() {
+const RouteManager = () => {
   return (
-    <>
+    <HashRouter>
       <ToastContainer />
-      <Navigation />
-      <main className="py-3">
-        <Outlet />
-      </main>
-    </>
+      <Router />
+    </HashRouter>
   );
-}
+};
+
+const App = () => {
+  return RouteManager();
+};
 
 export default App;
