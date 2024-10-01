@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import {
   HomeRounded,
@@ -44,7 +44,7 @@ const collapsedDrawerWidth = 70;
 const Navigation = () => {
   // Hooks
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -67,6 +67,7 @@ const Navigation = () => {
   };
 
   const handleLogout = () => {
+    // dispatch(here)
     navigate("/login");
     toast.success("Logged Out Successfully!");
   };

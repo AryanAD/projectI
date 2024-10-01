@@ -11,7 +11,6 @@ export const Router = () => {
     <>
       <Routes>
         <Route
-          errorElement={<ErrorDisplay />}
           path="/"
           element={
             // <AuthWrapper>
@@ -19,10 +18,11 @@ export const Router = () => {
             // </AuthWrapper>
           }
         >
-          <Route index={true} path="/" element={<Homepage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route index={true} path="" element={<Homepage />} />
         </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<ErrorDisplay />} />
       </Routes>
     </>
   );
