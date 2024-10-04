@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* * {
-  background: #303030;
-  color: #f9f9f9;
-} */
+/* Root CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto Flex";
+  letter-spacing: 1px;
+}
