@@ -7,13 +7,10 @@ import {
   ListItemText,
 } from "@mui/material";
 import {
-  Category,
   ExpandLess,
   ExpandMore,
-  Groups,
-  Inventory,
-  ProductionQuantityLimits,
-  Warehouse,
+  PersonRounded,
+  PeopleRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -24,29 +21,18 @@ const UserAccordion = () => {
   const currentPath = location.pathname;
 
   // States
-  const [openInventory, setOpenInventory] = useState(true);
+  const [openUsers, setOpenUsers] = useState(true);
 
   // Functions
   const handleInventoryClick = () => {
-    setOpenInventory(!openInventory);
+    setOpenUsers(!openUsers);
   };
 
   useEffect(() => {
-    if (
-      currentPath.startsWith("/users") ||
-      currentPath === "/add-product" ||
-      currentPath === "/add-existing-product" ||
-      currentPath === "/products/pay-credit" ||
-      currentPath.startsWith("/customer") ||
-      currentPath === "/add-suppliers" ||
-      currentPath.startsWith("/suppliers") ||
-      currentPath === "/category" ||
-      currentPath === "/add-suppliers" ||
-      currentPath === "/add-category"
-    ) {
-      setOpenInventory(true);
+    if (currentPath.includes("/users") || currentPath === "/manage-users") {
+      setOpenUsers(true);
     } else {
-      setOpenInventory(false);
+      setOpenUsers(false);
     }
   }, [currentPath]);
 
@@ -54,126 +40,48 @@ const UserAccordion = () => {
     <div>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
-          <Inventory />
+          <PersonRounded />
         </ListItemIcon>
-        <ListItemText primary="Inventory" />
-        {openInventory ? <ExpandLess /> : <ExpandMore />}
+        <ListItemText primary="Users" />
+        {openUsers ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-      <Collapse in={openInventory} timeout="auto" unmountOnExit>
+      <Collapse in={openUsers} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton
-            onClick={() => navigate("/category")}
+            onClick={() => navigate("/manage-users")}
             sx={{
               pl: 4,
               backgroundColor:
-                currentPath === "/category" || currentPath === "/add-category"
+                currentPath === "/users" || currentPath === "/manage-users"
                   ? "#5AC064"
                   : "transparent",
               color:
-                currentPath === "/category" || currentPath === "/add-category"
+                currentPath === "/users" || currentPath === "/manage-users"
                   ? "white"
                   : "black",
               "&:hover": {
                 backgroundColor:
-                  currentPath === "/category" || currentPath === "/add-category"
+                  currentPath === "/users" || currentPath === "/manage-users"
                     ? "#5AC064"
                     : "transparent",
                 color:
-                  currentPath === "/category" || currentPath === "/add-category"
+                  currentPath === "/users" || currentPath === "/manage-users"
                     ? "white"
                     : "black",
               },
             }}
           >
             <ListItemIcon>
-              <Category
+              <PeopleRounded
                 sx={{
                   color:
-                    currentPath === "/category" ||
-                    currentPath === "/add-category"
+                    currentPath === "/users" || currentPath === "/manage-users"
                       ? "white"
                       : "",
                 }}
               />
             </ListItemIcon>
-            <ListItemText primary="Category" />
-          </ListItemButton>
-
-          <ListItemButton
-            onClick={() => navigate("/products")}
-            sx={{
-              pl: 4,
-              backgroundColor: currentPath.includes("product")
-                ? "#5AC064"
-                : "transparent",
-              color: currentPath.includes("product") ? "white" : "black",
-              "&:hover": {
-                backgroundColor: currentPath.includes("product")
-                  ? "#5AC064"
-                  : "transparent",
-                color: currentPath.includes("product") ? "white" : "black",
-              },
-            }}
-          >
-            <ListItemIcon>
-              <ProductionQuantityLimits
-                sx={{
-                  color: currentPath.includes("product") ? "white" : "",
-                }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="Product" />
-          </ListItemButton>
-
-          <ListItemButton
-            onClick={() => navigate("/suppliers")}
-            sx={{
-              pl: 4,
-              backgroundColor: currentPath.includes("suppliers")
-                ? "#5AC064"
-                : "transparent",
-              color: currentPath.includes("suppliers") ? "white" : "black",
-              "&:hover": {
-                backgroundColor: currentPath.includes("suppliers")
-                  ? "#5AC064"
-                  : "transparent",
-                color: currentPath.includes("suppliers") ? "white" : "black",
-              },
-            }}
-          >
-            <ListItemIcon>
-              <Warehouse
-                sx={{
-                  color: currentPath.includes("suppliers") ? "white" : "",
-                }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="Suppliers" />
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => navigate("/customer")}
-            sx={{
-              pl: 4,
-              backgroundColor: currentPath.includes("customer")
-                ? "#5AC064"
-                : "transparent",
-              color: currentPath.includes("customer") ? "white" : "black",
-              "&:hover": {
-                backgroundColor: currentPath.includes("customer")
-                  ? "#5AC064"
-                  : "transparent",
-                color: currentPath.includes("customer") ? "white" : "black",
-              },
-            }}
-          >
-            <ListItemIcon>
-              <Groups
-                sx={{
-                  color: currentPath.includes("customer") ? "white" : "",
-                }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="Customer" />
+            <ListItemText primary="Manage Users" />
           </ListItemButton>
         </List>
       </Collapse>
