@@ -16,6 +16,13 @@ const User = sequelize.define(
         notEmpty: { msg: "Username is required" },
       },
     },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: { msg: "Must be a valid URL" },
+      },
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

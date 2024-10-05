@@ -16,6 +16,13 @@ const Client = sequelize.define(
         notEmpty: { msg: "Name is required" },
       },
     },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: { msg: "Must be a valid URL" },
+      },
+    },
     details: {
       type: DataTypes.STRING,
       allowNull: false,
