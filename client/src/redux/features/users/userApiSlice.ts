@@ -6,6 +6,8 @@ interface RegisterOrUpdatePayload {
   username?: string;
   email?: string;
   password?: string;
+  loading?: boolean;
+  error?: string | null;
 }
 
 interface LoginPayload {
