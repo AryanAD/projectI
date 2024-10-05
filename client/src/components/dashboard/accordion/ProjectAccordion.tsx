@@ -11,6 +11,7 @@ import {
   ExpandMore,
   CodeRounded,
   DvrRounded,
+  PostAddRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -31,6 +32,7 @@ const ProjectAccordion = () => {
   useEffect(() => {
     if (
       currentPath.includes("/projects") ||
+      currentPath === "/add-projects" ||
       currentPath === "/manage-projects"
     ) {
       setOpenProjects(true);
@@ -40,7 +42,7 @@ const ProjectAccordion = () => {
   }, [currentPath]);
 
   return (
-    <div>
+    <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
           <CodeRounded />
@@ -50,6 +52,44 @@ const ProjectAccordion = () => {
       </ListItemButton>
       <Collapse in={openProjects} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+          <ListItemButton
+            onClick={() => navigate("/add-projects")}
+            sx={{
+              pl: 4,
+              backgroundColor:
+                currentPath === "/projects" || currentPath === "/add-projects"
+                  ? "#5AC064"
+                  : "transparent",
+              color:
+                currentPath === "/projects" || currentPath === "/add-projects"
+                  ? "white"
+                  : "black",
+              "&:hover": {
+                backgroundColor:
+                  currentPath === "/projects" || currentPath === "/add-projects"
+                    ? "#5AC064"
+                    : "transparent",
+                color:
+                  currentPath === "/projects" || currentPath === "/add-projects"
+                    ? "white"
+                    : "black",
+              },
+            }}
+          >
+            <ListItemIcon>
+              <PostAddRounded
+                sx={{
+                  color:
+                    currentPath === "/projects" ||
+                    currentPath === "/add-projects"
+                      ? "white"
+                      : "",
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Add Projects" />
+          </ListItemButton>
+
           <ListItemButton
             onClick={() => navigate("/manage-projects")}
             sx={{
@@ -93,7 +133,7 @@ const ProjectAccordion = () => {
           </ListItemButton>
         </List>
       </Collapse>
-    </div>
+    </>
   );
 };
 

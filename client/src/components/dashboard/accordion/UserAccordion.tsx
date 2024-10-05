@@ -11,6 +11,7 @@ import {
   ExpandMore,
   PersonRounded,
   PeopleRounded,
+  PersonAddRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -29,7 +30,11 @@ const UserAccordion = () => {
   };
 
   useEffect(() => {
-    if (currentPath.includes("/users") || currentPath === "/manage-users") {
+    if (
+      currentPath.includes("/users") ||
+      currentPath === "/add-users" ||
+      currentPath === "/manage-users"
+    ) {
       setOpenUsers(true);
     } else {
       setOpenUsers(false);
@@ -37,7 +42,7 @@ const UserAccordion = () => {
   }, [currentPath]);
 
   return (
-    <div>
+    <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
           <PersonRounded />
@@ -47,6 +52,43 @@ const UserAccordion = () => {
       </ListItemButton>
       <Collapse in={openUsers} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+          <ListItemButton
+            onClick={() => navigate("/add-users")}
+            sx={{
+              pl: 4,
+              backgroundColor:
+                currentPath === "/users" || currentPath === "/add-users"
+                  ? "#5AC064"
+                  : "transparent",
+              color:
+                currentPath === "/users" || currentPath === "/add-users"
+                  ? "white"
+                  : "black",
+              "&:hover": {
+                backgroundColor:
+                  currentPath === "/users" || currentPath === "/add-users"
+                    ? "#5AC064"
+                    : "transparent",
+                color:
+                  currentPath === "/users" || currentPath === "/add-users"
+                    ? "white"
+                    : "black",
+              },
+            }}
+          >
+            <ListItemIcon>
+              <PersonAddRounded
+                sx={{
+                  color:
+                    currentPath === "/users" || currentPath === "/add-users"
+                      ? "white"
+                      : "",
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Add Users" />
+          </ListItemButton>
+
           <ListItemButton
             onClick={() => navigate("/manage-users")}
             sx={{
@@ -85,7 +127,7 @@ const UserAccordion = () => {
           </ListItemButton>
         </List>
       </Collapse>
-    </div>
+    </>
   );
 };
 

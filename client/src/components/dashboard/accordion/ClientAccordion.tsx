@@ -11,6 +11,7 @@ import {
   ExpandMore,
   EmojiPeopleRounded,
   GroupsRounded,
+  GroupAddRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -29,7 +30,11 @@ const ClientAccordion = () => {
   };
 
   useEffect(() => {
-    if (currentPath.includes("/clients") || currentPath === "/manage-clients") {
+    if (
+      currentPath.includes("/clients") ||
+      currentPath === "/add-clients" ||
+      currentPath === "/manage-clients"
+    ) {
       setOpenClients(true);
     } else {
       setOpenClients(false);
@@ -37,7 +42,7 @@ const ClientAccordion = () => {
   }, [currentPath]);
 
   return (
-    <div>
+    <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
           <EmojiPeopleRounded />
@@ -47,6 +52,43 @@ const ClientAccordion = () => {
       </ListItemButton>
       <Collapse in={openClients} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+          <ListItemButton
+            onClick={() => navigate("/add-clients")}
+            sx={{
+              pl: 4,
+              backgroundColor:
+                currentPath === "/clients" || currentPath === "/add-clients"
+                  ? "#5AC064"
+                  : "transparent",
+              color:
+                currentPath === "/clients" || currentPath === "/add-clients"
+                  ? "white"
+                  : "black",
+              "&:hover": {
+                backgroundColor:
+                  currentPath === "/clients" || currentPath === "/add-clients"
+                    ? "#5AC064"
+                    : "transparent",
+                color:
+                  currentPath === "/clients" || currentPath === "/add-clients"
+                    ? "white"
+                    : "black",
+              },
+            }}
+          >
+            <ListItemIcon>
+              <GroupAddRounded
+                sx={{
+                  color:
+                    currentPath === "/clients" || currentPath === "/add-clients"
+                      ? "white"
+                      : "",
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Add Clients" />
+          </ListItemButton>
+
           <ListItemButton
             onClick={() => navigate("/manage-clients")}
             sx={{
@@ -88,7 +130,7 @@ const ClientAccordion = () => {
           </ListItemButton>
         </List>
       </Collapse>
-    </div>
+    </>
   );
 };
 

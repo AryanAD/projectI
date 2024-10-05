@@ -9,12 +9,15 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 
 import Users from "../pages/users";
+import AddUsers from "../pages/users/AddUsers";
 import ManageUsers from "../pages/users/ManageUsers";
 
 import Clients from "../pages/clients";
+import AddClients from "../pages/clients/AddClients";
 import ManageClients from "../pages/clients/ManageClients";
 
 import Projects from "../pages/projects";
+import AddProjects from "../pages/projects/AddProjects";
 import ManageProjects from "../pages/projects/ManageProjects";
 
 import Tasks from "../pages/tasks";
@@ -36,14 +39,17 @@ export const Router = () => {
 
           {/* Users */}
           <Route path="/users" element={<Users />} />
+          <Route path="/add-users" element={<AddUsers />} />
           <Route path="/manage-users" element={<ManageUsers />} />
 
           {/* Clients */}
           <Route path="/clients" element={<Clients />} />
+          <Route path="/add-clients" element={<AddClients />} />
           <Route path="/manage-clients" element={<ManageClients />} />
 
           {/* Projects */}
           <Route path="/projects" element={<Projects />} />
+          <Route path="/add-projects" element={<AddProjects />} />
           <Route path="/manage-projects" element={<ManageProjects />} />
 
           {/* Tasks */}

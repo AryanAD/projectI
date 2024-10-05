@@ -37,7 +37,7 @@ const TaskAccordion = () => {
   }, [currentPath]);
 
   return (
-    <div>
+    <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
           <TaskAltRounded />
@@ -45,7 +45,12 @@ const TaskAccordion = () => {
         <ListItemText primary="Tasks" />
         {openTasks ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-      <Collapse in={openTasks} timeout="auto" unmountOnExit>
+      <Collapse
+        className="transition-all ease-in duration-1000"
+        in={openTasks}
+        timeout="auto"
+        unmountOnExit
+      >
         <List component="div" disablePadding>
           <ListItemButton
             onClick={() => navigate("/manage-tasks")}
@@ -85,7 +90,7 @@ const TaskAccordion = () => {
           </ListItemButton>
         </List>
       </Collapse>
-    </div>
+    </>
   );
 };
 
