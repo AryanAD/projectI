@@ -1,13 +1,24 @@
-import { USERS_URL } from "../../constants";
+import { UPLOADS_URL, USERS_URL } from "../../constants";
 import { apiSlice } from "../../apiSlice";
 import { User } from "../../../types/userTypes";
+
+export interface UserPayload {
+  id: number;
+  username: string;
+  email: string;
+  image?: string;
+}
+
+interface UploadImageResponse {
+  message: string;
+  image: string;
+}
 
 interface RegisterOrUpdatePayload {
   username?: string;
   email?: string;
   password?: string;
-  loading?: boolean;
-  error?: string | null;
+  image?: string;
 }
 
 interface LoginPayload {
@@ -17,12 +28,20 @@ interface LoginPayload {
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    register: builder.mutation<User, RegisterOrUpdatePayload>({
+    register: builder.mutation<User, RegisterOrUpdatePayload | FormData>({
       query: (data) => ({
         url: `${USERS_URL}`,
         method: "POST",
-        body: data,
+        body: data instanceof FormData ? data : { ...data },
         providesTags: ["Users"],
+      }),
+    }),
+
+    uploadUserImage: builder.mutation<UploadImageResponse, FormData>({
+      query: (formData) => ({
+        url: `${UPLOADS_URL}`,
+        method: "POST",
+        body: formData,
       }),
     }),
 
@@ -97,6 +116,7 @@ const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useRegisterMutation,
+  useUploadUserImageMutation,
   useLoginMutation,
   useLogoutMutation,
   useGetProfileQuery,

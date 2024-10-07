@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password, role } = req.body;
+  const { username, email, password, role, image } = req.body;
 
   const userExists = await User.findOne({ where: { email } });
 
@@ -21,6 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password: hashedPassword,
     role: role || "staff",
+    image,
   });
 
   if (user) {
@@ -31,6 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
       username: user.username,
       email: user.email,
       role: user.role,
+      image: user.image,
     });
   } else {
     res.status(400);
