@@ -8,6 +8,13 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Roboto Flex";
+}
+
+#root {
+  display: flex;
+  align-items: start;
+  padding-top: 10rem;
   letter-spacing: 1px;
-  /* background: whitesmoke; */
+  background: #f6f6f6;
+  height: 100vh;
 }

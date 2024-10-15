@@ -68,10 +68,10 @@ const AddUsers = () => {
   };
 
   return (
-    <Container>
+    <Container className={CustomCSS.cardBG}>
       <CustomHeading heading={"Add Users"} />
 
-      <div className="mt-16 flex flex-col">
+      <div className="flex flex-col">
         <form onSubmit={handleSubmit}>
           {imageUrl && (
             <div className="text-center">
@@ -83,7 +83,7 @@ const AddUsers = () => {
             </div>
           )}
 
-          <div className={`w-full mt-3 mb-[5rem] ${imageUrl ? "hidden" : ""}`}>
+          <div className={`w-full my-8 ${imageUrl ? "hidden" : ""}`}>
             <label className={CustomCSS.imageLabel}>
               {image ? image.name : "Upload Image"}
               <input
@@ -95,7 +95,7 @@ const AddUsers = () => {
             </label>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 w-full">
+          <div className="grid grid-cols-2 gap-6 w-full">
             <div className="flex flex-col">
               <label className={CustomCSS.label} htmlFor="username">
                 Enter Username
@@ -107,20 +107,6 @@ const AddUsers = () => {
                 className={CustomCSS.input}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <label className={CustomCSS.label} htmlFor="email">
-                Enter Email
-              </label>
-              <input
-                className={CustomCSS.input}
-                type="email"
-                id="email"
-                placeholder="Enter Your Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -137,9 +123,23 @@ const AddUsers = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+
+            <div className="flex flex-col col-span-full">
+              <label className={CustomCSS.label} htmlFor="email">
+                Enter Email
+              </label>
+              <input
+                className={CustomCSS.input}
+                type="email"
+                id="email"
+                placeholder="Enter Your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
           </div>
 
-          <div className="my-8">
+          <div className="my-5">
             <button
               className={CustomCSS.submitButton}
               type="submit"
