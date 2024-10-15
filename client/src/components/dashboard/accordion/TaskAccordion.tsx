@@ -13,8 +13,9 @@ import {
   AddTaskRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+import SidebarCollapseType from "./Interface";
 
-const TaskAccordion = () => {
+const TaskAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
   // Hooks
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,7 +41,12 @@ const TaskAccordion = () => {
     <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
-          <TaskAltRounded />
+          <TaskAltRounded
+            sx={{
+              transition: "all 0.5s ease",
+              marginLeft: sidebarCollapsed ? "10px" : "20px",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Tasks" />
         {openTasks ? <ExpandLess /> : <ExpandMore />}
@@ -55,10 +61,10 @@ const TaskAccordion = () => {
           <ListItemButton
             onClick={() => navigate("/manage-tasks")}
             sx={{
-              pl: 4,
+              pl: 8,
               backgroundColor:
                 currentPath === "/tasks" || currentPath === "/manage-tasks"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/tasks" || currentPath === "/manage-tasks"
@@ -67,7 +73,7 @@ const TaskAccordion = () => {
               "&:hover": {
                 backgroundColor:
                   currentPath === "/tasks" || currentPath === "/manage-tasks"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/tasks" || currentPath === "/manage-tasks"

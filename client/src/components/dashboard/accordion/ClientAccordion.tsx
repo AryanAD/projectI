@@ -14,8 +14,9 @@ import {
   GroupAddRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+import SidebarCollapseType from "./Interface";
 
-const ClientAccordion = () => {
+const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
   // Hooks
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,7 +46,12 @@ const ClientAccordion = () => {
     <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
-          <EmojiPeopleRounded />
+          <EmojiPeopleRounded
+            sx={{
+              transition: "all 0.5s ease",
+              marginLeft: sidebarCollapsed ? "10px" : "20px",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Clients" />
         {openClients ? <ExpandLess /> : <ExpandMore />}
@@ -55,10 +61,10 @@ const ClientAccordion = () => {
           <ListItemButton
             onClick={() => navigate("/add-clients")}
             sx={{
-              pl: 4,
+              pl: 8,
               backgroundColor:
                 currentPath === "/clients" || currentPath === "/add-clients"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/clients" || currentPath === "/add-clients"
@@ -67,7 +73,7 @@ const ClientAccordion = () => {
               "&:hover": {
                 backgroundColor:
                   currentPath === "/clients" || currentPath === "/add-clients"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/clients" || currentPath === "/add-clients"
@@ -92,10 +98,10 @@ const ClientAccordion = () => {
           <ListItemButton
             onClick={() => navigate("/manage-clients")}
             sx={{
-              pl: 4,
+              pl: 8,
               backgroundColor:
                 currentPath === "/clients" || currentPath === "/manage-clients"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/clients" || currentPath === "/manage-clients"
@@ -105,7 +111,7 @@ const ClientAccordion = () => {
                 backgroundColor:
                   currentPath === "/clients" ||
                   currentPath === "/manage-clients"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/clients" ||

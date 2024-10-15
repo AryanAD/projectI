@@ -14,8 +14,9 @@ import {
   PostAddRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+import SidebarCollapseType from "./Interface";
 
-const ProjectAccordion = () => {
+const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
   // Hooks
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,7 +46,12 @@ const ProjectAccordion = () => {
     <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
-          <CodeRounded />
+          <CodeRounded
+            sx={{
+              transition: "all 0.5s ease",
+              marginLeft: sidebarCollapsed ? "10px" : "20px",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Projects" />
         {openProjects ? <ExpandLess /> : <ExpandMore />}
@@ -55,10 +61,10 @@ const ProjectAccordion = () => {
           <ListItemButton
             onClick={() => navigate("/add-projects")}
             sx={{
-              pl: 4,
+              pl: 8,
               backgroundColor:
                 currentPath === "/projects" || currentPath === "/add-projects"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/projects" || currentPath === "/add-projects"
@@ -67,7 +73,7 @@ const ProjectAccordion = () => {
               "&:hover": {
                 backgroundColor:
                   currentPath === "/projects" || currentPath === "/add-projects"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/projects" || currentPath === "/add-projects"
@@ -93,11 +99,11 @@ const ProjectAccordion = () => {
           <ListItemButton
             onClick={() => navigate("/manage-projects")}
             sx={{
-              pl: 4,
+              pl: 8,
               backgroundColor:
                 currentPath === "/projects" ||
                 currentPath === "/manage-projects"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/projects" ||
@@ -108,7 +114,7 @@ const ProjectAccordion = () => {
                 backgroundColor:
                   currentPath === "/projects" ||
                   currentPath === "/manage-projects"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/projects" ||

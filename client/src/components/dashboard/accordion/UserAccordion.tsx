@@ -14,8 +14,9 @@ import {
   PersonAddRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+import SidebarCollapseType from "./Interface";
 
-const UserAccordion = () => {
+const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
   // Hooks
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,7 +46,12 @@ const UserAccordion = () => {
     <>
       <ListItemButton onClick={handleInventoryClick}>
         <ListItemIcon>
-          <PersonRounded />
+          <PersonRounded
+            sx={{
+              transition: "all 0.5s ease",
+              marginLeft: sidebarCollapsed ? "10px" : "20px",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Users" />
         {openUsers ? <ExpandLess /> : <ExpandMore />}
@@ -55,10 +61,10 @@ const UserAccordion = () => {
           <ListItemButton
             onClick={() => navigate("/add-users")}
             sx={{
-              pl: 4,
+              pl: 8,
               backgroundColor:
                 currentPath === "/users" || currentPath === "/add-users"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/users" || currentPath === "/add-users"
@@ -67,7 +73,7 @@ const UserAccordion = () => {
               "&:hover": {
                 backgroundColor:
                   currentPath === "/users" || currentPath === "/add-users"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/users" || currentPath === "/add-users"
@@ -92,10 +98,10 @@ const UserAccordion = () => {
           <ListItemButton
             onClick={() => navigate("/manage-users")}
             sx={{
-              pl: 4,
+              pl: 8,
               backgroundColor:
                 currentPath === "/users" || currentPath === "/manage-users"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/users" || currentPath === "/manage-users"
@@ -104,7 +110,7 @@ const UserAccordion = () => {
               "&:hover": {
                 backgroundColor:
                   currentPath === "/users" || currentPath === "/manage-users"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/users" || currentPath === "/manage-users"

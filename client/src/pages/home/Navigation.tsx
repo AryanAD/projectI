@@ -15,7 +15,6 @@ import {
   Avatar,
   Box,
   CssBaseline,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -77,31 +76,37 @@ const Navigation = () => {
   };
 
   const drawer = (
-    <>
+    <div className="h-full">
       <div className="flex items-center justify-center gap-3 py-2">
         <>
           <img
             src={ProfilePicture}
             alt="Profile Picture"
-            className="w-[54px] h-[54px] transition-all ease-in-out"
+            className="w-[49px] h-[49px] transition-all ease-in duration-300"
           />
           {!sidebarCollapsed && (
-            <h1 className="font-semibold text-3xl transition-all ease-in-out">
+            <h1 className="font-semibold text-[#4B49AC] text-3xl transition-all ease-in duration-300">
               Saral Admin
             </h1>
           )}
         </>
       </div>
 
-      <Divider />
-      <List disablePadding>
+      <List
+        sx={{
+          height: "92vh",
+          overflow: "hidden",
+          borderRight: "2px solid #f5f5f5",
+        }}
+        disablePadding
+      >
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => navigate("/")}
             sx={{
               backgroundColor:
                 currentPath === "/" || currentPath === "/profile"
-                  ? "#5AC064"
+                  ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/" || currentPath === "/profile"
@@ -110,7 +115,7 @@ const Navigation = () => {
               "&:hover": {
                 backgroundColor:
                   currentPath === "/" || currentPath === "/profile"
-                    ? "#5AC064"
+                    ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/" || currentPath === "/profile"
@@ -127,6 +132,8 @@ const Navigation = () => {
                     currentPath === "/" || currentPath === "/profile"
                       ? "white"
                       : "",
+                  transition: "all 0.5s ease",
+                  marginLeft: sidebarCollapsed ? "10px" : "20px",
                 }}
               />
             </ListItemIcon>
@@ -134,16 +141,16 @@ const Navigation = () => {
           </ListItemButton>
         </ListItem>
 
-        <UserAccordion />
-        <ClientAccordion />
-        <ProjectAccordion />
-        <TaskAccordion />
+        <UserAccordion sidebarCollapsed={sidebarCollapsed} />
+        <ClientAccordion sidebarCollapsed={sidebarCollapsed} />
+        <ProjectAccordion sidebarCollapsed={sidebarCollapsed} />
+        <TaskAccordion sidebarCollapsed={sidebarCollapsed} />
       </List>
-    </>
+    </div>
   );
 
   return (
-    <div className="flex items-center">
+    <>
       <CssBaseline />
 
       <AppBar
@@ -155,9 +162,9 @@ const Navigation = () => {
           ml: {
             sm: `${sidebarCollapsed ? collapsedDrawerWidth : drawerWidth}px`,
           },
-          bgcolor: "#5AC064",
-          height: 70,
-          transition: "width 0.5s ease, margin-left 0.5s ease",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          bgcolor: "white",
+          transition: "all 0.5s ease",
         }}
       >
         <Toolbar>
@@ -167,7 +174,7 @@ const Navigation = () => {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
-            <MenuRounded sx={{ color: "white", height: 33, width: 33 }} />
+            <MenuRounded sx={{ color: "#4B49AC", height: 33, width: 33 }} />
           </IconButton>
           <Box
             sx={{
@@ -177,8 +184,13 @@ const Navigation = () => {
               width: "100%",
             }}
           >
-            {/* Sidebar Toggle Button */}
-            <IconButton onClick={handleSidebarToggle} sx={{ color: "white" }}>
+            <IconButton
+              onClick={handleSidebarToggle}
+              sx={{
+                display: { xs: "none", sm: "inline-flex" },
+                color: "#4B49AC",
+              }}
+            >
               {sidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
             </IconButton>
 
@@ -189,15 +201,16 @@ const Navigation = () => {
               sx={{
                 fontWeight: 600,
                 fontSize: {
-                  sm: 18,
-                  md: 24,
-                  lg: 28,
+                  xs: 24,
+                  md: 28,
+                  lg: 32,
                 },
+                color: "#4B49AC",
+                transition: "all 0.5s ease",
               }}
             >
-              Dashboard
+              Saral Admin
             </Typography>
-
             <Box>
               <Tooltip title="Open Settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -276,6 +289,7 @@ const Navigation = () => {
             display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
+              border: "none",
               width: sidebarCollapsed ? collapsedDrawerWidth : drawerWidth,
               transition: "width 0.5s ease",
             },
@@ -286,7 +300,7 @@ const Navigation = () => {
         </Drawer>
       </Box>
       <Outlet />
-    </div>
+    </>
   );
 };
 

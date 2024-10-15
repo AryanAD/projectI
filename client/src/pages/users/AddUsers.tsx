@@ -5,6 +5,9 @@ import {
 } from "../../redux/features/users/userApiSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import { Container } from "@mui/material";
+import CustomHeading from "../../components/custom/CustomHeading";
+import { CustomCSS } from "../../components/custom/CustomCSS";
 
 interface UploadImageResponse {
   message: string;
@@ -65,65 +68,89 @@ const AddUsers = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-[80vw] h-[100vh]">
-      <form onSubmit={handleSubmit}>
-        {imageUrl && (
-          <div className="text-center">
-            <img
-              src={imageUrl}
-              alt="User Profile"
-              className="block mx-auto max-h-[200px] max-w-[200px] rounded-mb mb-5"
-            />
+    <Container>
+      <CustomHeading heading={"Add Users"} />
+
+      <div className="mt-16 flex flex-col">
+        <form onSubmit={handleSubmit}>
+          {imageUrl && (
+            <div className="text-center">
+              <img
+                src={imageUrl}
+                alt="User Profile"
+                className={CustomCSS.displayUploadedImage}
+              />
+            </div>
+          )}
+
+          <div className={`w-full mt-3 mb-[5rem] ${imageUrl ? "hidden" : ""}`}>
+            <label className={CustomCSS.imageLabel}>
+              {image ? image.name : "Upload Image"}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImage}
+                className="hidden"
+              />
+            </label>
           </div>
-        )}
 
-        <div className={`mb-3 ${imageUrl ? "hidden" : ""}`}>
-          <label className="">
-            {image ? image.name : "Upload Image"}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImage}
-              className="hidden"
-            />
-          </label>
-        </div>
+          <div className="grid grid-cols-3 gap-6 w-full">
+            <div className="flex flex-col">
+              <label className={CustomCSS.label} htmlFor="username">
+                Enter Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                placeholder="Enter Your Username"
+                className={CustomCSS.input}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="username">Enter Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+            <div className="flex flex-col">
+              <label className={CustomCSS.label} htmlFor="email">
+                Enter Email
+              </label>
+              <input
+                className={CustomCSS.input}
+                type="email"
+                id="email"
+                placeholder="Enter Your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="email">Enter Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+            <div className="flex flex-col">
+              <label className={CustomCSS.label} htmlFor="password">
+                Enter Password
+              </label>
+              <input
+                className={CustomCSS.input}
+                type="password"
+                placeholder="Enter Your Password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="password">Enter Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Registering..." : "Register"}
-        </button>
-      </form>
-    </div>
+          <div className="my-8">
+            <button
+              className={CustomCSS.submitButton}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Registering..." : "Register"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </Container>
   );
 };
 
