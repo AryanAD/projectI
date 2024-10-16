@@ -1,5 +1,9 @@
 export const CustomCSS = {
-  cardBG: "bg-white p-4 rounded-lg shadow-sm drop-shadow-sm",
+  cardBG: "bg-white w-[90%] md:w-full p-4 rounded-lg shadow-sm drop-shadow-sm",
+
+  //Grids
+  gridTwo: "grid md:grid-cols-2 gap-6 w-full",
+  gridThree: "grid md:grid-cols-3 gap-6 w-full",
 
   // Buttons
   submitButton:

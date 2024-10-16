@@ -95,7 +95,7 @@ const AddUsers = () => {
             </label>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 w-full">
+          <div className={CustomCSS.gridTwo}>
             <div className="flex flex-col">
               <label className={CustomCSS.label} htmlFor="username">
                 Enter Username
