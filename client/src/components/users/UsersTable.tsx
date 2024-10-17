@@ -15,7 +15,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { CustomCSS } from "../../components/custom/CustomCSS";
+import { CustomCSS } from "../custom/CustomCSS";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -86,7 +86,9 @@ const UsersTable = () => {
           {userData?.map((user) => (
             <TableRow key={user.id}>
               <TableCell>{user.id}</TableCell>
-              <TableCell>{user.username}</TableCell>
+              <Link to={`/users/${user.id}`}>
+                <TableCell>{user.username}</TableCell>
+              </Link>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.role}</TableCell>
               <TableCell>

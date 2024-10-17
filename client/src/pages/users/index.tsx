@@ -2,12 +2,13 @@ import { Container } from "@mui/material";
 import CustomHeading from "../../components/custom/CustomHeading";
 import { CustomCSS } from "../../components/custom/CustomCSS";
 import { useNavigate } from "react-router";
-import UsersTable from "./UsersTable";
+import UsersTable from "../../components/users/UsersTable";
+import { PersonAddAltRounded } from "@mui/icons-material";
 
 const Users = () => {
   const navigate = useNavigate();
   return (
-    <Container className={CustomCSS.cardBG}>
+    <Container className={CustomCSS.indexMainDiv}>
       <div className="inline-flex justify-between w-full">
         <CustomHeading heading={"Manage Users"} />
 
@@ -15,6 +16,7 @@ const Users = () => {
           className={CustomCSS.addButton}
           onClick={() => navigate("/add-users")}
         >
+          <PersonAddAltRounded />
           Add Users
         </button>
       </div>

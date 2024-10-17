@@ -71,7 +71,15 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.findAll({
-    attributes: ["id", "username", "email", "role", "createdAt", "updatedAt"],
+    attributes: [
+      "id",
+      "image",
+      "username",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ],
   });
 
   res.json(users);
@@ -79,7 +87,15 @@ const getUsers = asyncHandler(async (req, res) => {
 
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.params.id, {
-    attributes: ["id", "username", "email", "role", "createdAt", "updatedAt"],
+    attributes: [
+      "id",
+      "image",
+      "username",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ],
   });
 
   if (user) {
@@ -95,6 +111,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   if (user) {
     user.username = req.body.username || user.username;
+    user.image = req.body.image || user.image;
     user.email = req.body.email || user.email;
     user.role = req.body.role || user.role;
 
@@ -103,6 +120,7 @@ const updateUser = asyncHandler(async (req, res) => {
     res.json({
       id: updatedUser.id,
       username: updatedUser.username,
+      image: updatedUser.image,
       email: updatedUser.email,
       role: updatedUser.role,
     });
@@ -131,7 +149,15 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.user.id, {
-    attributes: ["id", "username", "email", "role", "createdAt", "updatedAt"],
+    attributes: [
+      "id",
+      "image",
+      "username",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ],
   });
 
   if (user) {
@@ -148,6 +174,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;
+    user.image = req.body.image || user.image;
 
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
@@ -160,6 +187,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       id: updatedUser.id,
       username: updatedUser.username,
       email: updatedUser.email,
+      image: updatedUser.image,
       role: updatedUser.role,
     });
   } else {

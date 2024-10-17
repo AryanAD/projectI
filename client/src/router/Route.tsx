@@ -2,15 +2,15 @@ import { Navigate, Route, Routes } from "react-router";
 
 import ErrorDisplay from "../pages/error/ErrorDisplay";
 
-import Navigation from "../pages/home/Navigation";
+import Navigation from "../components/dashboard/Navigation";
 import Homepage from "../pages/home/Homepage";
 
 import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
 
 import Users from "../pages/users/index";
 import AddUsers from "../pages/users/AddUsers";
-import UsersTable from "../pages/users/UsersTable";
+import EditSingleUser from "../pages/users/EditSingleUser";
+import UsersTable from "../components/users/UsersTable";
 
 import Clients from "../pages/clients";
 import AddClients from "../pages/clients/AddClients";
@@ -22,6 +22,7 @@ import ManageProjects from "../pages/projects/ManageProjects";
 
 import Tasks from "../pages/tasks";
 import ManageTasks from "../pages/tasks/ManageTasks";
+import SingleUser from "../pages/users/SingleUser";
 
 export const Router = () => {
   return (
@@ -39,8 +40,10 @@ export const Router = () => {
 
           {/* Users */}
           <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<SingleUser />} />
           <Route path="/add-users" element={<AddUsers />} />
           <Route path="/manage-users" element={<UsersTable />} />
+          <Route path="/edit-user/:id" element={<EditSingleUser />} />
 
           {/* Clients */}
           <Route path="/clients" element={<Clients />} />
@@ -57,7 +60,6 @@ export const Router = () => {
           <Route path="/manage-tasks" element={<ManageTasks />} />
         </Route>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="*" element={<ErrorDisplay />} />
       </Routes>
     </>

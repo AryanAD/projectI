@@ -31,10 +31,10 @@ import {
 
 // Project Imports
 import ProfilePicture from "/profilePicture.jpg";
-import UserAccordion from "../../components/dashboard/accordion/UserAccordion";
-import TaskAccordion from "../../components/dashboard/accordion/TaskAccordion";
-import ClientAccordion from "../../components/dashboard/accordion/ClientAccordion";
-import ProjectAccordion from "../../components/dashboard/accordion/ProjectAccordion";
+import UserAccordion from "./accordion/UserAccordion";
+import TaskAccordion from "./accordion/TaskAccordion";
+import ClientAccordion from "./accordion/ClientAccordion";
+import ProjectAccordion from "./accordion/ProjectAccordion";
 
 // Constants
 const drawerWidth = 300;

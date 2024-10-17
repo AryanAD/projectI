@@ -1,5 +1,9 @@
 export const CustomCSS = {
-  cardBG: "bg-white w-[90%] md:w-full p-4 rounded-lg shadow-sm drop-shadow-sm",
+  // Containers
+  mainDiv:
+    "flex flex-col w-[60%] p-10 bg-white rounded-lg drop-shadow-sm shadow-md",
+  indexMainDiv:
+    "bg-white w-[90%] md:w-full p-4 rounded-lg shadow-md drop-shadow-sm",
 
   //Table
   tableCell: {
@@ -21,7 +25,7 @@ export const CustomCSS = {
   updateButton:
     "py-3 text-[#f6f6f6] bg-[#488ac7] font-bold text-md px-6 py-1 rounded-[4px] transition-all ease-in duration-100 uppercase outline-none hover:bg-[#488ac790] hover:ring-1 hover:ring-[#488ac790] tracking-[2px]",
   addButton:
-    "py-2 px-3 rounded-[6px] shadow-md drop-shadow-md transition-all ease-in duration-100 bg-[#4B49AC] text-white hover:bg-[#7978E9] hover:ring-1 hover:ring-[#4B49AC] font-bold uppercase text-md outline-none tracking-[1px]",
+    "inline-flex items-center gap-2 py-2 px-3 rounded-[6px] shadow-md drop-shadow-md transition-all ease-in duration-100 bg-[#4B49AC] text-white hover:bg-[#7978E9] hover:ring-1 hover:ring-[#4B49AC] font-bold uppercase text-md outline-none tracking-[1px]",
 
   //Icon Buttons
   editIconButton: {
@@ -48,8 +52,16 @@ export const CustomCSS = {
     "py-3 rounded-lg px-6 border w-full border-[#7978E990] placeholder:text-[#98BDFF80] focus:outline-[#98BDFF]",
   imageLabel:
     "border border-[#7978E990] px-4 block w-full text-[#98BDFF] text-center rounded-lg cursor-pointer font-bold py-11",
+  updateImageLabel:
+    "block text-[#98BDFF] text-center cursor-pointer font-bold uppercase",
   displayUploadedImage:
     "block mx-auto max-h-[400px] max-w-[50%] rounded-lg mb-5",
+
+  // Chips
+  adminChip:
+    "px-6 py-2 font-bold uppercase rounded-full text-lime-600 bg-lime-100",
+  userChip:
+    "px-6 py-2 font-bold text-yellow-600 uppercase bg-yellow-100 rounded-full",
 
   // Modals
   deleteModal: {

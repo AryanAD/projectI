@@ -1,30 +1,47 @@
-import { useState } from "react";
-import {
-  useRegisterMutation,
-  useUploadUserImageMutation,
-} from "../../redux/features/users/userApiSlice";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { ArrowBackRounded } from "@mui/icons-material";
 import { CustomCSS } from "../../components/custom/CustomCSS";
 import CustomHeading from "../../components/custom/CustomHeading";
-import { ArrowBackRounded } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import {
+  useGetAllUsersQuery,
+  useUpdateUserByIdMutation,
+  useUploadUserImageMutation,
+} from "../../redux/features/users/userApiSlice";
 
 interface UploadImageResponse {
   message: string;
   image: string;
 }
 
-const AddUsers = () => {
-  const [register, { isLoading }] = useRegisterMutation();
+const EditSingleUser = () => {
+  const [updateUserById, { isLoading }] = useUpdateUserByIdMutation();
   const [uploadUserImage] = useUploadUserImageMutation();
+  const { data: previousUserData } = useGetAllUsersQuery();
 
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [role, setRole] = useState<string>("");
 
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (previousUserData && id) {
+      const previousUser = previousUserData.find(
+        (element) => element.id === parseInt(id)
+      );
+      if (previousUser) {
+        setUsername(previousUser.username || "");
+        setEmail(previousUser.email || "");
+        setRole(previousUser.role || "");
+        setImageUrl(previousUser.image || null);
+      }
+    }
+  }, [previousUserData, id]);
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -50,20 +67,17 @@ const AddUsers = () => {
 
     const role = "staff";
 
-    if (!username || !email || !password || !role || !image) {
-      toast.error("All fields are required");
-      return;
-    }
-
     try {
-      const userData = {
+      const updatedUserData = {
         username,
         email,
-        password,
         role,
         ...(imageUrl && { image: imageUrl }),
       };
-      const data = await register(userData).unwrap();
+      const data = await updateUserById({
+        id: parseInt(id),
+        data: updatedUserData,
+      }).unwrap();
       toast.success(`${data.username} Successfully Created`);
       navigate("/users");
     } catch (error) {
@@ -97,9 +111,9 @@ const AddUsers = () => {
           </div>
         )}
 
-        <div className={`w-full my-8 ${imageUrl ? "hidden" : ""}`}>
-          <label className={CustomCSS.imageLabel}>
-            {image ? image.name : "Upload Image"}
+        <div className={`w-full my-8 `}>
+          <label className={CustomCSS.updateImageLabel}>
+            {image ? image.name : "Update Image"}
             <input
               type="file"
               accept="image/*"
@@ -125,16 +139,16 @@ const AddUsers = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="password">
-              Enter Password
+            <label className={CustomCSS.label} htmlFor="role">
+              Enter role
             </label>
             <input
               className={CustomCSS.input}
-              type="password"
-              placeholder="Enter Your Password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="role"
+              placeholder="Enter Your role"
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
             />
           </div>
 
@@ -159,7 +173,7 @@ const AddUsers = () => {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Registering..." : "Register"}
+            {isLoading ? "Updating..." : "Update"}
           </button>
         </div>
       </form>
@@ -167,4 +181,4 @@ const AddUsers = () => {
   );
 };
 
-export default AddUsers;
+export default EditSingleUser;
