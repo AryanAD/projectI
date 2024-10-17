@@ -80,6 +80,9 @@ const userApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: `${USERS_URL}`,
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
       providesTags: ["Users"],
     }),

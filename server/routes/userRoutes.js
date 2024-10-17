@@ -27,9 +27,13 @@ router
 
 // Admin routes
 router
-  .get("/", protect, admin, getUsers)
-  .get("/:id", protect, admin, getUserById)
-  .put("/:id", protect, admin, updateUser)
-  .delete("/:id", protect, admin, deleteUser);
+  // .get("/", protect, admin, getUsers)
+  // .get("/:id", protect, admin, getUserById)
+  // .put("/:id", protect, admin, updateUser)
+  // .delete("/:id", protect, admin, deleteUser);
+  .get("/", getUsers)
+  .get("/:id", getUserById)
+  .put("/:id", updateUser)
+  .delete("/:id", deleteUser);
 
 export default router;

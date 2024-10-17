@@ -8,9 +8,9 @@ import Homepage from "../pages/home/Homepage";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 
-import Users from "../pages/users";
+import Users from "../pages/users/index";
 import AddUsers from "../pages/users/AddUsers";
-import ManageUsers from "../pages/users/ManageUsers";
+import UsersTable from "../pages/users/UsersTable";
 
 import Clients from "../pages/clients";
 import AddClients from "../pages/clients/AddClients";
@@ -40,7 +40,7 @@ export const Router = () => {
           {/* Users */}
           <Route path="/users" element={<Users />} />
           <Route path="/add-users" element={<AddUsers />} />
-          <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/manage-users" element={<UsersTable />} />
 
           {/* Clients */}
           <Route path="/clients" element={<Clients />} />

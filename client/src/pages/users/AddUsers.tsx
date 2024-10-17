@@ -68,89 +68,85 @@ const AddUsers = () => {
   };
 
   return (
-    <Container className={CustomCSS.cardBG}>
-      <CustomHeading heading={"Add Users"} />
+    <div className="flex flex-col">
+      <form onSubmit={handleSubmit}>
+        {imageUrl && (
+          <div className="text-center">
+            <img
+              src={imageUrl}
+              alt="User Profile"
+              className={CustomCSS.displayUploadedImage}
+            />
+          </div>
+        )}
 
-      <div className="flex flex-col">
-        <form onSubmit={handleSubmit}>
-          {imageUrl && (
-            <div className="text-center">
-              <img
-                src={imageUrl}
-                alt="User Profile"
-                className={CustomCSS.displayUploadedImage}
-              />
-            </div>
-          )}
+        <div className={`w-full my-8 ${imageUrl ? "hidden" : ""}`}>
+          <label className={CustomCSS.imageLabel}>
+            {image ? image.name : "Upload Image"}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImage}
+              className="hidden"
+            />
+          </label>
+        </div>
 
-          <div className={`w-full my-8 ${imageUrl ? "hidden" : ""}`}>
-            <label className={CustomCSS.imageLabel}>
-              {image ? image.name : "Upload Image"}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImage}
-                className="hidden"
-              />
+        <div className={CustomCSS.gridTwo}>
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="username">
+              Enter Username
             </label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter Your Username"
+              className={CustomCSS.input}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
 
-          <div className={CustomCSS.gridTwo}>
-            <div className="flex flex-col">
-              <label className={CustomCSS.label} htmlFor="username">
-                Enter Username
-              </label>
-              <input
-                type="text"
-                id="username"
-                placeholder="Enter Your Username"
-                className={CustomCSS.input}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <label className={CustomCSS.label} htmlFor="password">
-                Enter Password
-              </label>
-              <input
-                className={CustomCSS.input}
-                type="password"
-                placeholder="Enter Your Password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <div className="flex flex-col col-span-full">
-              <label className={CustomCSS.label} htmlFor="email">
-                Enter Email
-              </label>
-              <input
-                className={CustomCSS.input}
-                type="email"
-                id="email"
-                placeholder="Enter Your Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="password">
+              Enter Password
+            </label>
+            <input
+              className={CustomCSS.input}
+              type="password"
+              placeholder="Enter Your Password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
-          <div className="my-5">
-            <button
-              className={CustomCSS.submitButton}
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? "Registering..." : "Register"}
-            </button>
+          <div className="flex flex-col col-span-full">
+            <label className={CustomCSS.label} htmlFor="email">
+              Enter Email
+            </label>
+            <input
+              className={CustomCSS.input}
+              type="email"
+              id="email"
+              placeholder="Enter Your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-        </form>
-      </div>
-    </Container>
+        </div>
+
+        <div className="my-5">
+          <button
+            className={CustomCSS.submitButton}
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "Registering..." : "Register"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
