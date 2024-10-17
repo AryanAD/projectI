@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   useRegisterMutation,
   useUploadUserImageMutation,
 } from "../../redux/features/users/userApiSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import { Container } from "@mui/material";
-import CustomHeading from "../../components/custom/CustomHeading";
 import { CustomCSS } from "../../components/custom/CustomCSS";
 
 interface UploadImageResponse {
@@ -35,7 +33,6 @@ const AddUsers = () => {
       try {
         const res: UploadImageResponse =
           await uploadUserImage(formData).unwrap();
-        toast.success(res.message);
         setImage(file);
         setImageUrl(res.image);
       } catch (error: unknown) {
@@ -49,18 +46,24 @@ const AddUsers = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const userData = new FormData();
-      userData.append("username", username);
-      userData.append("email", email);
-      userData.append("password", password);
-      if (imageUrl) {
-        userData.append("image", imageUrl);
-      }
+    const role = "staff";
 
+    if (!username || !email || !password || !role || !image) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    try {
+      const userData = {
+        username,
+        email,
+        password,
+        role,
+        ...(imageUrl && { image: imageUrl }),
+      };
       const data = await register(userData).unwrap();
       toast.success(`${data.username} Successfully Created`);
-      navigate("/manage-users");
+      navigate("/users");
     } catch (error) {
       console.error(error);
       toast.error("Failed to register user");

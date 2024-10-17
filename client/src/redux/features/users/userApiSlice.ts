@@ -33,8 +33,8 @@ const userApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}`,
         method: "POST",
         body: data instanceof FormData ? data : { ...data },
-        providesTags: ["Users"],
       }),
+      invalidatesTags: ["Users"],
     }),
 
     uploadUserImage: builder.mutation<UploadImageResponse, FormData>({
