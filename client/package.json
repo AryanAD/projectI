@@ -19,6 +19,7 @@
     "apexcharts": "^3.52.0",
     "axios": "^1.7.4",
     "css": "^3.0.0",
+    "dayjs": "^1.11.13",
     "flowbite": "^2.5.1",
     "flowbite-react": "^0.10.1",
     "moment": "^2.30.1",

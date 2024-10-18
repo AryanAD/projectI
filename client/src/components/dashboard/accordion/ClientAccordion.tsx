@@ -117,7 +117,7 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
           </ListItemButton>
 
           <ListItemButton
-            onClick={() => navigate("/manage-clients")}
+            onClick={() => navigate("/clients")}
             sx={{
               pl: 8,
               backgroundColor:
