@@ -2,9 +2,14 @@ export interface Client {
   id: number;
   name: string;
   details: string;
-  category: string;
+  logo?: string;
+  email: string;
   phone: string;
-  address: string;
+  location: string;
+  priority: "normal" | "high" | "very high";
+  startDate: Date;
+  endDate: Date;
   createdAt?: Date;
   updatedAt?: Date;
+  categoryId: number;
 }

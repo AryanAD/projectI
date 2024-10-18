@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
+import ClientCategory from "./clientCategoryModel.js"; // import the ClientCategory model
 
 const Client = sequelize.define(
   "Client",
@@ -13,14 +14,7 @@ const Client = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Name is required" },
-      },
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: { msg: "Must be a valid URL" },
+        notEmpty: { msg: "Client name is required" },
       },
     },
     details: {
@@ -30,11 +24,16 @@ const Client = sequelize.define(
         notEmpty: { msg: "Client details are required" },
       },
     },
-    category: {
+    logo: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Client category is required" },
+        isEmail: { msg: "Must be a valid email address" },
+        notEmpty: { msg: "Email is required" },
       },
     },
     phone: {
@@ -42,15 +41,36 @@ const Client = sequelize.define(
       allowNull: false,
       validate: {
         is: /^\d{10}$/,
-        notEmpty: { msg: "Client phone number is required" },
+        notEmpty: { msg: "Phone number is required" },
       },
     },
-    address: {
+    location: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Client address is required" },
+        notEmpty: { msg: "Location is required" },
       },
+    },
+    priority: {
+      type: DataTypes.ENUM("normal", "high", "very high"),
+      allowNull: false,
+      defaultValue: "normal",
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    clientCategoryId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: ClientCategory, // references the ClientCategory model
+        key: "id",
+      },
+      allowNull: false,
     },
   },
   {
@@ -58,5 +78,8 @@ const Client = sequelize.define(
     tableName: "clients",
   }
 );
+
+// Define the association between Client and ClientCategory
+Client.belongsTo(ClientCategory, { foreignKey: "clientCategoryId" });
 
 export default Client;

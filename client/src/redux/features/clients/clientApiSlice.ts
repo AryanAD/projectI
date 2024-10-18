@@ -5,9 +5,14 @@ import { Client } from "../../../types/clientTypes";
 interface AddOrModifyPayload {
   name?: string;
   details?: string;
-  category?: string;
+  logo?: string;
+  email?: string;
   phone?: string;
-  address?: string;
+  location?: string;
+  priority?: "normal" | "high" | "very high";
+  startDate?: Date;
+  endDate?: Date;
+  categoryId?: number;
 }
 
 export const clientApiSlice = apiSlice.injectEndpoints({
@@ -20,7 +25,7 @@ export const clientApiSlice = apiSlice.injectEndpoints({
         providesTags: ["Clients"],
       }),
     }),
-    getClients: builder.query<Client, void>({
+    getClients: builder.query<Client[], void>({
       query: () => ({
         url: `${CLIENTS_URL}`,
         method: "GET",
