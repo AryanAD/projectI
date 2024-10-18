@@ -9,12 +9,20 @@ import Login from "../pages/auth/Login";
 
 import Users from "../pages/users/index";
 import AddUsers from "../pages/users/AddUsers";
-import EditSingleUser from "../pages/users/EditSingleUser";
+import SingleUser from "../pages/users/SingleUser";
 import UsersTable from "../components/users/UsersTable";
+import EditSingleUser from "../pages/users/EditSingleUser";
 
-import Clients from "../pages/clients";
+import Clients from "../pages/clients/index";
 import AddClients from "../pages/clients/AddClients";
-import ManageClients from "../pages/clients/ManageClients";
+import SingleClient from "../pages/clients/SingleClient";
+import ClientsTable from "../components/clients/ClientsTable";
+import EditSingleClient from "../pages/clients/EditSingleClient";
+
+import ClientCategories from "../pages/clients/categories/index";
+import AddClientCategories from "../pages/clients/categories/AddCategories";
+import EditClientCategory from "../pages/clients/categories/EditSingleCategory";
+import ClientCategoryTable from "../components/clients/categories/CategoryTable";
 
 import Projects from "../pages/projects";
 import AddProjects from "../pages/projects/AddProjects";
@@ -22,7 +30,6 @@ import ManageProjects from "../pages/projects/ManageProjects";
 
 import Tasks from "../pages/tasks";
 import ManageTasks from "../pages/tasks/ManageTasks";
-import SingleUser from "../pages/users/SingleUser";
 
 export const Router = () => {
   return (
@@ -47,8 +54,25 @@ export const Router = () => {
 
           {/* Clients */}
           <Route path="/clients" element={<Clients />} />
+          <Route path="/clients/:id" element={<SingleClient />} />
           <Route path="/add-clients" element={<AddClients />} />
-          <Route path="/manage-clients" element={<ManageClients />} />
+          <Route path="/manage-clients" element={<ClientsTable />} />
+          <Route path="/edit-client/:id" element={<EditSingleClient />} />
+
+          {/* Clients Categories*/}
+          <Route path="/client-categories" element={<ClientCategories />} />
+          <Route
+            path="/add-client-category"
+            element={<AddClientCategories />}
+          />
+          <Route
+            path="/manage-client-category"
+            element={<ClientCategoryTable />}
+          />
+          <Route
+            path="/edit-client-category/:id"
+            element={<EditClientCategory />}
+          />
 
           {/* Projects */}
           <Route path="/projects" element={<Projects />} />

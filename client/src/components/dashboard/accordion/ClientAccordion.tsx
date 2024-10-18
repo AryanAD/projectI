@@ -11,7 +11,7 @@ import {
   ExpandMore,
   EmojiPeopleRounded,
   GroupsRounded,
-  GroupAddRounded,
+  CategoryRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SidebarCollapseType from "./Interface";
@@ -32,9 +32,15 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
 
   useEffect(() => {
     if (
-      currentPath.includes("/clients") ||
+      currentPath === "/client-categories" ||
+      currentPath === "/add-client-category" ||
+      currentPath === "/manage-client-category" ||
+      currentPath.includes("/edit-client-category") ||
+      currentPath === "/clients" ||
       currentPath === "/add-clients" ||
-      currentPath === "/manage-clients"
+      currentPath === "/manage-clients" ||
+      currentPath.includes("/add-client") ||
+      currentPath.includes("/clients")
     ) {
       setOpenClients(true);
     } else {
@@ -59,40 +65,55 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
       <Collapse in={openClients} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton
-            onClick={() => navigate("/add-clients")}
+            onClick={() => navigate("/client-categories")}
             sx={{
               pl: 8,
               backgroundColor:
-                currentPath === "/clients" || currentPath === "/add-clients"
+                currentPath === "/client-categories" ||
+                currentPath === "/add-client-category" ||
+                currentPath === "/manage-client-category" ||
+                currentPath.includes("/edit-client-category")
                   ? "#4B49AC"
                   : "transparent",
               color:
-                currentPath === "/clients" || currentPath === "/add-clients"
+                currentPath === "/client-categories" ||
+                currentPath === "/add-client-category" ||
+                currentPath === "/manage-client-category" ||
+                currentPath.includes("/edit-client-category")
                   ? "white"
                   : "black",
               "&:hover": {
                 backgroundColor:
-                  currentPath === "/clients" || currentPath === "/add-clients"
+                  currentPath === "/client-categories" ||
+                  currentPath === "/add-client-category" ||
+                  currentPath === "/manage-client-category" ||
+                  currentPath.includes("/edit-client-category")
                     ? "#4B49AC"
                     : "transparent",
                 color:
-                  currentPath === "/clients" || currentPath === "/add-clients"
+                  currentPath === "/client-categories" ||
+                  currentPath === "/add-client-category" ||
+                  currentPath === "/manage-client-category" ||
+                  currentPath.includes("/edit-client-category")
                     ? "white"
                     : "black",
               },
             }}
           >
             <ListItemIcon>
-              <GroupAddRounded
+              <CategoryRounded
                 sx={{
                   color:
-                    currentPath === "/clients" || currentPath === "/add-clients"
+                    currentPath === "/client-categories" ||
+                    currentPath === "/add-client-category" ||
+                    currentPath === "/manage-client-category" ||
+                    currentPath.includes("/edit-client-category")
                       ? "white"
                       : "",
                 }}
               />
             </ListItemIcon>
-            <ListItemText primary="Add Clients" />
+            <ListItemText primary="Manage Categories" />
           </ListItemButton>
 
           <ListItemButton
@@ -100,22 +121,36 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
             sx={{
               pl: 8,
               backgroundColor:
-                currentPath === "/clients" || currentPath === "/manage-clients"
+                currentPath === "/clients" ||
+                currentPath === "/add-clients" ||
+                currentPath === "/manage-clients" ||
+                currentPath.includes("/add-client") ||
+                currentPath.includes("/clients")
                   ? "#4B49AC"
                   : "transparent",
               color:
-                currentPath === "/clients" || currentPath === "/manage-clients"
+                currentPath === "/clients" ||
+                currentPath === "/add-clients" ||
+                currentPath === "/manage-clients" ||
+                currentPath.includes("/add-client") ||
+                currentPath.includes("/clients")
                   ? "white"
                   : "black",
               "&:hover": {
                 backgroundColor:
                   currentPath === "/clients" ||
-                  currentPath === "/manage-clients"
+                  currentPath === "/add-clients" ||
+                  currentPath === "/manage-clients" ||
+                  currentPath.includes("/add-client") ||
+                  currentPath.includes("/clients")
                     ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/clients" ||
-                  currentPath === "/manage-clients"
+                  currentPath === "/add-clients" ||
+                  currentPath === "/manage-clients" ||
+                  currentPath.includes("/add-client") ||
+                  currentPath.includes("/clients")
                     ? "white"
                     : "black",
               },
@@ -126,7 +161,10 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                 sx={{
                   color:
                     currentPath === "/clients" ||
-                    currentPath === "/manage-clients"
+                    currentPath === "/add-clients" ||
+                    currentPath === "/manage-clients" ||
+                    currentPath.includes("/add-client") ||
+                    currentPath.includes("/clients")
                       ? "white"
                       : "",
                 }}
