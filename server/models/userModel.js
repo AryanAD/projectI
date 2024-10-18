@@ -34,6 +34,18 @@ const User = sequelize.define(
         notEmpty: { msg: "Email is required" },
       },
     },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: "Phone number is required" },
+        isNumeric: { msg: "Must be a valid phone number" },
+        len: {
+          args: [10],
+          msg: "Phone number must be 10 digits long",
+        },
+      },
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,

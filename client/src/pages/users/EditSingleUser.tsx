@@ -24,6 +24,7 @@ const EditSingleUser = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
   const [role, setRole] = useState<string>("");
 
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const EditSingleUser = () => {
       if (previousUser) {
         setUsername(previousUser.username || "");
         setEmail(previousUser.email || "");
+        setPhone(previousUser.phone || "");
         setRole(previousUser.role || "");
         setImageUrl(previousUser.image || null);
       }
@@ -71,6 +73,7 @@ const EditSingleUser = () => {
       const updatedUserData = {
         username,
         email,
+        phone,
         role,
         ...(imageUrl && { image: imageUrl }),
       };
@@ -152,7 +155,7 @@ const EditSingleUser = () => {
             />
           </div>
 
-          <div className="flex flex-col col-span-full">
+          <div className="flex flex-col">
             <label className={CustomCSS.label} htmlFor="email">
               Enter Email
             </label>
@@ -163,6 +166,20 @@ const EditSingleUser = () => {
               placeholder="Enter Your Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="phone">
+              Enter Phone Number
+            </label>
+            <input
+              className={CustomCSS.input}
+              type="number"
+              id="phone"
+              placeholder="Enter Your Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
         </div>

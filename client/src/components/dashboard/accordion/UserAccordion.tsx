@@ -11,7 +11,6 @@ import {
   ExpandMore,
   PersonRounded,
   PeopleRounded,
-  PersonAddRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SidebarCollapseType from "./Interface";
@@ -32,6 +31,7 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
 
   useEffect(() => {
     if (
+      currentPath.includes("/edit-user") ||
       currentPath.includes("/users") ||
       currentPath === "/add-users" ||
       currentPath === "/manage-users"
@@ -63,26 +63,30 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
             sx={{
               pl: 8,
               backgroundColor:
-                currentPath === "/users" ||
+                currentPath.includes("/edit-user") ||
+                currentPath.includes("/users") ||
                 currentPath === "/add-users" ||
                 currentPath === "/manage-users"
                   ? "#4B49AC"
                   : "transparent",
               color:
-                currentPath === "/users" ||
+                currentPath.includes("/edit-user") ||
+                currentPath.includes("/users") ||
                 currentPath === "/add-users" ||
                 currentPath === "/manage-users"
                   ? "white"
                   : "black",
               "&:hover": {
                 backgroundColor:
-                  currentPath === "/users" ||
+                  currentPath.includes("/edit-user") ||
+                  currentPath.includes("/users") ||
                   currentPath === "/add-users" ||
                   currentPath === "/manage-users"
                     ? "#4B49AC"
                     : "transparent",
                 color:
-                  currentPath === "/users" ||
+                  currentPath.includes("/edit-user") ||
+                  currentPath.includes("/users") ||
                   currentPath === "/add-users" ||
                   currentPath === "/manage-users"
                     ? "white"
@@ -94,7 +98,8 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
               <PeopleRounded
                 sx={{
                   color:
-                    currentPath === "/users" ||
+                    currentPath.includes("/edit-user") ||
+                    currentPath.includes("/users") ||
                     currentPath === "/add-users" ||
                     currentPath === "/manage-users"
                       ? "white"

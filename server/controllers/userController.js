@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password, role, image } = req.body;
+  const { username, email, password, phone, role, image } = req.body;
 
   const userExists = await User.findOne({ where: { email } });
 
@@ -20,6 +20,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password: hashedPassword,
+    phone,
     role: role || "staff",
     image,
   });
@@ -31,6 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
+      phone: user.phone,
       role: user.role,
       image: user.image,
     });
@@ -76,6 +78,7 @@ const getUsers = asyncHandler(async (req, res) => {
       "image",
       "username",
       "email",
+      "phone",
       "role",
       "createdAt",
       "updatedAt",
@@ -92,6 +95,7 @@ const getUserById = asyncHandler(async (req, res) => {
       "image",
       "username",
       "email",
+      "phone",
       "role",
       "createdAt",
       "updatedAt",
@@ -113,6 +117,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.username = req.body.username || user.username;
     user.image = req.body.image || user.image;
     user.email = req.body.email || user.email;
+    user.phone = req.body.phone || user.phone;
     user.role = req.body.role || user.role;
 
     const updatedUser = await user.save();
@@ -122,6 +127,7 @@ const updateUser = asyncHandler(async (req, res) => {
       username: updatedUser.username,
       image: updatedUser.image,
       email: updatedUser.email,
+      phone: updatedUser.phone,
       role: updatedUser.role,
     });
   } else {
@@ -154,6 +160,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       "image",
       "username",
       "email",
+      "phone",
       "role",
       "createdAt",
       "updatedAt",
@@ -174,6 +181,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;
+    user.phone = req.body.phone || user.phone;
     user.image = req.body.image || user.image;
 
     if (req.body.password) {
@@ -187,6 +195,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       id: updatedUser.id,
       username: updatedUser.username,
       email: updatedUser.email,
+      phone: updatedUser.phone,
       image: updatedUser.image,
       role: updatedUser.role,
     });

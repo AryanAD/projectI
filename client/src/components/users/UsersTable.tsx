@@ -24,7 +24,9 @@ interface Users {
   id?: number;
   username?: string;
   email?: string;
+  phone?: string;
   role?: string;
+  image?: string;
 }
 
 const UsersTable = () => {
@@ -72,6 +74,7 @@ const UsersTable = () => {
             </TableCell>
             <TableCell sx={CustomCSS.tableCell}>Username</TableCell>
             <TableCell sx={CustomCSS.tableCell}>Email</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Phone Number</TableCell>
             <TableCell sx={CustomCSS.tableCell}>Role</TableCell>
             <TableCell
               sx={{ ...CustomCSS.tableCell, borderRadius: "0 6px 0 0" }}
@@ -90,6 +93,7 @@ const UsersTable = () => {
                 <TableCell>{user.username}</TableCell>
               </Link>
               <TableCell>{user.email}</TableCell>
+              <TableCell>{user.phone}</TableCell>
               <TableCell>{user.role}</TableCell>
               <TableCell>
                 <Link to={`/edit-user/${user.id}`}>
@@ -101,9 +105,7 @@ const UsersTable = () => {
                 </Link>
 
                 <IconButton
-                  onClick={() => {
-                    handleOpen(user.id);
-                  }}
+                  onClick={() => handleOpen(user.id)}
                   sx={CustomCSS.deleteIconButton}
                 >
                   <DeleteRounded />

@@ -1,8 +1,8 @@
 import { CustomCSS } from "./CustomCSS";
 
 interface ChipParams {
-  text: string;
-  role: string;
+  text: string | undefined;
+  role: string | undefined;
 }
 
 const CustomChip: React.FC<ChipParams> = ({ text, role }) => {

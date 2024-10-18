@@ -5,6 +5,7 @@ import { User } from "../../../types/userTypes";
 export interface UserPayload {
   id: number;
   username: string;
+  phone: string;
   email: string;
   image?: string;
 }
@@ -17,6 +18,7 @@ interface UploadImageResponse {
 interface RegisterOrUpdatePayload {
   username?: string;
   email?: string;
+  phone?: string;
   role?: string;
   password?: string;
   image?: string;
