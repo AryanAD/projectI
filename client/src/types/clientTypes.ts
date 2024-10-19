@@ -13,3 +13,8 @@ export interface Client {
   updatedAt?: Date;
   categoryId: number;
 }
+
+export interface Category {
+  id: number;
+  name: string;
+}

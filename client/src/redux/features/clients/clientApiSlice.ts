@@ -1,6 +1,7 @@
-import { CLIENTS_URL } from "../../constants";
+import { CLIENT_CATEGORY_URL, CLIENTS_URL } from "../../constants";
 import { apiSlice } from "../../apiSlice";
 import { Client } from "../../../types/clientTypes";
+import { Category } from "../../../types/clientTypes";
 
 interface AddOrModifyPayload {
   name?: string;
@@ -22,8 +23,8 @@ export const clientApiSlice = apiSlice.injectEndpoints({
         url: `${CLIENTS_URL}`,
         method: "POST",
         body: data,
-        providesTags: ["Clients"],
       }),
+      invalidatesTags: ["Clients"],
     }),
     getClients: builder.query<Client[], void>({
       query: () => ({
@@ -58,6 +59,39 @@ export const clientApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Clients"],
     }),
+    addClientCategory: builder.mutation<Category, string>({
+      query: (data) => ({
+        url: `${CLIENT_CATEGORY_URL}`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["ClientCategories"],
+    }),
+    getClientCategories: builder.query<Category[], void>({
+      query: () => ({
+        url: `${CLIENT_CATEGORY_URL}`,
+        method: "GET",
+      }),
+      providesTags: ["ClientCategories"],
+    }),
+    updateClientCategories: builder.mutation<
+      Category,
+      { id: number; name: string }
+    >({
+      query: ({ id, name }) => ({
+        url: `${CLIENT_CATEGORY_URL}/${id}`,
+        method: "PUT",
+        body: { name },
+      }),
+      invalidatesTags: ["ClientCategories"],
+    }),
+    deleteClientCategory: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `${CLIENT_CATEGORY_URL}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["ClientCategories"],
+    }),
   }),
 });
 
@@ -67,4 +101,8 @@ export const {
   useGetClientByIdQuery,
   useUpdateClientMutation,
   useDeleteClientMutation,
+  useAddClientCategoryMutation,
+  useGetClientCategoriesQuery,
+  useUpdateClientCategoriesMutation,
+  useDeleteClientCategoryMutation,
 } = clientApiSlice;

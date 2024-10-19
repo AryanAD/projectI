@@ -81,7 +81,7 @@ const EditSingleUser = () => {
         id: parseInt(id),
         data: updatedUserData,
       }).unwrap();
-      toast.success(`${data.username} Successfully Created`);
+      toast.success(`${data.username} Successfully Updated`);
       navigate("/users");
     } catch (error) {
       console.error(error);

@@ -8,7 +8,6 @@ const fetchClients = asyncHandler(async (req, res) => {
     include: [
       {
         model: ClientCategory,
-        as: "category",
         attributes: ["name"], // Include only the category name
       },
     ],
@@ -23,7 +22,6 @@ const fetchClientById = asyncHandler(async (req, res) => {
     include: [
       {
         model: ClientCategory,
-        as: "category",
         attributes: ["name"], // Include only the category name
       },
     ],
@@ -120,4 +118,58 @@ const deleteClient = asyncHandler(async (req, res) => {
   res.json({ message: "Client removed" });
 });
 
-export { fetchClients, fetchClientById, addClient, updateClient, deleteClient };
+const fetchCategories = asyncHandler(async (req, res) => {
+  const categories = await ClientCategory.findAll();
+
+  res.json(categories);
+});
+
+const addCategories = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+
+  const category = await ClientCategory.create({ name });
+
+  res.status(201).json(category);
+});
+
+const updateCategory = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+
+  const category = await ClientCategory.findByPk(req.params.id);
+
+  if (!category) {
+    res.status(404);
+    throw new Error("Category not found");
+  }
+
+  category.name = name || category.name;
+
+  await category.save();
+
+  res.json(category);
+});
+
+const deleteCategory = asyncHandler(async (req, res) => {
+  const category = await ClientCategory.findByPk(req.params.id);
+
+  if (!category) {
+    res.status(404);
+    throw new Error("Category not found");
+  }
+
+  await category.destroy();
+
+  res.json({ message: "Category removed" });
+});
+
+export {
+  fetchClients,
+  fetchClientById,
+  addClient,
+  updateClient,
+  deleteClient,
+  fetchCategories,
+  addCategories,
+  updateCategory,
+  deleteCategory,
+};
