@@ -19,17 +19,16 @@ import {
   useDeleteClientMutation,
   useGetClientsQuery,
 } from "../../redux/features/clients/clientApiSlice";
-import dayjs from "dayjs"; // Use dayjs or date-fns for date formatting
-
+import dayjs from "dayjs";
 // interface Client {
-//   id: number; // Required property
+//   id: number;
 //   name: string;
 //   email: string;
 //   phone: string;
 //   location: string;
 //   priority: "normal" | "high" | "very high";
-//   startDate: string; // Use string for easier handling
-//   endDate: string; // Use string for easier handling
+//   startDate: string;
+//   endDate: string;
 // }
 
 const ClientsTable = () => {

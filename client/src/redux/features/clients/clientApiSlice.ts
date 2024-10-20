@@ -1,4 +1,4 @@
-import { CLIENT_CATEGORY_URL, CLIENTS_URL } from "../../constants";
+import { CLIENT_CATEGORY_URL, CLIENTS_URL, UPLOADS_URL } from "../../constants";
 import { apiSlice } from "../../apiSlice";
 import { Client } from "../../../types/clientTypes";
 import { Category } from "../../../types/clientTypes";
@@ -14,6 +14,11 @@ interface AddOrModifyPayload {
   startDate?: Date;
   endDate?: Date;
   categoryId?: number;
+}
+
+interface UploadLogoResponse {
+  message: string;
+  logo: string;
 }
 
 export const clientApiSlice = apiSlice.injectEndpoints({
@@ -92,6 +97,14 @@ export const clientApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["ClientCategories"],
     }),
+
+    uploadClientLogo: builder.mutation<UploadLogoResponse, FormData>({
+      query: (formData) => ({
+        url: `${UPLOADS_URL}`,
+        method: "POST",
+        body: formData,
+      }),
+    }),
   }),
 });
 
@@ -105,4 +118,5 @@ export const {
   useGetClientCategoriesQuery,
   useUpdateClientCategoriesMutation,
   useDeleteClientCategoryMutation,
+  useUploadClientLogoMutation,
 } = clientApiSlice;
