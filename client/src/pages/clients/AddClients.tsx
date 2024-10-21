@@ -6,21 +6,25 @@ import CustomHeading from "../../components/custom/CustomHeading";
 import { ArrowBackRounded } from "@mui/icons-material";
 import {
   useAddClientMutation,
+  useGetClientCategoriesQuery,
   useUploadClientLogoMutation,
 } from "../../redux/features/clients/clientApiSlice";
 
 interface UploadLogoResponse {
   message: string;
-  logo: string;
+  image: string;
 }
 
 const AddClients = () => {
   const [addClient, { isLoading }] = useAddClientMutation();
   const [uploadClientLogo] = useUploadClientLogoMutation();
+  const { data: existingCategories } = useGetClientCategoriesQuery();
 
   const [logo, setLogo] = useState<File | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
-  const [name, setName] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [clientCategoryId, setClientCategoryId] = useState<number>();
   const [details, setDetails] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -34,13 +38,13 @@ const AddClients = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const formData = new FormData();
-      formData.append("logo", file);
+      formData.append("image", file);
 
       try {
         const res: UploadLogoResponse =
           await uploadClientLogo(formData).unwrap();
         setLogo(file);
-        setLogoUrl(res.logo);
+        setLogoUrl(res.image);
       } catch (error: unknown) {
         const err = error as { data?: { message?: string }; error?: string };
         console.error(err);
@@ -48,6 +52,27 @@ const AddClients = () => {
       }
     }
   };
+
+  const getFullName = () => {
+    return firstName + " " + lastName;
+  };
+
+  const getFormattedDate = () => {
+    const date = new Date();
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
+  const name = getFullName();
+  const startDate = getFormattedDate();
+
+  console.log(clientCategoryId);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,6 +85,8 @@ const AddClients = () => {
       !phone ||
       !priority ||
       !location ||
+      !clientCategoryId ||
+      !startDate ||
       !endDate
     ) {
       toast.error("All fields are required");
@@ -70,12 +97,14 @@ const AddClients = () => {
       const clientData = {
         name,
         details,
-        phone: parseInt(phone),
+        phone,
         email,
         location,
-        priority,
+        priority: priority.toLowerCase(),
+        startDate,
         endDate,
         ...(logoUrl && { logo: logoUrl }),
+        clientCategoryId,
       };
       const data = await addClient(clientData).unwrap();
       toast.success(`${data.name} Successfully Created`);
@@ -125,16 +154,30 @@ const AddClients = () => {
 
         <div className={CustomCSS.gridTwo}>
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="name">
-              Enter name
+            <label className={CustomCSS.label} htmlFor="firstName">
+              Enter First Name
             </label>
             <input
               type="text"
-              id="name"
-              placeholder="Enter Client name"
+              id="firstName"
+              placeholder="Enter Client First name"
               className={CustomCSS.input}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="lastName">
+              Enter Last Name
+            </label>
+            <input
+              type="text"
+              id="lastName"
+              placeholder="Enter Client Last name"
+              className={CustomCSS.input}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </div>
 
@@ -181,25 +224,6 @@ const AddClients = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="priority">
-              Select Priority
-            </label>
-            <select
-              className={CustomCSS.input}
-              id="priority"
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-            >
-              <option value="">--Select Client Priority--</option>
-              {priorityOptions.map((priority) => (
-                <option key={priority.value} value={priority.value}>
-                  {priority.value}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col">
             <label className={CustomCSS.label} htmlFor="endDate">
               Select Contract End Date
             </label>
@@ -210,6 +234,47 @@ const AddClients = () => {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
+          </div>
+
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="priority">
+              Select Priority
+            </label>
+            <select
+              className={`${CustomCSS.select} bg-white`}
+              id="priority"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+            >
+              <option value="">--Select Client Priority--</option>
+              {priorityOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.value}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="category">
+              Select Category
+            </label>
+            <select
+              className={`${CustomCSS.select} bg-white`}
+              id="category"
+              value={clientCategoryId || ""}
+              onChange={(e) => {
+                setClientCategoryId(parseInt(e.target.value));
+              }}
+            >
+              <option value="">--Select Client Category--</option>
+              {existingCategories &&
+                existingCategories.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+            </select>
           </div>
 
           <div className="flex flex-col col-span-full">
@@ -244,7 +309,7 @@ const AddClients = () => {
 export default AddClients;
 
 const priorityOptions = [
-  { value: "very high" },
-  { value: "high" },
-  { value: "normal" },
+  { value: "Very High" },
+  { value: "High" },
+  { value: "Normal" },
 ];

@@ -48,12 +48,16 @@ const ClientsTable = () => {
     if (selectedClientId !== null) {
       try {
         await deleteClient(selectedClientId).unwrap();
-        toast.success(
-          `Successfully deleted client with id: ${selectedClientId}`
-        );
+        if (isSuccess) {
+          toast.success(
+            `Successfully deleted client with id: ${selectedClientId}`
+          );
+        } else {
+          toast.error(`Error: ${error}`);
+        }
         handleClose();
-      } catch (error: unknown) {
-        toast.error(error.message || "Failed to delete client.");
+      } catch (err: unknown) {
+        toast.error(err.message || "Failed to delete client.");
       }
     }
   };
@@ -87,9 +91,11 @@ const ClientsTable = () => {
           {clients?.map((client) => (
             <TableRow key={client.id}>
               <TableCell>{client.id}</TableCell>
-              <Link to={`/clients/${client.id}`}>
-                <TableCell>{client.name}</TableCell>
-              </Link>
+              <TableCell>
+                <Link to={`/clients/${client.id}`} className="hover:underline">
+                  {client.name}
+                </Link>
+              </TableCell>
               <TableCell>{client.email}</TableCell>
               <TableCell>{client.phone}</TableCell>
               <TableCell>{client.location}</TableCell>

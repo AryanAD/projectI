@@ -1,9 +1,9 @@
 export const CustomCSS = {
   // Containers
   mainDiv:
-    "flex flex-col w-[60%] p-10 bg-white rounded-lg drop-shadow-sm shadow-md",
+    "flex flex-col min-w-[60%] max-w-[80%] p-10 bg-white rounded-lg drop-shadow-sm shadow-md",
   indexMainDiv:
-    "bg-white w-[90%] md:w-full p-4 rounded-lg shadow-md drop-shadow-sm",
+    "bg-white min-w-[60%] max-w-[80%] p-4 rounded-lg shadow-md drop-shadow-sm",
 
   //Table
   tableCell: {
@@ -48,6 +48,9 @@ export const CustomCSS = {
   // Inputs
   label:
     "block text-[#98BDFF] text-sm pb-1 uppercase font-bold tracking-widest",
+  select:
+    "py-3 rounded-lg px-6 border w-full border-[#7978E990] placeholder:text-[#98BDFF80] focus:outline-[#98BDFF]",
+
   input:
     "py-3 rounded-lg px-6 border w-full border-[#7978E990] placeholder:text-[#98BDFF80] focus:outline-[#98BDFF]",
   imageLabel:
@@ -57,11 +60,21 @@ export const CustomCSS = {
   displayUploadedImage:
     "block mx-auto max-h-[400px] max-w-[50%] rounded-lg mb-5",
 
-  // Chips
+  // Role Chips
   adminChip:
     "px-6 py-2 font-bold uppercase rounded-full text-lime-600 bg-lime-100",
   userChip:
     "px-6 py-2 font-bold text-yellow-600 uppercase bg-yellow-100 rounded-full",
+  clientChip:
+    "px-6 py-2 font-bold text-blue-600 uppercase bg-blue-100 rounded-full",
+
+  // Priority Chips
+  normalPriorityChip:
+    "px-6 py-2 font-bold text-green-500 uppercase bg-green-100 w-full text-center rounded-md",
+  highPriorityChip:
+    "px-6 py-2 font-bold text-yellow-500 uppercase bg-yellow-100 w-full text-center rounded-md",
+  veryHighPriorityChip:
+    "px-6 py-2 font-bold text-red-500 uppercase bg-red-100 w-full text-center rounded-md",
 
   // Modals
   deleteModal: {

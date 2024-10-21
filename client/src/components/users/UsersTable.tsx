@@ -89,9 +89,11 @@ const UsersTable = () => {
           {userData?.map((user) => (
             <TableRow key={user.id}>
               <TableCell>{user.id}</TableCell>
-              <Link to={`/users/${user.id}`}>
-                <TableCell>{user.username}</TableCell>
-              </Link>
+              <TableCell>
+                <Link to={`/users/${user.id}`} className="hover:underline">
+                  {user.username}
+                </Link>
+              </TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
               <TableCell>{user.role}</TableCell>

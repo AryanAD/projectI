@@ -10,15 +10,15 @@ interface AddOrModifyPayload {
   email?: string;
   phone?: string;
   location?: string;
-  priority?: "normal" | "high" | "very high";
-  startDate?: Date;
-  endDate?: Date;
+  priority?: string;
+  startDate?: string;
+  endDate?: string;
   categoryId?: number;
 }
 
 interface UploadLogoResponse {
   message: string;
-  logo: string;
+  image: string;
 }
 
 export const clientApiSlice = apiSlice.injectEndpoints({

@@ -1,4 +1,3 @@
-import { Container } from "@mui/material";
 import { useNavigate } from "react-router";
 import { CustomCSS } from "../../../components/custom/CustomCSS";
 import CustomHeading from "../../../components/custom/CustomHeading";
@@ -8,7 +7,7 @@ import CategoryTable from "../../../components/clients/categories/CategoryTable"
 const ClientCategories = () => {
   const navigate = useNavigate();
   return (
-    <Container className={CustomCSS.indexMainDiv}>
+    <div className={CustomCSS.indexMainDiv}>
       <div className="inline-flex justify-between w-full">
         <CustomHeading heading={"Manage Categories"} />
 
@@ -22,7 +21,7 @@ const ClientCategories = () => {
       </div>
 
       <CategoryTable />
-    </Container>
+    </div>
   );
 };
 
