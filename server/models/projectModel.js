@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
+import ProjectCategory from "./projectCategoryModel.js";
 
 const Project = sequelize.define(
   "Project",
@@ -16,6 +17,7 @@ const Project = sequelize.define(
         notEmpty: { msg: "Project name is required" },
       },
     },
+
     details: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -23,11 +25,12 @@ const Project = sequelize.define(
         notEmpty: { msg: "Project details are required" },
       },
     },
-    category: {
-      type: DataTypes.STRING,
+    projectCategoryId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: { msg: "Project category is required" },
+      references: {
+        model: ProjectCategory,
+        key: "id",
       },
     },
     status: {
@@ -35,11 +38,18 @@ const Project = sequelize.define(
       allowNull: false,
       defaultValue: "todo",
     },
+
+    deadline: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   {
     timestamps: true,
-    tableName: "projects",
+    tableName: "project",
   }
 );
+
+Project.belongsTo(ProjectCategory, { foreignKey: "projectCategoryId" });
 
 export default Project;

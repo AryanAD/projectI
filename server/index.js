@@ -16,6 +16,9 @@ import projectRoutes from "./routes/projectRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import uploadRoutes from "../server/routes/uploadRoutes.js";
 
+// Associations
+import "./models/associations.js";
+
 const PORT = process.env.PORT || 5000;
 
 // Middleware

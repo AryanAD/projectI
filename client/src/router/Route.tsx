@@ -26,7 +26,14 @@ import ClientCategoryTable from "../components/clients/categories/CategoryTable"
 
 import Projects from "../pages/projects";
 import AddProjects from "../pages/projects/AddProjects";
-import ManageProjects from "../pages/projects/ManageProjects";
+import SingleProject from "../pages/projects/SingleProject";
+import ProjectsTable from "../components/projects/ProjectsTable";
+import EditSingleProject from "../pages/projects/EditSingleProject";
+
+import ProjectCategories from "../pages/projects/categories/index";
+import AddProjectCategories from "../pages/projects/categories/AddCategories";
+import EditProjectCategory from "../pages/projects/categories/EditSingleCategory";
+import ProjectCategoryTable from "../components/projects/categories/CategoryTable";
 
 import Tasks from "../pages/tasks";
 import ManageTasks from "../pages/tasks/ManageTasks";
@@ -76,8 +83,25 @@ export const Router = () => {
 
           {/* Projects */}
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<SingleProject />} />
           <Route path="/add-projects" element={<AddProjects />} />
-          <Route path="/manage-projects" element={<ManageProjects />} />
+          <Route path="/manage-projects" element={<ProjectsTable />} />
+          <Route path="/edit-project/:id" element={<EditSingleProject />} />
+
+          {/* Projects Categories*/}
+          <Route path="/project-categories" element={<ProjectCategories />} />
+          <Route
+            path="/add-project-category"
+            element={<AddProjectCategories />}
+          />
+          <Route
+            path="/manage-project-category"
+            element={<ProjectCategoryTable />}
+          />
+          <Route
+            path="/edit-project-category/:id"
+            element={<EditProjectCategory />}
+          />
 
           {/* Tasks */}
           <Route path="/tasks" element={<Tasks />} />

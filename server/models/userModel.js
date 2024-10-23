@@ -20,7 +20,8 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        notEmpty: { msg: "Must be a valid URL" },
+        // URL validation is only necessary if an image is provided
+        isUrl: { msg: "Must be a valid URL" },
       },
     },
     email: {

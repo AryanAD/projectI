@@ -1,18 +1,26 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Project from "../models/projectModel.js";
+import ProjectCategory from "../models/projectCategoryModel.js";
 
 const fetchProjects = asyncHandler(async (req, res) => {
-  const projects = await Project.findAll();
+  const projects = await Project.findAll({
+    include: [
+      {
+        model: ProjectCategory,
+        attributes: ["name"],
+      },
+    ],
+  });
   res.json(projects);
 });
 
 const addProject = asyncHandler(async (req, res) => {
-  const { name, details, category, status } = req.body;
+  const { name, details, projectCategoryId, status } = req.body;
 
   const project = await Project.create({
     name,
     details,
-    category,
+    projectCategoryId,
     status,
   });
 
@@ -20,7 +28,14 @@ const addProject = asyncHandler(async (req, res) => {
 });
 
 const fetchProductById = asyncHandler(async (req, res) => {
-  const project = await Project.findByPk(req.params.id);
+  const project = await Project.findByPk(req.params.id, {
+    include: [
+      {
+        model: ProjectCategory,
+        attributes: ["name"],
+      },
+    ],
+  });
 
   if (!project) {
     res.status(404);

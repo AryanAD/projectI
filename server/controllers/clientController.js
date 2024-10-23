@@ -8,7 +8,7 @@ const fetchClients = asyncHandler(async (req, res) => {
     include: [
       {
         model: ClientCategory,
-        attributes: ["name"], // Include only the category name
+        attributes: ["name"],
       },
     ],
   });
@@ -22,7 +22,7 @@ const fetchClientById = asyncHandler(async (req, res) => {
     include: [
       {
         model: ClientCategory,
-        attributes: ["name"], // Include only the category name
+        attributes: ["name"],
       },
     ],
   });
