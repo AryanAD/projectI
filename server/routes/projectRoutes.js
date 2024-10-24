@@ -2,7 +2,7 @@ import express from "express";
 import {
   fetchProjects,
   addProject,
-  fetchProductById,
+  fetchProjectById,
   updateProject,
   deleteProject,
 } from "../controllers/projectController.js";
@@ -17,7 +17,7 @@ router
 
 router
   .route("/:id")
-  .get(protect, admin, fetchProductById)
+  .get(protect, admin, fetchProjectById)
   .put(protect, admin, updateProject)
   .delete(protect, admin, deleteProject);
 
