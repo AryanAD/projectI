@@ -4,12 +4,12 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
 import { ArrowBackRounded } from "@mui/icons-material";
-import { useAddClientCategoryMutation } from "../../../redux/features/clients/clientApiSlice";
 import { CustomCSS } from "../../../components/custom/CustomCSS";
 import CustomHeading from "../../../components/custom/CustomHeading";
+import { useAddProjectCategoryMutation } from "../../../redux/features/projects/projectApiSlice";
 
 const AddCategories = () => {
-  const [addClientCategory, { isLoading }] = useAddClientCategoryMutation();
+  const [addProjectCategory, { isLoading }] = useAddProjectCategoryMutation();
 
   const [name, setName] = useState<string>("");
 
@@ -27,9 +27,9 @@ const AddCategories = () => {
       const categoryData = {
         name,
       };
-      const data = await addClientCategory(categoryData).unwrap();
+      const data = await addProjectCategory(categoryData).unwrap();
       toast.success(`${data.name} Successfully Created`);
-      navigate("/client-categories");
+      navigate("/project-categories");
     } catch (error) {
       console.error(error);
       toast.error("Failed to register category");
@@ -43,7 +43,7 @@ const AddCategories = () => {
 
         <button
           className={CustomCSS.addButton}
-          onClick={() => navigate("/client-categories")}
+          onClick={() => navigate("/project-categories")}
         >
           <ArrowBackRounded />
           Back

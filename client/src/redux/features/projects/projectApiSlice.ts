@@ -1,6 +1,6 @@
-import { PROJECTS_URL } from "../../constants";
+import { PROJECT_CATEGORY_URL, PROJECTS_URL } from "../../constants";
 import { apiSlice } from "../../apiSlice";
-import { Project } from "../../../types/projectTypes";
+import { Category, Project } from "../../../types/projectTypes";
 
 interface CreateOrUpdatePayload {
   name?: string;
@@ -52,6 +52,40 @@ export const projectApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Projects"],
     }),
+
+    addProjectCategory: builder.mutation<Category, string>({
+      query: (data) => ({
+        url: `${PROJECT_CATEGORY_URL}`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["ProjectCategories"],
+    }),
+    getProjectCategories: builder.query<Category[], void>({
+      query: () => ({
+        url: `${PROJECT_CATEGORY_URL}`,
+        method: "GET",
+      }),
+      providesTags: ["ProjectCategories"],
+    }),
+    updateProjectCategories: builder.mutation<
+      Category,
+      { id: number; name: string }
+    >({
+      query: ({ id, name }) => ({
+        url: `${PROJECT_CATEGORY_URL}/${id}`,
+        method: "PUT",
+        body: { name },
+      }),
+      invalidatesTags: ["ProjectCategories"],
+    }),
+    deleteProjectCategory: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `${PROJECT_CATEGORY_URL}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["ProjectCategories"],
+    }),
   }),
 });
 
@@ -61,4 +95,8 @@ export const {
   useGetProjectByIdQuery,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
+  useAddProjectCategoryMutation,
+  useGetProjectCategoriesQuery,
+  useUpdateProjectCategoriesMutation,
+  useDeleteProjectCategoryMutation,
 } = projectApiSlice;

@@ -16,11 +16,11 @@ import {
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  useDeleteClientCategoryMutation,
-  useGetClientCategoriesQuery,
-} from "../../../redux/features/clients/clientApiSlice";
 import { CustomCSS } from "../../custom/CustomCSS";
+import {
+  useDeleteProjectCategoryMutation,
+  useGetProjectCategoriesQuery,
+} from "../../../redux/features/projects/projectApiSlice";
 
 interface Categories {
   id?: number;
@@ -34,11 +34,11 @@ const CategoryTable = () => {
   );
   const [open, setOpen] = useState(false);
 
-  const { data, isSuccess, error, isLoading } = useGetClientCategoriesQuery();
+  const { data, isSuccess, error, isLoading } = useGetProjectCategoriesQuery();
   console.log(data);
 
-  const [deleteClientCategory, { isLoading: isDeleting }] =
-    useDeleteClientCategoryMutation();
+  const [deleteProjectCategory, { isLoading: isDeleting }] =
+    useDeleteProjectCategoryMutation();
 
   const handleOpen = (id: number) => {
     setSelectedCategoryId(id);
@@ -49,7 +49,7 @@ const CategoryTable = () => {
   const handleDelete = async () => {
     if (selectedCategoryId !== null) {
       try {
-        await deleteClientCategory(selectedCategoryId).unwrap();
+        await deleteProjectCategory(selectedCategoryId).unwrap();
         toast.success(
           `Successfully deleted category with id: ${selectedCategoryId}`
         );
@@ -93,7 +93,7 @@ const CategoryTable = () => {
               <TableCell>{data.name}</TableCell>
 
               <TableCell>
-                <Link to={`/edit-client-category/${data.id}`}>
+                <Link to={`/edit-project-category/${data.id}`}>
                   <IconButton
                     sx={{ ...CustomCSS.editIconButton, marginRight: 1 }}
                   >

@@ -2,9 +2,9 @@ import { useNavigate } from "react-router";
 import { CustomCSS } from "../../../components/custom/CustomCSS";
 import CustomHeading from "../../../components/custom/CustomHeading";
 import { PersonAddAltRounded } from "@mui/icons-material";
-import CategoryTable from "../../../components/clients/categories/CategoryTable";
+import CategoryTable from "../../../components/projects/categories/CategoryTable";
 
-const ClientCategories = () => {
+const ProjectCategories = () => {
   const navigate = useNavigate();
   return (
     <div className={CustomCSS.indexMainDiv}>
@@ -13,7 +13,7 @@ const ClientCategories = () => {
 
         <button
           className={CustomCSS.addButton}
-          onClick={() => navigate("/add-client-category")}
+          onClick={() => navigate("/add-project-category")}
         >
           <PersonAddAltRounded />
           Add Categories
@@ -25,4 +25,4 @@ const ClientCategories = () => {
   );
 };
 
-export default ClientCategories;
+export default ProjectCategories;

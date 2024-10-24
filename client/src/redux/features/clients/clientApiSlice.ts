@@ -1,7 +1,6 @@
 import { CLIENT_CATEGORY_URL, CLIENTS_URL, UPLOADS_URL } from "../../constants";
 import { apiSlice } from "../../apiSlice";
-import { Client } from "../../../types/clientTypes";
-import { Category } from "../../../types/clientTypes";
+import { Client, Category } from "../../../types/clientTypes";
 
 interface AddOrModifyPayload {
   name?: string;
