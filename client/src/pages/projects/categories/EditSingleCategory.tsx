@@ -4,17 +4,17 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
 
 import { ArrowBackRounded } from "@mui/icons-material";
-import {
-  useGetClientCategoriesQuery,
-  useUpdateClientCategoriesMutation,
-} from "../../../redux/features/clients/clientApiSlice";
 import { CustomCSS } from "../../../components/custom/CustomCSS";
 import CustomHeading from "../../../components/custom/CustomHeading";
+import {
+  useGetProjectCategoriesQuery,
+  useUpdateProjectCategoriesMutation,
+} from "../../../redux/features/projects/projectApiSlice";
 
 const EditSingleCategory = () => {
-  const [updateClientCategory, { isLoading }] =
-    useUpdateClientCategoriesMutation();
-  const { data: previousCategoryData } = useGetClientCategoriesQuery();
+  const [updateProjectCategory, { isLoading }] =
+    useUpdateProjectCategoriesMutation();
+  const { data: previousCategoryData } = useGetProjectCategoriesQuery();
 
   const [name, setName] = useState<string>("");
 
@@ -41,12 +41,12 @@ const EditSingleCategory = () => {
     }
 
     try {
-      const data = await updateClientCategory({
+      const data = await updateProjectCategory({
         id: parseInt(id),
         name,
       }).unwrap();
       toast.success(`${data.name} Successfully Updated`);
-      navigate("/client-categories");
+      navigate("/project-categories");
     } catch (error) {
       console.error(error);
       toast.error("Failed to update category");
@@ -60,7 +60,7 @@ const EditSingleCategory = () => {
 
         <button
           className={CustomCSS.addButton}
-          onClick={() => navigate("/client-categories")}
+          onClick={() => navigate("/project-categories")}
         >
           <ArrowBackRounded />
           Back
