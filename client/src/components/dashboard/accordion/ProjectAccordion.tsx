@@ -11,7 +11,7 @@ import {
   ExpandMore,
   CodeRounded,
   DvrRounded,
-  PostAddRounded,
+  CategoryRounded,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SidebarCollapseType from "./Interface";
@@ -32,9 +32,14 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
 
   useEffect(() => {
     if (
-      currentPath.includes("/projects") ||
+      currentPath === "/projects" ||
       currentPath === "/add-projects" ||
-      currentPath === "/manage-projects"
+      currentPath === "/manage-projects" ||
+      currentPath.includes("/edit-projects") ||
+      currentPath === "/project-categories" ||
+      currentPath === "/add-project-category" ||
+      currentPath === "/manage-project-category" ||
+      currentPath.includes("/edit-project-category")
     ) {
       setOpenProjects(true);
     } else {
@@ -59,41 +64,55 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
       <Collapse in={openProjects} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton
-            onClick={() => navigate("/add-projects")}
+            onClick={() => navigate("/project-categories")}
             sx={{
               pl: 8,
               backgroundColor:
-                currentPath === "/projects" || currentPath === "/add-projects"
+                currentPath === "/project-categories" ||
+                currentPath === "/add-project-category" ||
+                currentPath === "/manage-project-category" ||
+                currentPath.includes("/edit-project-category")
                   ? "#4B49AC"
                   : "transparent",
               color:
-                currentPath === "/projects" || currentPath === "/add-projects"
+                currentPath === "/project-categories" ||
+                currentPath === "/add-project-category" ||
+                currentPath === "/manage-project-category" ||
+                currentPath.includes("/edit-project-category")
                   ? "white"
                   : "black",
               "&:hover": {
                 backgroundColor:
-                  currentPath === "/projects" || currentPath === "/add-projects"
+                  currentPath === "/project-categories" ||
+                  currentPath === "/add-project-category" ||
+                  currentPath === "/manage-project-category" ||
+                  currentPath.includes("/edit-project-category")
                     ? "#4B49AC"
                     : "transparent",
                 color:
-                  currentPath === "/projects" || currentPath === "/add-projects"
+                  currentPath === "/project-categories" ||
+                  currentPath === "/add-project-category" ||
+                  currentPath === "/manage-project-category" ||
+                  currentPath.includes("/edit-project-category")
                     ? "white"
                     : "black",
               },
             }}
           >
             <ListItemIcon>
-              <PostAddRounded
+              <CategoryRounded
                 sx={{
                   color:
-                    currentPath === "/projects" ||
-                    currentPath === "/add-projects"
+                    currentPath === "/project-categories" ||
+                    currentPath === "/add-project-category" ||
+                    currentPath === "/manage-project-category" ||
+                    currentPath.includes("/edit-project-category")
                       ? "white"
                       : "",
                 }}
               />
             </ListItemIcon>
-            <ListItemText primary="Add Projects" />
+            <ListItemText primary="Manage Categories" />
           </ListItemButton>
 
           <ListItemButton
@@ -102,23 +121,31 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
               pl: 8,
               backgroundColor:
                 currentPath === "/projects" ||
-                currentPath === "/manage-projects"
+                currentPath === "/add-projects" ||
+                currentPath === "/manage-projects" ||
+                currentPath.includes("/edit-projects")
                   ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath === "/projects" ||
-                currentPath === "/manage-projects"
+                currentPath === "/add-projects" ||
+                currentPath === "/manage-projects" ||
+                currentPath.includes("/edit-projects")
                   ? "white"
                   : "black",
               "&:hover": {
                 backgroundColor:
                   currentPath === "/projects" ||
-                  currentPath === "/manage-projects"
+                  currentPath === "/add-projects" ||
+                  currentPath === "/manage-projects" ||
+                  currentPath.includes("/edit-projects")
                     ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath === "/projects" ||
-                  currentPath === "/manage-projects"
+                  currentPath === "/add-projects" ||
+                  currentPath === "/manage-projects" ||
+                  currentPath.includes("/edit-projects")
                     ? "white"
                     : "black",
               },
@@ -129,7 +156,9 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                 sx={{
                   color:
                     currentPath === "/projects" ||
-                    currentPath === "/manage-projects"
+                    currentPath === "/add-projects" ||
+                    currentPath === "/manage-projects" ||
+                    currentPath.includes("/edit-projects")
                       ? "white"
                       : "",
                 }}
