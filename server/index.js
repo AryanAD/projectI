@@ -10,9 +10,13 @@ import sequelize from "./config/database.js";
 
 // Routes
 import userRoutes from "./routes/userRoutes.js";
+
 import clientRoutes from "./routes/clientRoutes.js";
 import clientCategoryRoutes from "./routes/clientCategoryRoutes.js";
+
 import projectRoutes from "./routes/projectRoutes.js";
+import projectCategoryRoutes from "./routes/projectCategoryRoutes.js";
+
 import taskRoutes from "./routes/taskRoutes.js";
 import uploadRoutes from "../server/routes/uploadRoutes.js";
 
@@ -43,6 +47,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/client-category", clientCategoryRoutes);
 app.use("/api/projects", projectRoutes);
+app.use("/api/project-category", projectCategoryRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/uploads", uploadRoutes);
 
