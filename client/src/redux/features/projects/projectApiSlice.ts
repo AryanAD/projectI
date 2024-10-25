@@ -5,8 +5,9 @@ import { Category, Project } from "../../../types/projectTypes";
 interface CreateOrUpdatePayload {
   name?: string;
   details?: string;
-  category?: string;
+  categoryId?: number;
   status?: string;
+  deadline?: string;
 }
 
 export const projectApiSlice = apiSlice.injectEndpoints({
@@ -16,8 +17,8 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         url: `${PROJECTS_URL}`,
         method: "POST",
         body: data,
-        providesTags: ["Projects"],
       }),
+      invalidatesTags: ["Projects"],
     }),
     getProject: builder.query<Project, void>({
       query: () => ({
@@ -42,8 +43,8 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         url: `${PROJECTS_URL}/${id}`,
         method: "PUT",
         body: data,
-        providesTags: ["Projects"],
       }),
+      invalidatesTags: ["Projects"],
     }),
     deleteProject: builder.mutation<void, number>({
       query: (id) => ({

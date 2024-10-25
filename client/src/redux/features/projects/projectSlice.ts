@@ -2,13 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Project } from "../../../types/projectTypes";
 
 interface ProjectState {
-  project: Project | null;
+  projects: Project[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: ProjectState = {
-  project: null,
+  projects: [],
   loading: false,
   error: null,
 };
@@ -18,8 +18,8 @@ const projectSlice = createSlice({
   initialState,
 
   reducers: {
-    setProject: (state, action: PayloadAction<Project | null>) => {
-      state.project = action.payload;
+    setProject: (state, action: PayloadAction<Project[]>) => {
+      state.projects = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;

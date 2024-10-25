@@ -53,8 +53,8 @@ export const clientApiSlice = apiSlice.injectEndpoints({
         url: `${CLIENTS_URL}/${id}`,
         method: "PUT",
         body: data,
-        providesTags: ["Clients"],
       }),
+      invalidatesTags: ["Clients"],
     }),
     deleteClient: builder.mutation<void, number>({
       query: (id) => ({

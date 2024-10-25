@@ -24,7 +24,7 @@ import AddClientCategories from "../pages/clients/categories/AddCategories";
 import EditClientCategory from "../pages/clients/categories/EditSingleCategory";
 import ClientCategoryTable from "../components/clients/categories/CategoryTable";
 
-import Projects from "../pages/projects";
+import Projects from "../pages/projects/index";
 import AddProjects from "../pages/projects/AddProjects";
 import SingleProject from "../pages/projects/SingleProject";
 import ProjectsTable from "../components/projects/ProjectsTable";

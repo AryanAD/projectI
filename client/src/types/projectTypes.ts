@@ -2,8 +2,9 @@ export interface Project {
   id: number;
   name: string;
   details: string;
-  category: string;
+  categoryId: number;
   status: "todo" | "doing" | "done";
+  deadline: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }

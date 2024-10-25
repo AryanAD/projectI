@@ -10,15 +10,23 @@ import { protect, admin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(protect, admin, fetchProjects)
-  .post(protect, admin, addProject);
+// router
+//   .route("/")
+//   .get(protect, admin, fetchProjects)
+//   .post(protect, admin, addProject);
+
+// router
+//   .route("/:id")
+//   .get(protect, admin, fetchProjectById)
+//   .put(protect, admin, updateProject)
+//   .delete(protect, admin, deleteProject);
+
+router.route("/").get(fetchProjects).post(addProject);
 
 router
   .route("/:id")
-  .get(protect, admin, fetchProjectById)
-  .put(protect, admin, updateProject)
-  .delete(protect, admin, deleteProject);
+  .get(fetchProjectById)
+  .put(updateProject)
+  .delete(deleteProject);
 
 export default router;
