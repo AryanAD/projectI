@@ -30,7 +30,7 @@ import {
 } from "@mui/material";
 
 // Project Imports
-import ProfilePicture from "/profilePicture.jpg";
+import ProfilePicture from "../../assets/profilePicture.jpg";
 import UserAccordion from "./accordion/UserAccordion";
 import TaskAccordion from "./accordion/TaskAccordion";
 import ClientAccordion from "./accordion/ClientAccordion";

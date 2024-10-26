@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ErrorImage from "../../../public/errorImage.svg";
+import ErrorImage from "../../assets/errorImage.svg";
 import { HomeRounded } from "@mui/icons-material";
 const ErrorDisplay = () => {
   return (
