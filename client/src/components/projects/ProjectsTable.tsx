@@ -64,13 +64,11 @@ const ProjectsTable = () => {
             <TableCell sx={{ ...CustomCSS.tableCell, borderRadius: "6px 0 0" }}>
               ID
             </TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Company Name</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Email</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Phone Number</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Location</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Priority</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Start Date</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>End Date</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Project Name</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Status</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Category</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Assigned To</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Deadline</TableCell>
             <TableCell
               sx={{ ...CustomCSS.tableCell, borderRadius: "0 6px 0 0" }}
             >
@@ -91,18 +89,16 @@ const ProjectsTable = () => {
                   {project.name}
                 </Link>
               </TableCell>
-              <TableCell>{project.email}</TableCell>
-              <TableCell>{project.phone}</TableCell>
-              <TableCell>{project.location}</TableCell>
-              <TableCell>{project.priority}</TableCell>
+              <TableCell>{project.status}</TableCell>
+              <TableCell>{project.ProjectCategory.name}</TableCell>
               <TableCell>
-                {project.startDate
-                  ? dayjs(project.startDate).format("MM/DD/YYYY")
-                  : "N/A"}
+                {project.Users.length === 0
+                  ? project.Users[0].username
+                  : project.Users[0].username + project.Users.length - 1}
               </TableCell>
               <TableCell>
-                {project.endDate
-                  ? dayjs(project.endDate).format("MM/DD/YYYY")
+                {project.deadline
+                  ? dayjs(project.deadline).format("MM/DD/YYYY")
                   : "N/A"}
               </TableCell>
               <TableCell>

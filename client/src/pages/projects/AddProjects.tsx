@@ -8,13 +8,16 @@ import {
   useAddProjectMutation,
   useGetProjectCategoriesQuery,
 } from "../../redux/features/projects/projectApiSlice";
+import { useGetAllUsersQuery } from "../../redux/features/users/userApiSlice";
 
 const AddProjects = () => {
   const [addProject, { isLoading }] = useAddProjectMutation();
   const { data: existingCategories } = useGetProjectCategoriesQuery();
+  const { data: existingUsers } = useGetAllUsersQuery();
 
   const [name, setName] = useState<string>("");
   const [projectCategoryId, setProjectCategoryId] = useState<number>();
+  const [assignedToIds, setAssignedToIds] = useState<number[]>([]);
   const [details, setDetails] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
@@ -26,7 +29,19 @@ const AddProjects = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!name || !details || !status || !projectCategoryId || !deadline) {
+    if (!Array.isArray(assignedToIds) || assignedToIds.length === 0) {
+      toast.error("Please assign at least one staff member.");
+      return;
+    }
+
+    if (
+      !name ||
+      !details ||
+      !status ||
+      !projectCategoryId ||
+      !assignedToIds ||
+      !deadline
+    ) {
       toast.error("All fields are required");
       return;
     }
@@ -37,6 +52,7 @@ const AddProjects = () => {
         details,
         status: status.toLowerCase(),
         projectCategoryId,
+        assignedToIds,
         deadline,
       };
       const data = await addProject(projectData).unwrap();
@@ -127,6 +143,29 @@ const AddProjects = () => {
                 existingCategories.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="assignedTo">
+              Assign Staffs
+            </label>
+            <select
+              className={`${CustomCSS.select} bg-white`}
+              id="assignedTo"
+              value={assignedToIds || ""}
+              onChange={(e) => {
+                const id = parseInt(e.target.value);
+                setAssignedToIds((prev) => [...prev, id]);
+              }}
+            >
+              <option value="">--Select Staff Assigned--</option>
+              {existingUsers &&
+                existingUsers.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.username}
                   </option>
                 ))}
             </select>

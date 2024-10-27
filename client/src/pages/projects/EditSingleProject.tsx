@@ -5,89 +5,54 @@ import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
-  useGetClientCategoriesQuery,
-  useGetClientsQuery,
-  useUpdateClientMutation,
-  useUploadClientLogoMutation,
-} from "../../redux/features/clients/clientApiSlice";
-interface UploadImageResponse {
-  message: string;
-  image: string;
-}
+  useGetProjectCategoriesQuery,
+  useGetProjectQuery,
+  useUpdateProjectMutation,
+} from "../../redux/features/projects/projectApiSlice";
+import { useGetAllUsersQuery } from "../../redux/features/users/userApiSlice";
 
 const EditSingleProject = () => {
-  const [updateClient, { isLoading }] = useUpdateClientMutation();
-  const [uploadUserImage] = useUploadClientLogoMutation();
-  const { data: previousClientData } = useGetClientsQuery();
-  const { data: existingCategories } = useGetClientCategoriesQuery();
+  const [updateProject, { isLoading }] = useUpdateProjectMutation();
+  const { data: previousProjectData } = useGetProjectQuery();
+  const { data: existingCategories } = useGetProjectCategoriesQuery();
+  const { data: existingUsers } = useGetAllUsersQuery();
 
-  const [logo, setLogo] = useState<File | null>(null);
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [clientCategoryId, setClientCategoryId] = useState<number>();
+  const [name, setName] = useState<string>("");
+  const [projectCategoryId, setProjectCategoryId] = useState<number>();
+  const [assignedToIds, setAssignedToIds] = useState<number[]>([]);
   const [details, setDetails] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [priority, setPriority] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [deadline, setDeadline] = useState<string>("");
+  const [clientCategoryId, setClientCategoryId] = useState<number>();
+  const [userId, setUserId] = useState<number>();
   const [existingCategoryName, setExistingCategoryName] = useState<string>("");
+  const [existingUserName, setExistingUserName] = useState<string>("");
 
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const clientId = parseInt(id);
+  const projectId = parseInt(id);
 
   useEffect(() => {
-    if (previousClientData && id) {
-      const previousClient = previousClientData.find(
-        (element) => element.id === clientId
+    if (previousProjectData && id) {
+      const previousProject = previousProjectData.find(
+        (element) => element.id === projectId
       );
       const formatDate = (dateString: string) => {
         return new Date(dateString).toISOString().slice(0, 16); // Format to yyyy-MM-ddThh:mm
       };
-      if (previousClient) {
-        setFirstName(previousClient?.name.split(" ")[0] || "");
-        setLastName(previousClient?.name.split(" ")[1] || "");
-        setEmail(previousClient.email || "");
-        setDetails(previousClient.details || "");
-        setPhone(previousClient.phone || "");
-        setPriority(previousClient.priority || "");
-        setStartDate(formatDate(previousClient.startDate || ""));
-        setEndDate(formatDate(previousClient.endDate || ""));
-        setLocation(previousClient.location || "");
-        setLogoUrl(previousClient.logo || null);
-        setClientCategoryId(previousClient.categoryId);
-        setExistingCategoryName(previousClient.ClientCategory.name || "");
+      if (previousProject) {
+        setName(previousProject?.name.split(" ")[0] || "");
+        setDetails(previousProject.details || "");
+        setStatus(previousProject.status || "");
+        setDeadline(formatDate(previousProject.startDate || ""));
+        setClientCategoryId(previousProject.projectCategoryId);
+        setUserId(previousProject.Users[0].id);
+        setExistingCategoryName(previousProject.ProjectCategory.name || "");
+        setExistingUserName(previousProject.Users[0].username || "");
       }
     }
-  }, [previousClientData, id, clientId]);
-
-  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("image", file);
-
-      try {
-        const res: UploadImageResponse =
-          await uploadUserImage(formData).unwrap();
-        setLogo(file);
-        setLogoUrl(res.image);
-      } catch (error: unknown) {
-        const err = error as { data?: { message?: string }; error?: string };
-        console.error(err);
-        toast.error(err?.data?.message || err?.error || "Upload failed");
-      }
-    }
-  };
-  const getFullName = () => {
-    return firstName + " " + lastName;
-  };
-
-  const name = getFullName();
+  }, [previousProjectData, id, projectId]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,17 +61,13 @@ const EditSingleProject = () => {
       const updatedClientData = {
         name,
         details,
-        phone,
-        email,
-        location,
-        priority: priority.toLowerCase(),
-        startDate,
-        endDate,
-        ...(logoUrl && { logo: logoUrl }),
-        clientCategoryId,
+        status: status.toLowerCase(),
+        projectCategoryId,
+        assignedToIds,
+        deadline,
       };
-      const data = await updateClient({
-        id: clientId,
+      const data = await updateProject({
+        id: projectId,
         data: updatedClientData,
       }).unwrap();
       toast.success(`${data.name} Successfully Updated`);
@@ -132,124 +93,46 @@ const EditSingleProject = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {logoUrl && (
-          <div className="text-center">
-            <img
-              src={logoUrl}
-              alt="Client Profile"
-              className={CustomCSS.displayUploadedImage}
-            />
-          </div>
-        )}
-
-        <div className={`w-full my-8 `}>
-          <label className={CustomCSS.updateImageLabel}>
-            {logo ? logo.name : "Update Image"}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImage}
-              className="hidden"
-            />
-          </label>
-        </div>
-
         <div className={CustomCSS.gridTwo}>
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="firstName">
-              Enter First Name
+            <label className={CustomCSS.label} htmlFor="name">
+              Enter Name
             </label>
             <input
               type="text"
-              id="firstName"
-              placeholder="Enter Client First name"
+              id="name"
+              placeholder="Enter Project name"
               className={CustomCSS.input}
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="lastName">
-              Enter Last Name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              placeholder="Enter Client Last name"
-              className={CustomCSS.input}
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="email">
-              Enter Email
-            </label>
-            <input
-              className={CustomCSS.input}
-              type="email"
-              id="email"
-              placeholder="Enter Client Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="phone">
-              Enter Phone Number
-            </label>
-            <input
-              className={CustomCSS.input}
-              type="number"
-              id="phone"
-              placeholder="Enter Client Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="location">
-              Enter Location
-            </label>
-            <input
-              className={CustomCSS.input}
-              type="text"
-              id="location"
-              placeholder="Enter Client Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="endDate">
-              Select Contract End Date
+            <label className={CustomCSS.label} htmlFor="deadline">
+              Select Project Deadline
             </label>
             <input
               className={CustomCSS.input}
               type="datetime-local"
-              id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              id="deadline"
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="priority">
-              Select Priority
+            <label className={CustomCSS.label} htmlFor="status">
+              Select Status
             </label>
             <select
               className={`${CustomCSS.select} bg-white`}
-              id="priority"
-              value={priority || ""}
-              onChange={(e) => setPriority(e.target.value)}
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="">--Select Client Priority--</option>
-              {priorityOptions.map((option) => (
+              <option value="">--Select Project status--</option>
+              {statusOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.value}
                 </option>
@@ -264,12 +147,12 @@ const EditSingleProject = () => {
             <select
               className={`${CustomCSS.select} bg-white`}
               id="category"
-              value={clientCategoryId || ""}
+              value={projectCategoryId || ""}
               onChange={(e) => {
-                setClientCategoryId(parseInt(e.target.value));
+                setProjectCategoryId(parseInt(e.target.value));
               }}
             >
-              <option value={""}>--Select Client Category--</option>
+              <option value="">--Select Project Category--</option>
               {existingCategories &&
                 existingCategories.map((option) => (
                   <option key={option.id} value={option.id}>
@@ -279,17 +162,40 @@ const EditSingleProject = () => {
             </select>
           </div>
 
+          <div className="flex flex-col">
+            <label className={CustomCSS.label} htmlFor="assignedTo">
+              Assign Staffs
+            </label>
+            <select
+              className={`${CustomCSS.select} bg-white`}
+              id="assignedTo"
+              value={assignedToIds || ""}
+              onChange={(e) => {
+                const id = parseInt(e.target.value);
+                setAssignedToIds((prev) => [...prev, id]);
+              }}
+            >
+              <option value="">--Select Staff Assigned--</option>
+              {existingUsers &&
+                existingUsers.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.username}
+                  </option>
+                ))}
+            </select>
+          </div>
+
           <div className="flex flex-col col-span-full">
-            <label className={CustomCSS.label} htmlFor="clientDetails">
-              Enter Client Details
+            <label className={CustomCSS.label} htmlFor="projectDetails">
+              Enter Project Details
             </label>
             <textarea
-              id="clientDetails"
+              id="projectDetails"
               value={details}
               className={CustomCSS.input}
               onChange={(e) => setDetails(e.target.value)}
               rows={5}
-              placeholder="Enter Client Details Here..."
+              placeholder="Enter Project Details Here..."
             ></textarea>
           </div>
         </div>
@@ -300,7 +206,7 @@ const EditSingleProject = () => {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Updating..." : "Update"}
+            {isLoading ? "Registering..." : "Register"}
           </button>
         </div>
       </form>
@@ -310,8 +216,8 @@ const EditSingleProject = () => {
 
 export default EditSingleProject;
 
-const priorityOptions = [
-  { value: "Very High" },
-  { value: "High" },
-  { value: "Normal" },
+const statusOptions = [
+  { value: "todo" },
+  { value: "doing" },
+  { value: "done" },
 ];

@@ -32,7 +32,7 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
 
   useEffect(() => {
     if (
-      currentPath === "/projects" ||
+      currentPath.includes("/projects") ||
       currentPath === "/add-projects" ||
       currentPath === "/manage-projects" ||
       currentPath.includes("/edit-projects") ||
@@ -116,18 +116,18 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
           </ListItemButton>
 
           <ListItemButton
-            onClick={() => navigate("/manage-projects")}
+            onClick={() => navigate("/projects")}
             sx={{
               pl: 8,
               backgroundColor:
-                currentPath === "/projects" ||
+                currentPath.includes("/projects") ||
                 currentPath === "/add-projects" ||
                 currentPath === "/manage-projects" ||
                 currentPath.includes("/edit-projects")
                   ? "#4B49AC"
                   : "transparent",
               color:
-                currentPath === "/projects" ||
+                currentPath.includes("/projects") ||
                 currentPath === "/add-projects" ||
                 currentPath === "/manage-projects" ||
                 currentPath.includes("/edit-projects")
@@ -135,14 +135,14 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                   : "black",
               "&:hover": {
                 backgroundColor:
-                  currentPath === "/projects" ||
+                  currentPath.includes("/projects") ||
                   currentPath === "/add-projects" ||
                   currentPath === "/manage-projects" ||
                   currentPath.includes("/edit-projects")
                     ? "#4B49AC"
                     : "transparent",
                 color:
-                  currentPath === "/projects" ||
+                  currentPath.includes("/projects") ||
                   currentPath === "/add-projects" ||
                   currentPath === "/manage-projects" ||
                   currentPath.includes("/edit-projects")
@@ -155,7 +155,7 @@ const ProjectAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
               <DvrRounded
                 sx={{
                   color:
-                    currentPath === "/projects" ||
+                    currentPath.includes("/projects") ||
                     currentPath === "/add-projects" ||
                     currentPath === "/manage-projects" ||
                     currentPath.includes("/edit-projects")
