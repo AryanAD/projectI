@@ -5,60 +5,84 @@ import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
+  useGetProjectByIdQuery,
   useGetProjectCategoriesQuery,
-  useGetProjectQuery,
   useUpdateProjectMutation,
 } from "../../redux/features/projects/projectApiSlice";
 import { useGetAllUsersQuery } from "../../redux/features/users/userApiSlice";
+import {
+  Checkbox,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
+
+const ITEM_HEIGHT = 50;
+const ITEM_PADDING_TOP = 3;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 2.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const EditSingleProject = () => {
   const [updateProject, { isLoading }] = useUpdateProjectMutation();
-  const { data: previousProjectData } = useGetProjectQuery();
+  const { id } = useParams();
+  const projectId = parseInt(id);
+
+  const { data: previousProjectData } = useGetProjectByIdQuery(projectId);
   const { data: existingCategories } = useGetProjectCategoriesQuery();
   const { data: existingUsers } = useGetAllUsersQuery();
 
   const [name, setName] = useState<string>("");
-  const [projectCategoryId, setProjectCategoryId] = useState<number>();
+  const [projectCategoryId, setProjectCategoryId] = useState<number | null>(
+    null
+  );
   const [assignedToIds, setAssignedToIds] = useState<number[]>([]);
   const [details, setDetails] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
-  const [clientCategoryId, setClientCategoryId] = useState<number>();
-  const [userId, setUserId] = useState<number>();
-  const [existingCategoryName, setExistingCategoryName] = useState<string>("");
-  const [existingUserName, setExistingUserName] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const { id } = useParams();
-  const projectId = parseInt(id);
-
   useEffect(() => {
-    if (previousProjectData && id) {
-      const previousProject = previousProjectData.find(
-        (element) => element.id === projectId
-      );
-      const formatDate = (dateString: string) => {
-        return new Date(dateString).toISOString().slice(0, 16); // Format to yyyy-MM-ddThh:mm
-      };
-      if (previousProject) {
-        setName(previousProject?.name.split(" ")[0] || "");
-        setDetails(previousProject.details || "");
-        setStatus(previousProject.status || "");
-        setDeadline(formatDate(previousProject.startDate || ""));
-        setClientCategoryId(previousProject.projectCategoryId);
-        setUserId(previousProject.Users[0].id);
-        setExistingCategoryName(previousProject.ProjectCategory.name || "");
-        setExistingUserName(previousProject.Users[0].username || "");
-      }
+    if (previousProjectData) {
+      setName(previousProjectData.name || "");
+      setDetails(previousProjectData.details || "");
+      setStatus(previousProjectData.status || "");
+      setDeadline(previousProjectData.startDate || "");
+      setProjectCategoryId(previousProjectData.projectCategoryId || null);
+      setAssignedToIds(previousProjectData.Users.map((user) => user.id) || []);
     }
-  }, [previousProjectData, id, projectId]);
+  }, [previousProjectData]);
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatus(e.target.value);
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setProjectCategoryId(parseInt(e.target.value));
+  };
+
+  const handleAssignedToChange = (event: SelectChangeEvent<number[]>) => {
+    const {
+      target: { value },
+    } = event;
+    setAssignedToIds(
+      typeof value === "string" ? value.split(",").map(Number) : value
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const updatedClientData = {
+      const updatedProjectData = {
         name,
         details,
         status: status.toLowerCase(),
@@ -68,7 +92,7 @@ const EditSingleProject = () => {
       };
       const data = await updateProject({
         id: projectId,
-        data: updatedClientData,
+        data: updatedProjectData,
       }).unwrap();
       toast.success(`${data.name} Successfully Updated`);
       navigate("/clients");
@@ -129,7 +153,7 @@ const EditSingleProject = () => {
               className={`${CustomCSS.select} bg-white`}
               id="status"
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={handleStatusChange}
             >
               <option value="">--Select Project status--</option>
               {statusOptions.map((option) => (
@@ -148,9 +172,7 @@ const EditSingleProject = () => {
               className={`${CustomCSS.select} bg-white`}
               id="category"
               value={projectCategoryId || ""}
-              onChange={(e) => {
-                setProjectCategoryId(parseInt(e.target.value));
-              }}
+              onChange={handleCategoryChange}
             >
               <option value="">--Select Project Category--</option>
               {existingCategories &&
@@ -166,23 +188,31 @@ const EditSingleProject = () => {
             <label className={CustomCSS.label} htmlFor="assignedTo">
               Assign Staffs
             </label>
-            <select
+            <Select
+              multiple
               className={`${CustomCSS.select} bg-white`}
               id="assignedTo"
-              value={assignedToIds || ""}
-              onChange={(e) => {
-                const id = parseInt(e.target.value);
-                setAssignedToIds((prev) => [...prev, id]);
-              }}
+              value={assignedToIds}
+              onChange={handleAssignedToChange}
+              input={<OutlinedInput label="Tag" />}
+              renderValue={(selected) =>
+                selected
+                  .map(
+                    (id) =>
+                      existingUsers?.find((user) => user.id === id)?.username
+                  )
+                  .join(", ")
+              }
+              MenuProps={MenuProps}
             >
-              <option value="">--Select Staff Assigned--</option>
               {existingUsers &&
                 existingUsers.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.username}
-                  </option>
+                  <MenuItem key={option.id} value={option.id}>
+                    <Checkbox checked={assignedToIds.includes(option.id)} />
+                    <ListItemText primary={option.username} />
+                  </MenuItem>
                 ))}
-            </select>
+            </Select>
           </div>
 
           <div className="flex flex-col col-span-full">
@@ -206,7 +236,7 @@ const EditSingleProject = () => {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Registering..." : "Register"}
+            {isLoading ? "Updating..." : "Update"}
           </button>
         </div>
       </form>
