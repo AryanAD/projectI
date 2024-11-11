@@ -30,7 +30,7 @@ const TaskAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
   };
 
   useEffect(() => {
-    if (currentPath.includes("/tasks") || currentPath === "/manage-tasks") {
+    if (currentPath.includes("/tasks")) {
       setOpenTasks(true);
     } else {
       setOpenTasks(false);
@@ -59,36 +59,23 @@ const TaskAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
       >
         <List component="div" disablePadding>
           <ListItemButton
-            onClick={() => navigate("/manage-tasks")}
+            onClick={() => navigate("/tasks")}
             sx={{
               pl: 8,
               backgroundColor:
-                currentPath === "/tasks" || currentPath === "/manage-tasks"
-                  ? "#4B49AC"
-                  : "transparent",
-              color:
-                currentPath === "/tasks" || currentPath === "/manage-tasks"
-                  ? "white"
-                  : "black",
+                currentPath === "/tasks" ? "#4B49AC" : "transparent",
+              color: currentPath === "/tasks" ? "white" : "black",
               "&:hover": {
                 backgroundColor:
-                  currentPath === "/tasks" || currentPath === "/manage-tasks"
-                    ? "#4B49AC"
-                    : "transparent",
-                color:
-                  currentPath === "/tasks" || currentPath === "/manage-tasks"
-                    ? "white"
-                    : "black",
+                  currentPath === "/tasks" ? "#4B49AC" : "transparent",
+                color: currentPath === "/tasks" ? "white" : "black",
               },
             }}
           >
             <ListItemIcon>
               <AddTaskRounded
                 sx={{
-                  color:
-                    currentPath === "/tasks" || currentPath === "/manage-tasks"
-                      ? "white"
-                      : "",
+                  color: currentPath === "/tasks" ? "white" : "",
                 }}
               />
             </ListItemIcon>

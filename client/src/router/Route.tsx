@@ -35,8 +35,7 @@ import AddProjectCategories from "../pages/projects/categories/AddCategories";
 import EditProjectCategory from "../pages/projects/categories/EditSingleCategory";
 import ProjectCategoryTable from "../components/projects/categories/CategoryTable";
 
-import Tasks from "../pages/tasks";
-import ManageTasks from "../pages/tasks/ManageTasks";
+import Tasks from "../pages/tasks/index";
 
 export const Router = () => {
   return (
@@ -105,7 +104,6 @@ export const Router = () => {
 
           {/* Tasks */}
           <Route path="/tasks" element={<Tasks />} />
-          <Route path="/manage-tasks" element={<ManageTasks />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorDisplay />} />
