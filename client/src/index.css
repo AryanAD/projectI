@@ -11,11 +11,11 @@
 }
 
 #root {
-  align-items: center;
-  background: #f6f6f6;
   display: flex;
+  background: #f6f6f6;
+  width: 100%;
   justify-content: center;
   letter-spacing: 1px;
   min-height: 100vh;
-  padding: 10vh 0 4vh 0;
+  /* padding: 10vh 0 4vh 0; */
 }
