@@ -48,7 +48,7 @@ const TaskCard: React.FC<PropType> = ({
       <div
         ref={setNodeRef}
         style={style}
-        className="bg-mainBgColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-lg border-2 border-rose-500 cursor-grab relative opacity-50"
+        className="bg-mainBgColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-lg border-2 border-[#98BDFF] relative opacity-50 cursor-grabbing"
       />
     );
   }
@@ -60,14 +60,14 @@ const TaskCard: React.FC<PropType> = ({
         style={style}
         {...attributes}
         {...listeners}
-        className="bg-mainBgColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-lg hover:ring-2 hover:ring-inset hover:ring-red-500 cursor-grab relative"
+        className="bg-mainBgColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-lg hover:ring-2 hover:ring-inset hover:ring-[#98BDFF] cursor-grab relative"
       >
         <textarea
           autoFocus
           onKeyDown={(e) => {
             if (e.key === "Enter" && e.shiftKey) toggleEditMode();
           }}
-          className="w-full h-full text-lg text-white bg-transparent rounded-lg outline-none resize-none"
+          className="w-full h-full text-lg text-[#4B49AB] bg-transparent rounded-lg outline-none resize-none"
           value={task.content}
           placeholder="Enter task description"
           onBlur={toggleEditMode}
@@ -84,7 +84,7 @@ const TaskCard: React.FC<PropType> = ({
       {...attributes}
       {...listeners}
       onClick={toggleEditMode}
-      className="bg-mainBgColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-lg hover:ring-2 hover:ring-inset hover:ring-red-500 cursor-grab relative task"
+      className="bg-mainBgColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-lg hover:ring-2 hover:ring-inset hover:ring-[#98BDFF] cursor-grab relative task"
       onMouseEnter={() => setMouseOver(true)}
       onMouseLeave={() => setMouseOver(false)}
     >
@@ -94,7 +94,7 @@ const TaskCard: React.FC<PropType> = ({
       {mouseOver && (
         <button
           onClick={() => handleDeleteTask(task.id)}
-          className="absolute p-2 rounded-lg stroke-white right-4 top-1/2-translate-y-1/2 bg-colBgColor opacity-60 hover:opacity-100"
+          className="absolute p-2 rounded-lg stroke-[#4B49AB] right-4 top-1/2-translate-y-1/2 bg-colBgColor opacity-60 hover:opacity-100"
         >
           <DeleteIcon />
         </button>
