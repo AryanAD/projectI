@@ -63,7 +63,7 @@ const KanbanBoard = () => {
           </div>
           <button
             onClick={() => handleCreateColumn()}
-            className="h-[60px] w-[350px] min-w-[350px] p-4 border-2 rounded-lg cursor-pointer bg-mainBgColor border-colBgColor ring-rose-400 hover:ring-2 flex gap-2"
+            className="h-[60px] w-[350px] min-w-[350px] p-4 border-2 rounded-lg cursor-pointer bg-mainBgColor border-colBgColor ring-[#4B49AB] hover:ring-2 flex gap-2"
           >
             <AddIcon /> Add Column
           </button>
