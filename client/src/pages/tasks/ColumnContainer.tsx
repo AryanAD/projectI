@@ -54,7 +54,7 @@ const ColumnContainer: React.FC<PropType> = ({
       <div
         ref={setNodeRef}
         style={style}
-        className="bg-colBgColor w-[350px] opacity-40 border border-rose-400 h-[500px] max-h-[500px] rounded-md flex flex-col"
+        className="bg-colBgColor w-[350px] opacity-40 border border-[#4B49AB] h-[500px] max-h-[500px] rounded-md flex flex-col"
       ></div>
     );
   }
@@ -79,7 +79,7 @@ const ColumnContainer: React.FC<PropType> = ({
             <input
               autoFocus
               value={column.title}
-              className="px-2 bg-black border rounded-md outline-none focus:border-rose-400"
+              className="px-2 bg-[#98BDFF] text-[#4B49AB] border rounded-md outline-none focus:border-[#4B49AB]"
               onChange={(e) => handleUpdateColumn(column.id, e.target.value)}
               onBlur={() => setEditMode(false)}
               onKeyDown={(e) => {
@@ -92,7 +92,7 @@ const ColumnContainer: React.FC<PropType> = ({
           )}
         </div>
         <button
-          className="px-1 py-2 rounded stroke-gray-400 hover:bg-colBgColor hover:stroke-red-500"
+          className="px-1 py-2 rounded stroke-[#4B49AB] hover:bg-colBgColor hover:stroke-red-500"
           onClick={() => handleDeleteColumn(column.id)}
         >
           <DeleteIcon />
@@ -112,7 +112,7 @@ const ColumnContainer: React.FC<PropType> = ({
       </div>
       <button
         onClick={() => handleCreateTask(column.id)}
-        className="flex items-center gap-2 p-4 border-2 rounded-md border-colBgColor border-x-colBgColor hover:bg-mainBgColor hover:text-rose-500 active:bg-black"
+        className="flex text-[#4B49AB] items-center gap-2 p-4 border-2 rounded-md border-colBgColor border-x-colBgColor hover:bg-mainBgColor hover:text-[#4B49AB] active:bg-[#4B49AB] active:text-white"
       >
         <AddIcon />
         Add Task
