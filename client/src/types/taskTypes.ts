@@ -1,4 +1,4 @@
-export type Id = number;
+export type Id = number | string;
 
 export interface Task {
   id: number;
