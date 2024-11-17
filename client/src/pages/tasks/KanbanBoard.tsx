@@ -18,13 +18,13 @@ import { Column, Id, Task } from "../../types/taskTypes";
 
 const KanbanBoard = () => {
   //States
-  const [columns, setColumns] = useState([]);
-  const [activeColumn, setActiveColumn] = useState(null);
-  const [tasks, setTasks] = useState(null);
-  const [activeTasks, setActiveTasks] = useState([]);
+  const [columns, setColumns] = useState<Column[]>([]);
+  const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+  const [activeTasks, setActiveTasks] = useState<Task | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const columnsId = useMemo(
-    () => columns.map((columns) => columns.id),
+    () => columns.map((columns) => columns?.id),
     [columns]
   );
 
@@ -47,18 +47,18 @@ const KanbanBoard = () => {
         <div className="flex gap-4 mx-auto">
           <div className="flex gap-4">
             <SortableContext items={columnsId}>
-              {columns.map((column) => {
+              {columns.map((col) => (
                 <ColumnContainer
-                  key={column.id}
-                  column={column}
-                  tasks={tasks.filter((task) => task.columnId === column.id)}
+                  key={col.id}
+                  column={col}
+                  tasks={tasks.filter((task) => task.columnId === col.id)}
                   handleDeleteColumn={handleDeleteColumn}
                   handleUpdateColumn={handleUpdateColumn}
                   handleCreateTask={handleCreateTask}
                   handleDeleteTask={handleDeleteTask}
                   handleUpdateTask={handleUpdateTask}
-                />;
-              })}
+                />
+              ))}
             </SortableContext>
           </div>
           <button onClick={() => handleCreateColumn()}>
@@ -71,8 +71,8 @@ const KanbanBoard = () => {
             {activeColumn && (
               <ColumnContainer
                 column={activeColumn}
-                tasks={tasks.filter(
-                  (task) => task.columnId === activeColumn.id
+                tasks={tasks?.filter(
+                  (task) => task.columnId === activeColumn?.id
                 )}
                 handleDeleteColumn={handleDeleteColumn}
                 handleUpdateColumn={handleUpdateColumn}

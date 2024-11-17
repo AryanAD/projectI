@@ -2,7 +2,7 @@ export type Id = number;
 
 export interface Task {
   id: number;
-  columnId: number;
+  columnId: number | string;
   content: string;
   status: "todo" | "doing" | "done";
   createdAt?: Date;
