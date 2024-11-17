@@ -65,7 +65,7 @@ const TaskCard: React.FC<PropType> = ({
         <textarea
           autoFocus
           onKeyDown={(e) => {
-            if (e.key === "Enter" && e.shiftKey) toggleEditMode();
+            if (e.key === "Enter" && e.ctrlKey) toggleEditMode();
           }}
           className="w-full h-full text-lg text-[#4B49AB] bg-transparent rounded-lg outline-none resize-none"
           value={task.content}
