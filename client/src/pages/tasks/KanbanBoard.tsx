@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import AddIcon from "../../icons/AddIcon";
 import ColumnContainer from "./ColumnContainer";
 import TaskCard from "./TaskCard";
@@ -22,6 +22,9 @@ const KanbanBoard = () => {
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTasks, setActiveTasks] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  //Hooks
+  const appRef = useRef<HTMLDivElement>(null);
 
   const columnsId = useMemo(
     () => columns.map((columns) => columns?.id),
@@ -37,7 +40,18 @@ const KanbanBoard = () => {
   );
 
   return (
-    <div className="bg-gradient-to-b from-[#4B49AB20] to-[#4B49AB40] w-full h-screen flex items-center justify-center overflow-x-auto overflow-y-hidden">
+    <div
+      ref={appRef}
+      className="bg-gradient-to-b from-[#4B49AB20] to-[#4B49AB40] w-full h-screen flex items-center justify-center overflow-x-auto overflow-y-hidden"
+    >
+      <button
+        onClick={document.fullscreenElement ? exitFullScreen : enterFullScreen}
+        className="absolute bottom-4 right-4 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+      >
+        {!appRef.current?.requestFullscreen
+          ? "Exit Fullscreen"
+          : "Go Fullscreen"}
+      </button>
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
@@ -97,6 +111,20 @@ const KanbanBoard = () => {
       </DndContext>
     </div>
   );
+
+  function enterFullScreen() {
+    if (appRef.current) {
+      if (appRef.current.requestFullscreen) {
+        appRef.current.requestFullscreen();
+      }
+    }
+  }
+
+  function exitFullScreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  }
 
   function generateId() {
     return Math.floor(Math.random() * 100);
