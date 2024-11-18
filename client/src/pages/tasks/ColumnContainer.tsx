@@ -92,7 +92,7 @@ const ColumnContainer: React.FC<PropType> = ({
           )}
         </div>
         <button
-          className="px-1 py-2 rounded stroke-[#4B49AB] hover:bg-colBgColor hover:stroke-red-500"
+          className="px-1 py-2 rounded stroke-[#4B49AB] hover:bg-colBgColor hover:stroke-[#4B49AB]"
           onClick={() => handleDeleteColumn(column.id)}
         >
           <DeleteIcon />
