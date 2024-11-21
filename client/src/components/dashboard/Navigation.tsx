@@ -30,7 +30,8 @@ import {
 } from "@mui/material";
 
 // Project Imports
-import ProfilePicture from "../../assets/profilePicture.jpg";
+import saLogo from "../../assets/saLogo.png";
+import profilePicture from "../../assets/profilePicture.jpg";
 import UserAccordion from "./accordion/UserAccordion";
 import TaskAccordion from "./accordion/TaskAccordion";
 import ClientAccordion from "./accordion/ClientAccordion";
@@ -80,7 +81,7 @@ const Navigation = () => {
       <div className="flex items-center justify-center gap-3 py-2">
         <>
           <img
-            src={ProfilePicture}
+            src={saLogo}
             alt="Profile Picture"
             className="w-[49px] h-[49px] transition-all ease-in duration-300"
           />
@@ -214,7 +215,7 @@ const Navigation = () => {
             <Box>
               <Tooltip title="Open Settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar src={ProfilePicture} alt="Profile Picture" />
+                  <Avatar src={profilePicture} alt="Profile Picture" />
                 </IconButton>
               </Tooltip>
               <Menu
