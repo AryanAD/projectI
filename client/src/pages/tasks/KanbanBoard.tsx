@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import AddIcon from "../../icons/AddIcon";
 import ColumnContainer from "./ColumnContainer";
 import TaskCard from "./TaskCard";
@@ -24,8 +24,6 @@ const KanbanBoard = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   //Hooks
-  const appRef = useRef<HTMLDivElement>(null);
-
   const columnsId = useMemo(
     () => columns.map((columns) => columns?.id),
     [columns]
@@ -40,25 +38,14 @@ const KanbanBoard = () => {
   );
 
   return (
-    <div
-      ref={appRef}
-      className="bg-gradient-to-b from-[#4B49AB20] to-[#4B49AB40] w-full h-screen flex items-center justify-center overflow-x-auto overflow-y-hidden"
-    >
-      <button
-        onClick={document.fullscreenElement ? exitFullScreen : enterFullScreen}
-        className="absolute bottom-4 right-4 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
-      >
-        {!appRef.current?.requestFullscreen
-          ? "Exit Fullscreen"
-          : "Go Fullscreen"}
-      </button>
+    <div className="bg-gradient-to-b from-[#4B49AB20] to-[#4B49AB40] w-full h-screen flex items-center justify-center overflow-x-scroll overflow-y-hidden">
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
       >
-        <div className="flex gap-4 mx-auto">
+        <div className="flex bg-yellow-200 w-[95%] gap-4 mx-auto">
           <div className="flex gap-4">
             <SortableContext items={columnsId}>
               {columns.map((col) => (
@@ -77,7 +64,7 @@ const KanbanBoard = () => {
           </div>
           <button
             onClick={() => handleCreateColumn()}
-            className="h-[60px] w-[350px] min-w-[350px] p-4 border-2 rounded-lg cursor-pointer bg-mainBgColor border-colBgColor ring-[#4B49AB] hover:ring-2 flex gap-2"
+            className="h-[60px] w-[350px] min-w-[350px] p-4 border-2 rounded-lg cursor-pointer bg-mainBgColor border-colBgColor ring-[#4B49AB] hover:ring-2 flex gap-2 items-center justify-center"
           >
             <AddIcon /> Add Column
           </button>
@@ -111,20 +98,6 @@ const KanbanBoard = () => {
       </DndContext>
     </div>
   );
-
-  function enterFullScreen() {
-    if (appRef.current) {
-      if (appRef.current.requestFullscreen) {
-        appRef.current.requestFullscreen();
-      }
-    }
-  }
-
-  function exitFullScreen() {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
-  }
 
   function generateId() {
     return Math.floor(Math.random() * 100);
