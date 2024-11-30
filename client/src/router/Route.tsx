@@ -63,7 +63,7 @@ export const Router = () => {
           <Route path="/clients/:id" element={<SingleClient />} />
           <Route path="/add-clients" element={<AddClients />} />
           <Route path="/manage-clients" element={<ClientsTable />} />
-          <Route path="/edit-client/:id" element={<EditSingleClient />} />
+          <Route path="/edit-clients/:id" element={<EditSingleClient />} />
 
           {/* Clients Categories*/}
           <Route path="/client-categories" element={<ClientCategories />} />
@@ -85,7 +85,7 @@ export const Router = () => {
           <Route path="/projects/:id" element={<SingleProject />} />
           <Route path="/add-projects" element={<AddProjects />} />
           <Route path="/manage-projects" element={<ProjectsTable />} />
-          <Route path="/edit-project/:id" element={<EditSingleProject />} />
+          <Route path="/edit-projects/:id" element={<EditSingleProject />} />
 
           {/* Projects Categories*/}
           <Route path="/project-categories" element={<ProjectCategories />} />

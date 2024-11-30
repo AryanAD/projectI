@@ -111,7 +111,7 @@ const ClientsTable = () => {
                   : "N/A"}
               </TableCell>
               <TableCell>
-                <Link to={`/edit-client/${client.id}`}>
+                <Link to={`/edit-clients/${client.id}`}>
                   <IconButton
                     sx={{ ...CustomCSS.editIconButton, marginRight: 1 }}
                   >

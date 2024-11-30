@@ -102,7 +102,7 @@ const ProjectsTable = () => {
                   : "N/A"}
               </TableCell>
               <TableCell>
-                <Link to={`/edit-project/${project.id}`}>
+                <Link to={`/edit-projects/${project.id}`}>
                   <IconButton
                     sx={{ ...CustomCSS.editIconButton, marginRight: 1 }}
                   >

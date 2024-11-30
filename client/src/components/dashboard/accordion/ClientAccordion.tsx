@@ -39,7 +39,7 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
       currentPath === "/clients" ||
       currentPath === "/add-clients" ||
       currentPath === "/manage-clients" ||
-      currentPath.includes("/edit-client") ||
+      currentPath.includes("/edit-clients") ||
       currentPath.includes("/clients")
     ) {
       setOpenClients(true);
@@ -124,7 +124,7 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                 currentPath === "/clients" ||
                 currentPath === "/add-clients" ||
                 currentPath === "/manage-clients" ||
-                currentPath.includes("/edit-client") ||
+                currentPath.includes("/edit-clients") ||
                 currentPath.includes("/clients")
                   ? "#4B49AC"
                   : "transparent",
@@ -132,7 +132,7 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                 currentPath === "/clients" ||
                 currentPath === "/add-clients" ||
                 currentPath === "/manage-clients" ||
-                currentPath.includes("/edit-client") ||
+                currentPath.includes("/edit-clients") ||
                 currentPath.includes("/clients")
                   ? "white"
                   : "black",
@@ -141,7 +141,7 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                   currentPath === "/clients" ||
                   currentPath === "/add-clients" ||
                   currentPath === "/manage-clients" ||
-                  currentPath.includes("/edit-client") ||
+                  currentPath.includes("/edit-clients") ||
                   currentPath.includes("/clients")
                     ? "#4B49AC"
                     : "transparent",
@@ -149,7 +149,7 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                   currentPath === "/clients" ||
                   currentPath === "/add-clients" ||
                   currentPath === "/manage-clients" ||
-                  currentPath.includes("/edit-client") ||
+                  currentPath.includes("/edit-clients") ||
                   currentPath.includes("/clients")
                     ? "white"
                     : "black",
@@ -163,7 +163,7 @@ const ClientAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                     currentPath === "/clients" ||
                     currentPath === "/add-clients" ||
                     currentPath === "/manage-clients" ||
-                    currentPath.includes("/edit-client") ||
+                    currentPath.includes("/edit-clients") ||
                     currentPath.includes("/clients")
                       ? "white"
                       : "",

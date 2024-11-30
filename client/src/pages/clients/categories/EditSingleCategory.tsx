@@ -90,7 +90,7 @@ const EditSingleCategory = () => {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Registering..." : "Register"}
+            {isLoading ? "Updating..." : "Update"}
           </button>
         </div>
       </form>
