@@ -105,23 +105,12 @@ const Navigation = () => {
           <ListItemButton
             onClick={() => navigate("/")}
             sx={{
-              backgroundColor:
-                currentPath === "/" || currentPath === "/profile"
-                  ? "#4B49AC"
-                  : "transparent",
-              color:
-                currentPath === "/" || currentPath === "/profile"
-                  ? "white"
-                  : "black",
+              backgroundColor: currentPath === "/" ? "#4B49AC" : "transparent",
+              color: currentPath === "/" ? "white" : "black",
               "&:hover": {
                 backgroundColor:
-                  currentPath === "/" || currentPath === "/profile"
-                    ? "#4B49AC"
-                    : "transparent",
-                color:
-                  currentPath === "/" || currentPath === "/profile"
-                    ? "white"
-                    : "black",
+                  currentPath === "/" ? "#4B49AC" : "transparent",
+                color: currentPath === "/" ? "white" : "black",
               },
               transition: "all 0.5s ease",
             }}
@@ -129,10 +118,7 @@ const Navigation = () => {
             <ListItemIcon>
               <HomeRounded
                 sx={{
-                  color:
-                    currentPath === "/" || currentPath === "/profile"
-                      ? "white"
-                      : "",
+                  color: currentPath === "/" ? "white" : "",
                   transition: "all 0.5s ease",
                   marginLeft: sidebarCollapsed ? "10px" : "20px",
                 }}
@@ -236,7 +222,7 @@ const Navigation = () => {
                   horizontal: "right",
                 }}
               >
-                <Link to={"/profile/profile"}>
+                <Link to={"/profile"}>
                   <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign={"center"}>Profile</Typography>
                   </MenuItem>

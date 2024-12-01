@@ -15,6 +15,7 @@ import AddIcon from "../../icons/AddIcon";
 import ColumnContainer from "./ColumnContainer";
 import TaskCard from "./TaskCard";
 import { Column, Id, Task } from "../../types/taskTypes";
+import { useAddTaskMutation } from "../../redux/features/tasks/taskApiSlice";
 
 const KanbanBoard = () => {
   //States
@@ -24,6 +25,7 @@ const KanbanBoard = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   //Hooks
+  const [addTask] = useAddTaskMutation();
   const columnsId = useMemo(
     () => columns.map((columns) => columns?.id),
     [columns]
@@ -45,7 +47,7 @@ const KanbanBoard = () => {
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
       >
-        <div className="flex bg-yellow-200 w-[95%] gap-4 mx-auto">
+        <div className="flex w-[95%] gap-4 mx-auto">
           <div className="flex gap-4">
             <SortableContext items={columnsId}>
               {columns.map((col) => (
@@ -213,6 +215,7 @@ const KanbanBoard = () => {
       content: `Task ${tasks.length + 1}`,
       status: "todo",
     };
+    addTask(newTask);
     setTasks([...tasks, newTask]);
   }
 

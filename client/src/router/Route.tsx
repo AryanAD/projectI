@@ -36,6 +36,7 @@ import EditProjectCategory from "../pages/projects/categories/EditSingleCategory
 import ProjectCategoryTable from "../components/projects/categories/CategoryTable";
 
 import Tasks from "../pages/tasks/index";
+import Profile from "../pages/Profile";
 
 export const Router = () => {
   return (
@@ -50,6 +51,9 @@ export const Router = () => {
           }
         >
           <Route index={true} path="" element={<Homepage />} />
+
+          {/* Profile */}
+          <Route path="/profile" element={<Profile />} />
 
           {/* Users */}
           <Route path="/users" element={<Users />} />
