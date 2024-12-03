@@ -22,8 +22,10 @@ router
 
 // Protected routes
 router
-  .get("/profile", protect, getUserProfile)
-  .put("/profile", protect, updateUserProfile);
+  // .get("/profile", protect, getUserProfile)
+  // .put("/profile", protect, updateUserProfile);
+  .get("/profile", getUserProfile)
+  .put("/profile", updateUserProfile);
 
 // Admin routes
 router

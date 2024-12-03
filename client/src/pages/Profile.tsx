@@ -5,7 +5,8 @@ import { HomeRounded } from "@mui/icons-material";
 import { useGetProfileQuery } from "../redux/features/users/userApiSlice";
 
 const Profile = () => {
-  const [getProfile] = useGetProfileQuery({ id });
+  const { data } = useGetProfileQuery();
+  console.log(data);
   const navigate = useNavigate();
   return (
     <div className={CustomCSS.mainDiv}>

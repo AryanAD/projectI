@@ -51,7 +51,8 @@ const KanbanBoard = () => {
           <div className="flex gap-4">
             <SortableContext items={columnsId}>
               {columns.map((col) => (
-                <ColumnContainer
+                <ColumnCont
+                  ainer
                   key={col.id}
                   column={col}
                   tasks={tasks.filter((task) => task.columnId === col.id)}

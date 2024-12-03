@@ -45,9 +45,9 @@ export const Router = () => {
         <Route
           path="/"
           element={
-            // <AuthWrapper>
-            <Navigation />
-            // </AuthWrapper>
+            <AuthWrapper>
+              <Navigation />
+            </AuthWrapper>
           }
         >
           <Route index={true} path="" element={<Homepage />} />
@@ -116,10 +116,10 @@ export const Router = () => {
   );
 };
 
-// const AuthWrapper = ({ children }) => {
-//   const token = localStorage.getItem("token");
+const AuthWrapper = ({ children }) => {
+  const token = localStorage.getItem("role");
 
-//   if (token === null) return <Navigate to={"/login"} />;
+  if (token === null) return <Navigate to={"/login"} />;
 
-//   return token && children;
-// };
+  return token && children;
+};
