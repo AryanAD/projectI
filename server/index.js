@@ -4,6 +4,11 @@ dotenv.config();
 import express from "express";
 const app = express();
 
+import { Server as SocketIOServer } from "socket.io";
+import http from "http";
+const server = http.createServer(app);
+const io = new SocketIOServer(server, { cors: { origin: "*" } });
+
 import path from "path";
 import cookieParser from "cookie-parser";
 import sequelize from "./config/database.js";
@@ -56,3 +61,23 @@ const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Websocket Event Handlers
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
+
+// Broadcast changes
+const broadcastTaskChange = (event, data) => {
+  io.emit("task-change", { event, data });
+};
+
+// Pass broadcast function to routes
+app.set("broadcastTaskChange", broadcastTaskChange);
+
+// Start Server with WebSocket Support
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

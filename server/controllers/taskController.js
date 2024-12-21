@@ -51,6 +51,9 @@ const assignTask = asyncHandler(async (req, res) => {
     message: `You have been assigned a new task: "${name}"`,
   });
 
+  // Broadcast task creation
+  req.io.emit("task-created", task);
+
   res.status(201).json(task);
 });
 
@@ -84,6 +87,9 @@ const updateTask = asyncHandler(async (req, res) => {
     message: `The task "${task.name}" has been updated.`,
   });
 
+  // Broadcast task update
+  req.io.emit("task-updated", task);
+
   res.json({ message: "Task updated successfully", task });
 });
 
@@ -102,6 +108,9 @@ const deleteTask = asyncHandler(async (req, res) => {
     userId: task.assignedTo,
     message: `The task "${task.name}" has been deleted.`,
   });
+
+  // Broadcast task deletion
+  req.io.emit("task-deleted", { id });
 
   res.json({ message: "Task deleted successfully" });
 });
