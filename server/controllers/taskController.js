@@ -1,7 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Task from "../models/taskModel.js";
 import User from "../models/userModel.js";
-import Notification from "../models/notificationModel.js";
 
 const fetchTasks = asyncHandler(async (req, res) => {
   const { role, id } = req.user;
@@ -46,11 +45,6 @@ const assignTask = asyncHandler(async (req, res) => {
     status: status || "todo",
   });
 
-  await Notification.create({
-    userId: assignedTo,
-    message: `You have been assigned a new task: "${name}"`,
-  });
-
   // Broadcast task creation
   req.io.emit("task-created", task);
 
@@ -82,11 +76,6 @@ const updateTask = asyncHandler(async (req, res) => {
 
   await task.save();
 
-  await Notification.create({
-    userId: task.assignedTo,
-    message: `The task "${task.name}" has been updated.`,
-  });
-
   // Broadcast task update
   req.io.emit("task-updated", task);
 
@@ -103,11 +92,6 @@ const deleteTask = asyncHandler(async (req, res) => {
   }
 
   await task.destroy();
-
-  await Notification.create({
-    userId: task.assignedTo,
-    message: `The task "${task.name}" has been deleted.`,
-  });
 
   // Broadcast task deletion
   req.io.emit("task-deleted", { id });

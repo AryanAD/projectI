@@ -60,7 +60,7 @@ app.use("/api/uploads", uploadRoutes);
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Websocket Event Handlers
 io.on("connection", (socket) => {
@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// Broadcast changes
+// Broad cast changes
 const broadcastTaskChange = (event, data) => {
   io.emit("task-change", { event, data });
 };
