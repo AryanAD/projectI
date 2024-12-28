@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Navigation from "./components/dashboard/Navigation";
 import { useLocation } from "react-router";
 import Login from "./pages/auth/Login";
+import ErrorDisplay from "./pages/error/ErrorDisplay";
 
 function App() {
   const location = useLocation();
@@ -11,7 +12,13 @@ function App() {
   return (
     <>
       <ToastContainer />
-      {currentPath.includes("login") ? <Login /> : <Navigation />}
+      {currentPath.includes("login") ? (
+        <Login />
+      ) : currentPath.includes(`/${`*`}`) ? (
+        <ErrorDisplay />
+      ) : (
+        <Navigation />
+      )}
     </>
   );
 }

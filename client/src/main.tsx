@@ -127,7 +127,11 @@ import { store } from "./redux/store.ts";
 import { Provider } from "react-redux";
 
 // Router
-import { RouterProvider } from "react-router-dom";
+import {
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 import { createBrowserRouter } from "react-router-dom";
 
 import ErrorDisplay from "./pages/error/ErrorDisplay";
@@ -170,67 +174,60 @@ import ProjectCategoryTable from "./components/projects/categories/CategoryTable
 import Tasks from "./pages/tasks/index";
 
 // Define the router
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      { path: "login", element: <Login /> },
-      { index: true, path: "", element: <Homepage /> },
-      { path: "*", element: <ErrorDisplay /> },
-      {
-        path: "admin",
-        element: <AdminRoutes />,
-        children: [
-          // Profile
-          { path: "profile", element: <Profile /> },
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+      <Route path="login" element={<Login />} />
+      <Route index={true} path="" element={<Homepage />} />
+      <Route path="*" element={<ErrorDisplay />} />
+      <Route path="admin" element={<AdminRoutes />}>
+        <Route path="profile" element={<Profile />} />
 
-          // Users
-          { path: "users", element: <Users /> },
-          { path: "users/:id", element: <SingleUser /> },
-          { path: "add-users", element: <AddUsers /> },
-          { path: "manage-users", element: <UsersTable /> },
-          { path: "edit-user/:id", element: <EditSingleUser /> },
+        <Route path="users" element={<Users />} />
+        <Route path="users/:id" element={<SingleUser />} />
+        <Route path="add-users" element={<AddUsers />} />
+        <Route path="manage-users" element={<UsersTable />} />
+        <Route path="edit-user/:id" element={<EditSingleUser />} />
 
-          // Clients
-          { path: "clients", element: <Clients /> },
-          { path: "clients/:id", element: <SingleClient /> },
-          { path: "add-clients", element: <AddClients /> },
-          { path: "manage-clients", element: <ClientsTable /> },
-          { path: "edit-clients/:id", element: <EditSingleClient /> },
+        <Route path="clients" element={<Clients />} />
+        <Route path="clients/:id" element={<SingleClient />} />
+        <Route path="add-clients" element={<AddClients />} />
+        <Route path="manage-clients" element={<ClientsTable />} />
+        <Route path="edit-clients/:id" element={<EditSingleClient />} />
 
-          // Client Categories
-          { path: "client-categories", element: <ClientCategories /> },
-          { path: "add-client-category", element: <AddClientCategories /> },
-          { path: "manage-client-category", element: <ClientCategoryTable /> },
-          { path: "edit-client-category/:id", element: <EditClientCategory /> },
+        <Route path="client-categories" element={<ClientCategories />} />
+        <Route path="add-client-category" element={<AddClientCategories />} />
+        <Route
+          path="manage-client-category"
+          element={<ClientCategoryTable />}
+        />
+        <Route
+          path="edit-client-category/:id"
+          element={<EditClientCategory />}
+        />
 
-          // Projects
-          { path: "projects", element: <Projects /> },
-          { path: "projects/:id", element: <SingleProject /> },
-          { path: "add-projects", element: <AddProjects /> },
-          { path: "manage-projects", element: <ProjectsTable /> },
-          { path: "edit-projects/:id", element: <EditSingleProject /> },
+        <Route path="projects" element={<Projects />} />
+        <Route path="projects/:id" element={<SingleProject />} />
+        <Route path="add-projects" element={<AddProjects />} />
+        <Route path="manage-projects" element={<ProjectsTable />} />
+        <Route path="edit-projects/:id" element={<EditSingleProject />} />
 
-          // Project Categories
-          { path: "project-categories", element: <ProjectCategories /> },
-          { path: "add-project-category", element: <AddProjectCategories /> },
-          {
-            path: "manage-project-category",
-            element: <ProjectCategoryTable />,
-          },
-          {
-            path: "edit-project-category/:id",
-            element: <EditProjectCategory />,
-          },
+        <Route path="project-categories" element={<ProjectCategories />} />
+        <Route path="add-project-category" element={<AddProjectCategories />} />
+        <Route
+          path="manage-project-category"
+          element={<ProjectCategoryTable />}
+        />
+        <Route
+          path="edit-project-category/:id"
+          element={<EditProjectCategory />}
+        />
 
-          // Tasks
-          { path: "tasks", element: <Tasks /> },
-        ],
-      },
-    ],
-  },
-]);
+        <Route path="tasks" element={<Tasks />} />
+      </Route>
+    </Route>
+  )
+);
 
 // Render the application
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -32,7 +32,7 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
   useEffect(() => {
     if (
       currentPath.includes("/edit-user") ||
-      currentPath.includes("/users") ||
+      currentPath.includes("admin/users") ||
       currentPath === "/add-users" ||
       currentPath === "/manage-users"
     ) {
@@ -59,19 +59,19 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
       <Collapse in={openUsers} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton
-            onClick={() => navigate("/users")}
+            onClick={() => navigate("admin/users")}
             sx={{
               pl: 8,
               backgroundColor:
                 currentPath.includes("/edit-user") ||
-                currentPath.includes("/users") ||
+                currentPath.includes("admin/users") ||
                 currentPath === "/add-users" ||
                 currentPath === "/manage-users"
                   ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath.includes("/edit-user") ||
-                currentPath.includes("/users") ||
+                currentPath.includes("admin/users") ||
                 currentPath === "/add-users" ||
                 currentPath === "/manage-users"
                   ? "white"
@@ -79,14 +79,14 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
               "&:hover": {
                 backgroundColor:
                   currentPath.includes("/edit-user") ||
-                  currentPath.includes("/users") ||
+                  currentPath.includes("admin/users") ||
                   currentPath === "/add-users" ||
                   currentPath === "/manage-users"
                     ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath.includes("/edit-user") ||
-                  currentPath.includes("/users") ||
+                  currentPath.includes("admin/users") ||
                   currentPath === "/add-users" ||
                   currentPath === "/manage-users"
                     ? "white"
@@ -99,7 +99,7 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                 sx={{
                   color:
                     currentPath.includes("/edit-user") ||
-                    currentPath.includes("/users") ||
+                    currentPath.includes("admin/users") ||
                     currentPath === "/add-users" ||
                     currentPath === "/manage-users"
                       ? "white"
