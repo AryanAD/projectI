@@ -36,6 +36,9 @@ import UserAccordion from "./accordion/UserAccordion";
 import TaskAccordion from "./accordion/TaskAccordion";
 import ClientAccordion from "./accordion/ClientAccordion";
 import ProjectAccordion from "./accordion/ProjectAccordion";
+import { logout } from "../../redux/features/auth/authSlice";
+import { useLogoutUserMutation } from "../../redux/features/users/userApiSlice";
+import { useDispatch } from "react-redux";
 
 // Constants
 const drawerWidth = 300;
@@ -44,7 +47,9 @@ const collapsedDrawerWidth = 70;
 const Navigation = () => {
   // Hooks
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const [logoutUser] = useLogoutUserMutation();
+
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -66,10 +71,15 @@ const Navigation = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleLogout = () => {
-    // dispatch(here)
-    navigate("/login");
-    toast.success("Logged Out Successfully!");
+  const handleLogout = async () => {
+    try {
+      await logoutUser().unwrap();
+      dispatch(logout());
+      navigate("/login");
+      toast.success("Logged Out Successfully");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSidebarToggle = () => {

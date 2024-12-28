@@ -56,7 +56,7 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    logout: builder.mutation<void, void>({
+    logoutUser: builder.mutation<void, void>({
       query: () => ({
         url: `${USERS_URL}/logout`,
         method: "POST",
@@ -124,7 +124,7 @@ export const {
   useRegisterMutation,
   useUploadUserImageMutation,
   useLoginMutation,
-  useLogoutMutation,
+  useLogoutUserMutation,
   useGetProfileQuery,
   useUpdateProfileMutation,
   useGetAllUsersQuery,

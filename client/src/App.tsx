@@ -1,16 +1,17 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Router } from "./router/Route";
-import { BrowserRouter } from "react-router-dom";
+import Navigation from "./components/dashboard/Navigation";
+import { useLocation } from "react-router";
+import Login from "./pages/auth/Login";
 
 function App() {
+  const location = useLocation();
+  const currentPath = location.pathname;
   return (
     <>
-      <BrowserRouter>
-        <ToastContainer />
-        <Router />
-      </BrowserRouter>
+      <ToastContainer />
+      {currentPath.includes("login") ? <Login /> : <Navigation />}
     </>
   );
 }
