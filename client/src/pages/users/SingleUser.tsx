@@ -1,10 +1,9 @@
 import { useNavigate, useParams } from "react-router";
 import { useGetUserByIdQuery } from "../../redux/features/users/userApiSlice";
-import { CustomCSS } from "../../components/custom/CustomCSS";
-import CustomHeading from "../../components/custom/CustomHeading";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { Avatar, Typography } from "@mui/material";
 import CustomChip from "../../components/custom/CustomChip";
+import { motion } from "framer-motion";
 
 const SingleUser = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,66 +21,108 @@ const SingleUser = () => {
   }
 
   return (
-    <div className={CustomCSS.mainDiv}>
-      <div className="inline-flex justify-between">
-        <CustomHeading heading="User Details" />
+    <div className="flex items-center justify-center min-h-[100vh-70px] px-6 pt-8 mt-8">
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="min-w-[50vw] max-w-6xl border rounded-2xl shadow-md drop-shadow-sm bg-white p-6 space-y-6"
+      >
+        <div className="flex justify-between items-center">
+          <motion.h1
+            className="text-[#4A4BAC] font-extrabold text-3xl sm:text-4xl uppercase tracking-widest"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            User Details
+          </motion.h1>
 
-        <button
-          onClick={() => navigate("/users")}
-          className={CustomCSS.addButton}
-        >
-          <ArrowBackRounded />
-          Back
-        </button>
-      </div>
-
-      <div className="flex items-center justify-around w-full flex-wrap">
-        <div className="lg:w-[35%] w-full">
-          <Avatar
-            src={userData?.image}
-            sx={{
-              width: 400,
-              height: 400,
-              margin: "2rem 0",
-              boxShadow: "0 4px 50px 2px rgba(0,0,0,0.34)",
-            }}
-          />
+          <motion.button
+            className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white text-[#4A4BAC] hover:bg-indigo-200 font-bold uppercase text-lg shadow-sm drop-shadow-md transition duration-300"
+            onClick={() => navigate("/admin/users")}
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ArrowBackRounded />
+            Back
+          </motion.button>
         </div>
 
-        <div className="lg:w-[55%] w-full flex justify-center">
-          <div className="w-[90%] flex flex-col justify-around gap-5">
-            <div className="inline-flex items-center justify-between w-full">
-              <Typography
-                variant="h3"
-                sx={{
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  textDecoration: "underline",
-                }}
-              >
-                {userData?.username}
-              </Typography>
+        <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between space-y-6 lg:space-y-0 lg:space-x-6">
+          <motion.div
+            className="w-[30%]"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <motion.div
+              className="w-[200px] h-[200px] rounded-full overflow-hidden shadow-lg mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <img
+                src={userData?.image}
+                alt="User Profile"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </motion.div>
 
-              <CustomChip text={userData?.role} role={userData?.role} />
+          <div className="w-[55%]">
+            <div className="flex flex-col gap-6">
+              <div className="inline-flex items-center justify-between">
+                <motion.h2
+                  className="font-semibold text-2xl"
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  {userData?.username}
+                </motion.h2>
+
+                <CustomChip text={userData?.role} role={userData?.role} />
+              </div>
+
+              <div className="space-y-3">
+                <motion.p
+                  className="text-gray-700"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <span className="font-semibold">Email:</span>{" "}
+                  {userData?.email}
+                </motion.p>
+
+                <motion.p
+                  className="text-gray-700"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <span className="font-semibold">Phone:</span>{" "}
+                  {userData?.phone || "N/A"}
+                </motion.p>
+
+                <motion.p
+                  className="text-gray-700"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <span className="font-semibold">Created At:</span>{" "}
+                  {userData?.createdAt &&
+                    new Date(userData?.createdAt).toLocaleDateString()}
+                </motion.p>
+              </div>
             </div>
-
-            <Typography variant="h5">
-              <span className="font-semibold">Email:</span> {userData?.email}
-            </Typography>
-
-            <Typography variant="h5">
-              <span className="font-semibold">Phone:</span>{" "}
-              {userData?.phone || "N/A"}
-            </Typography>
-
-            <Typography variant="h5">
-              <span className="font-semibold">Created At:</span>{" "}
-              {userData?.createdAt &&
-                userData?.createdAt.toString().slice(0, 10)}
-            </Typography>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

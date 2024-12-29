@@ -6,12 +6,9 @@ import User from "../models/userModel.js";
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
+  if (req.headers.cookie && req.headers.cookie.startsWith("jwt")) {
     try {
-      token = req.headers.authorization.split(" ")[1];
+      token = req.headers.cookie.split("=")[1];
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -39,8 +36,8 @@ const protect = asyncHandler(async (req, res, next) => {
 
 // Admin middleware
 const admin = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
-    console.log(req.user.role, "userRole is Admin");
+  if (req.user && req.user.dataValues.role === "admin") {
+    console.log(req.user.dataValues.role, "userRole is Admin");
     next();
   } else {
     res.status(403);

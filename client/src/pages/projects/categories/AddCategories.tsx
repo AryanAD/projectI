@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 
 import { ArrowBackRounded } from "@mui/icons-material";
 import { CustomCSS } from "../../../components/custom/CustomCSS";
-import CustomHeading from "../../../components/custom/CustomHeading";
+
 import { useAddProjectCategoryMutation } from "../../../redux/features/projects/projectApiSlice";
 
 const AddCategories = () => {
@@ -42,7 +42,7 @@ const AddCategories = () => {
         <CustomHeading heading="Add Categories" />
 
         <button
-          className={CustomCSS.addButton}
+          className="inline-flex items-center gap-2 py-2 px-3 rounded-[6px] shadow-md drop-shadow-md transition-all ease-in duration-100 bg-[#4B49AC] text-white hover:bg-[#7978E9] hover:ring-1 hover:ring-[#4B49AC] font-bold uppercase text-md outline-none tracking-[1px]"
           onClick={() => navigate("/project-categories")}
         >
           <ArrowBackRounded />

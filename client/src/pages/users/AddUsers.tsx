@@ -5,9 +5,8 @@ import {
 } from "../../redux/features/users/userApiSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import { CustomCSS } from "../../components/custom/CustomCSS";
-import CustomHeading from "../../components/custom/CustomHeading";
 import { ArrowBackRounded } from "@mui/icons-material";
+import { motion } from "framer-motion";
 
 interface UploadImageResponse {
   message: string;
@@ -67,7 +66,7 @@ const AddUsers = () => {
       };
       const data = await register(userData).unwrap();
       toast.success(`${data.username} Successfully Created`);
-      navigate("/users");
+      navigate("/admin/users");
     } catch (error) {
       console.error(error);
       toast.error("Failed to register user");
@@ -75,32 +74,44 @@ const AddUsers = () => {
   };
 
   return (
-    <div className={CustomCSS.mainDiv}>
-      <div className="inline-flex justify-between w-full">
-        <CustomHeading heading="Add Users" />
-
+    <div className="flex flex-col items-center justify-start min-h-[100vh-70px] px-6 pt-8 mt-20">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="flex justify-between w-full items-center mb-8"
+      >
+        <h1 className="text-[#4A4BAC] font-extrabold text-4xl uppercase tracking-widest">
+          Add Users
+        </h1>
         <button
-          className={CustomCSS.addButton}
-          onClick={() => navigate("/users")}
+          className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white text-[#4A4BAC] hover:bg-indigo-200 font-bold uppercase text-lg shadow-md transition duration-300"
+          onClick={() => navigate("/admin/users")}
         >
           <ArrowBackRounded />
           Back
         </button>
-      </div>
+      </motion.div>
 
-      <form onSubmit={handleSubmit}>
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-xl space-y-6"
+      >
         {imageUrl && (
-          <div className="text-center">
+          <div className="text-center mb-6">
             <img
               src={imageUrl}
               alt="User Profile"
-              className={CustomCSS.displayUploadedImage}
+              className="block mx-auto max-h-[400px] rounded-lg shadow-md transition-transform transform hover:scale-105"
             />
           </div>
         )}
 
         <div className={`w-full my-8 ${imageUrl ? "hidden" : ""}`}>
-          <label className={CustomCSS.imageLabel}>
+          <label className="border-2 border-dashed border-indigo-300 p-6 block w-full text-center rounded-lg cursor-pointer font-semibold text-[#4A4BAC90] hover:bg-indigo-50 hover:border-indigo-400 transition duration-200">
             {image ? image.name : "Upload Image"}
             <input
               type="file"
@@ -111,27 +122,33 @@ const AddUsers = () => {
           </label>
         </div>
 
-        <div className={CustomCSS.gridTwo}>
+        <div className="grid md:grid-cols-2 gap-8">
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="username">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="username"
+            >
               Enter Username
             </label>
             <input
               type="text"
               id="username"
               placeholder="Enter Your Username"
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="password">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="password"
+            >
               Enter Password
             </label>
             <input
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               type="password"
               placeholder="Enter Your Password"
               id="password"
@@ -141,11 +158,14 @@ const AddUsers = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="email">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="email"
+            >
               Enter Email
             </label>
             <input
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               type="email"
               id="email"
               placeholder="Enter Your Email"
@@ -155,11 +175,14 @@ const AddUsers = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="phone">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="phone"
+            >
               Enter Phone Number
             </label>
             <input
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               type="number"
               id="phone"
               placeholder="Enter Your Phone Number"
@@ -169,16 +192,41 @@ const AddUsers = () => {
           </div>
         </div>
 
-        <div className="my-5">
+        <div className="my-6 text-center">
           <button
-            className={CustomCSS.submitButton}
+            className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg w-full transition-all duration-200"
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Registering..." : "Register"}
+            {isLoading ? (
+              <span className="flex justify-center items-center">
+                <svg
+                  className="animate-spin h-5 w-5 mr-3 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V2a10 10 0 00-10 10h2z"
+                  ></path>
+                </svg>
+                Registering...
+              </span>
+            ) : (
+              "Register"
+            )}
           </button>
         </div>
-      </form>
+      </motion.form>
     </div>
   );
 };

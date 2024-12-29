@@ -66,41 +66,103 @@ const UsersTable = () => {
 
   return (
     <>
-      <Table className="mt-8">
+      <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
-            <TableCell sx={{ ...CustomCSS.tableCell, borderRadius: "6px 0 0" }}>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
               ID
             </TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Username</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Email</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Phone Number</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Role</TableCell>
             <TableCell
-              sx={{ ...CustomCSS.tableCell, borderRadius: "0 6px 0 0" }}
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Username
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Email
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Phone Number
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Role
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
             >
               Action
             </TableCell>
           </TableRow>
         </TableHead>
 
-        <TableBody>
-          {isLoading && <TableRow>Loading...</TableRow>}
+        <TableBody className="bg-[#f9f9f9]">
+          {isLoading && (
+            <TableRow>
+              <TableCell colSpan={6} className="text-center">
+                Loading...
+              </TableCell>
+            </TableRow>
+          )}
           {userData?.map((user) => (
-            <TableRow key={user.id}>
+            <TableRow
+              key={user.id}
+              className="transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-100"
+            >
               <TableCell>{user.id}</TableCell>
               <TableCell>
-                <Link to={`/users/${user.id}`} className="hover:underline">
-                  {user.username}
-                </Link>
+                <Link to={`/admin/users/${user.id}`}>{user.username}</Link>
               </TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
               <TableCell>{user.role}</TableCell>
               <TableCell>
-                <Link to={`/edit-user/${user.id}`}>
+                <Link to={`/admin/edit-user/${user.id}`}>
                   <IconButton
-                    sx={{ ...CustomCSS.editIconButton, marginRight: 1 }}
+                    sx={{
+                      color: "#488ac7",
+                      "&:hover": {
+                        bgcolor: "#488ac7",
+                        color: "white",
+                      },
+                      transition: "all ease-in-out 0.2s",
+                    }}
                   >
                     <EditRounded />
                   </IconButton>
@@ -108,7 +170,14 @@ const UsersTable = () => {
 
                 <IconButton
                   onClick={() => handleOpen(user.id)}
-                  sx={CustomCSS.deleteIconButton}
+                  sx={{
+                    color: "#db0f27",
+                    "&:hover": {
+                      bgcolor: "#db0f27",
+                      color: "white",
+                    },
+                    transition: "all ease-in-out 0.2s",
+                  }}
                 >
                   <DeleteRounded />
                 </IconButton>
@@ -118,13 +187,34 @@ const UsersTable = () => {
         </TableBody>
       </Table>
 
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={CustomCSS.deleteModal}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        sx={{
+          transition: "opacity 0.3s ease",
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 500,
+            bgcolor: "background.paper",
+            border: "2px solid #ff000070",
+            borderRadius: "12px",
+            boxShadow: 24,
+            p: 4,
+            transition: "transform 0.3s ease-in-out",
+          }}
+        >
           <Typography
             fontWeight={500}
             textTransform={"uppercase"}
             mb={1}
             variant="h5"
+            className="text-center"
           >
             Are you sure to delete this user?
           </Typography>
@@ -136,7 +226,7 @@ const UsersTable = () => {
           <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className={`${CustomCSS.deleteButton} inline-flex gap-1`}
+            className="py-3 text-[#f6f6f6] bg-[#db0f27] font-bold text-md px-6 rounded-[4px] transition-all ease-in duration-200 uppercase outline-none hover:bg-[#9A0B1B] hover:ring-1 hover:ring-[#db0f2790] tracking-[2px] w-full"
           >
             <DeleteRounded />
             {isDeleting ? "Deleting..." : "Delete User"}

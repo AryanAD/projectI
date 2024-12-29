@@ -176,11 +176,11 @@ import Tasks from "./pages/tasks/index";
 // Define the router
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="/" errorElement={<ErrorDisplay />} element={<App />}>
       <Route path="login" element={<Login />} />
       <Route index={true} path="" element={<Homepage />} />
-      <Route path="*" element={<ErrorDisplay />} />
-      <Route path="admin" element={<AdminRoutes />}>
+
+      <Route path="/admin" element={<AdminRoutes />}>
         <Route path="profile" element={<Profile />} />
 
         <Route path="users" element={<Users />} />
@@ -232,6 +232,8 @@ const router = createBrowserRouter(
 // Render the application
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <div className="main-content">
+      <RouterProvider router={router} />
+    </div>
   </Provider>
 );
