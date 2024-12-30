@@ -3,7 +3,7 @@ import { apiSlice } from "../../apiSlice";
 import { User } from "../../../types/userTypes";
 
 export interface UserPayload {
-  id: number;
+  id: number | string;
   username: string;
   phone: string;
   email: string;

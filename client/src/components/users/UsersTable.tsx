@@ -15,7 +15,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { CustomCSS } from "../custom/CustomCSS";
+
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -35,6 +35,7 @@ const UsersTable = () => {
   const [open, setOpen] = useState(false);
 
   const { data, isSuccess, error, isLoading } = useGetAllUsersQuery();
+
   const [deleteUserById, { isLoading: isDeleting }] =
     useDeleteUserByIdMutation();
 
@@ -191,7 +192,7 @@ const UsersTable = () => {
         open={open}
         onClose={handleClose}
         sx={{
-          transition: "opacity 0.3s ease",
+          transition: "opacity 0.3s ease-in-out",
         }}
       >
         <Box
@@ -200,37 +201,76 @@ const UsersTable = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 500,
+            width: 450,
             bgcolor: "background.paper",
-            border: "2px solid #ff000070",
-            borderRadius: "12px",
+            borderRadius: "8px",
             boxShadow: 24,
             p: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 2,
             transition: "transform 0.3s ease-in-out",
           }}
         >
           <Typography
-            fontWeight={500}
-            textTransform={"uppercase"}
-            mb={1}
             variant="h5"
-            className="text-center"
+            fontWeight={600}
+            textTransform="uppercase"
+            color="text.primary"
+            align="center"
+            className="tracking-wider"
           >
-            Are you sure to delete this user?
+            Confirm Deletion
           </Typography>
 
-          <Alert sx={{ mb: 2 }} severity="error">
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            textAlign="center"
+            sx={{
+              mb: 2,
+              lineHeight: 1.6,
+            }}
+          >
+            Are you sure you want to delete this user? This action cannot be
+            undone.
+          </Typography>
+
+          <Alert
+            severity="error"
+            sx={{
+              width: "100%",
+              fontSize: "0.9rem",
+              mb: 2,
+              justifyContent: "center",
+              "& .MuiAlert-message": {
+                textAlign: "center",
+              },
+            }}
+          >
             Deleted users can't be recovered!
           </Alert>
 
-          <button
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="py-3 text-[#f6f6f6] bg-[#db0f27] font-bold text-md px-6 rounded-[4px] transition-all ease-in duration-200 uppercase outline-none hover:bg-[#9A0B1B] hover:ring-1 hover:ring-[#db0f2790] tracking-[2px] w-full"
-          >
-            <DeleteRounded />
-            {isDeleting ? "Deleting..." : "Delete User"}
-          </button>
+          <div className="flex gap-4 justify-center w-full">
+            <button
+              onClick={handleClose}
+              className="py-2 px-6 bg-gray-200 text-gray-800 font-semibold rounded hover:bg-gray-300 transition-all duration-200 ease-in-out"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className={`py-2 px-6 font-semibold rounded text-white transition-all duration-200 ease-in-out ${
+                isDeleting
+                  ? "bg-red-400 cursor-not-allowed"
+                  : "bg-[#db0f27] hover:bg-[#9A0B1B]"
+              }`}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </button>
+          </div>
         </Box>
       </Modal>
     </>
