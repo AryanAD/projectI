@@ -7,14 +7,14 @@ const Clients = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[100vh-70px] px-6 pt-8 mt-[70px]">
+    <div className="flex flex-col items-center justify-start min-h-[100vh-70px] h-full px-6 pt-8 mt-[70px]">
       <motion.div
         className="flex justify-between items-center w-full max-w-4xl"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-[#4A4BAC] font-extrabold text-4xl uppercase tracking-widest">
+        <h1 className="text-[#4A4BAC] font-extrabold text-2xl uppercase tracking-widest">
           Manage Clients
         </h1>
 

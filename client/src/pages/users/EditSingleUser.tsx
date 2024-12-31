@@ -96,7 +96,7 @@ const EditSingleUser = () => {
         transition={{ duration: 0.8 }}
         className="flex justify-between w-full items-center mb-8"
       >
-        <h1 className="text-[#4A4BAC] font-extrabold text-4xl uppercase tracking-widest">
+        <h1 className="text-[#4A4BAC] font-extrabold text-2xl uppercase tracking-widest">
           Edit User
         </h1>
         <button

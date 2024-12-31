@@ -48,7 +48,7 @@ const AddCategories = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-3xl font-extrabold text-[#4A4BAC] uppercase tracking-wide"
+            className="text-2xl font-extrabold text-[#4A4BAC] uppercase tracking-wide"
           >
             Add Categories
           </motion.h1>

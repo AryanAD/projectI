@@ -9,7 +9,7 @@ const ProjectCategories = () => {
   return (
     <div className="flex items-center justify-center min-h-screen min-w-[100vw-300px] flex-col">
       <div className="inline-flex justify-between w-full">
-        <h1 className="font-extrabold underline text-[#7D80FA] text-3xl uppercase">
+        <h1 className="font-extrabold underline text-[#7D80FA] text-2xl uppercase">
           Manage Categories
         </h1>
 

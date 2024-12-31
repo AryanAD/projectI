@@ -14,7 +14,7 @@ const Projects = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-[#4A4BAC] font-extrabold text-4xl uppercase tracking-widest">
+        <h1 className="text-[#4A4BAC] font-extrabold text-2xl uppercase tracking-widest">
           Manage Projects
         </h1>
 
@@ -44,7 +44,7 @@ const Projects = () => {
   // return (
   //   <div className="flex items-center justify-center min-h-screen min-w-[100vw-300px] flex-col">
   //     <div className="inline-flex justify-between w-full">
-  //       <h1 className="font-extrabold underline text-[#7D80FA] text-3xl uppercase">
+  //       <h1 className="font-extrabold underline text-[#7D80FA] text-2xl uppercase">
   //         Manage Projects
   //       </h1>
 

@@ -14,7 +14,7 @@ const ClientCategories = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-[#4A4BAC] font-extrabold text-4xl uppercase tracking-widest">
+        <h1 className="text-[#4A4BAC] font-extrabold text-2xl uppercase tracking-widest">
           Manage Categories
         </h1>
 

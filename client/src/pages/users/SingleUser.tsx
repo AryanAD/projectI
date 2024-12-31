@@ -30,7 +30,7 @@ const SingleUser = () => {
       >
         <div className="flex justify-between items-center">
           <motion.h1
-            className="text-[#4A4BAC] font-extrabold text-3xl sm:text-4xl uppercase tracking-widest"
+            className="text-[#4A4BAC] font-extrabold text-2xl sm:text-2xl uppercase tracking-widest"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}

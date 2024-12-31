@@ -70,7 +70,7 @@ const CategoryTable = () => {
 
   return (
     <>
-      <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg">
+      <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg min-w-[50vw]">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
             <TableCell

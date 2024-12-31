@@ -10,7 +10,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { CustomCSS } from "../custom/CustomCSS";
 import { Link } from "react-router-dom";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { toast } from "react-toastify";
@@ -66,54 +65,118 @@ const ClientsTable = () => {
 
   return (
     <>
-      <Table className="mt-8">
+      <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
-            <TableCell sx={{ ...CustomCSS.tableCell, borderRadius: "6px 0 0" }}>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
               ID
             </TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Company Name</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Email</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Phone Number</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Location</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Priority</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Start Date</TableCell>
-            <TableCell sx={CustomCSS.tableCell}>End Date</TableCell>
             <TableCell
-              sx={{ ...CustomCSS.tableCell, borderRadius: "0 6px 0 0" }}
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Company Name
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Email
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Phone Number
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Priority
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              End Date
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
             >
               Action
             </TableCell>
           </TableRow>
         </TableHead>
 
-        <TableBody>
+        <TableBody className="bg-[#f9f9f9]">
+          {isLoading && (
+            <TableRow>
+              <TableCell colSpan={9} className="text-center">
+                Loading...
+              </TableCell>
+            </TableRow>
+          )}
           {clients?.map((client) => (
-            <TableRow key={client.id}>
+            <TableRow
+              className="transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-100"
+              key={client.id}
+            >
               <TableCell>{client.id}</TableCell>
               <TableCell>
-                <Link to={`/clients/${client.id}`} className="hover:underline">
-                  {client.name}
-                </Link>
+                <Link to={`/admin/clients/${client.id}`}>{client.name}</Link>
               </TableCell>
               <TableCell>{client.email}</TableCell>
               <TableCell>{client.phone}</TableCell>
-              <TableCell>{client.location}</TableCell>
               <TableCell>{client.priority}</TableCell>
-              <TableCell>
-                {client.startDate
-                  ? dayjs(client.startDate).format("MM/DD/YYYY")
-                  : "N/A"}
-              </TableCell>
               <TableCell>
                 {client.endDate
                   ? dayjs(client.endDate).format("MM/DD/YYYY")
                   : "N/A"}
               </TableCell>
               <TableCell>
-                <Link to={`/edit-clients/${client.id}`}>
+                <Link to={`/admin/edit-clients/${client.id}`}>
                   <IconButton
-                    sx={{ ...CustomCSS.editIconButton, marginRight: 1 }}
+                    sx={{
+                      color: "#488ac7",
+                      "&:hover": {
+                        bgcolor: "#488ac7",
+                        color: "white",
+                      },
+                      transition: "all ease-in-out 0.2s",
+                    }}
                   >
                     <EditRounded />
                   </IconButton>
@@ -121,7 +184,14 @@ const ClientsTable = () => {
 
                 <IconButton
                   onClick={() => handleOpen(client.id)}
-                  sx={CustomCSS.deleteIconButton}
+                  sx={{
+                    color: "#db0f27",
+                    "&:hover": {
+                      bgcolor: "#db0f27",
+                      color: "white",
+                    },
+                    transition: "all ease-in-out 0.2s",
+                  }}
                 >
                   <DeleteRounded />
                 </IconButton>
@@ -131,29 +201,89 @@ const ClientsTable = () => {
         </TableBody>
       </Table>
 
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={CustomCSS.deleteModal}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        sx={{
+          transition: "opacity 0.3s ease-in-out",
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 450,
+            bgcolor: "background.paper",
+            borderRadius: "8px",
+            boxShadow: 24,
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 2,
+            transition: "transform 0.3s ease-in-out",
+          }}
+        >
           <Typography
-            fontWeight={500}
-            textTransform={"uppercase"}
-            mb={1}
             variant="h5"
+            fontWeight={600}
+            textTransform="uppercase"
+            color="text.primary"
+            align="center"
+            className="tracking-wider"
           >
-            Are you sure you want to delete this client?
+            Confirm Deletion
           </Typography>
 
-          <Alert sx={{ mb: 2 }} severity="error">
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            textAlign="center"
+            sx={{
+              mb: 2,
+              lineHeight: 1.6,
+            }}
+          >
+            Are you sure you want to delete this client? This action cannot be
+            undone.
+          </Typography>
+
+          <Alert
+            severity="error"
+            sx={{
+              width: "100%",
+              fontSize: "0.9rem",
+              mb: 2,
+              justifyContent: "center",
+              "& .MuiAlert-message": {
+                textAlign: "center",
+              },
+            }}
+          >
             Deleted clients can't be recovered!
           </Alert>
 
-          <button
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className={`${CustomCSS.deleteButton} inline-flex gap-1`}
-          >
-            <DeleteRounded />
-            {isDeleting ? "Deleting..." : "Delete Client"}
-          </button>
+          <div className="flex gap-4 justify-center w-full">
+            <button
+              onClick={handleClose}
+              className="py-2 px-6 bg-gray-200 text-gray-800 font-semibold rounded hover:bg-gray-300 transition-all duration-200 ease-in-out"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className={`py-2 px-6 font-semibold rounded text-white transition-all duration-200 ease-in-out ${
+                isDeleting
+                  ? "bg-red-400 cursor-not-allowed"
+                  : "bg-[#db0f27] hover:bg-[#9A0B1B]"
+              }`}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </button>
+          </div>
         </Box>
       </Modal>
     </>

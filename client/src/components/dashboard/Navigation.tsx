@@ -90,7 +90,7 @@ const Navigation = () => {
           className="w-[49px] h-[49px] transition-all ease-in duration-300"
         />
         {!sidebarCollapsed && (
-          <h1 className="font-semibold text-[#4B49AC] text-3xl transition-all ease-in duration-300">
+          <h1 className="font-semibold text-[#4B49AC] text-2xl transition-all ease-in duration-300">
             Saral Admin
           </h1>
         )}
