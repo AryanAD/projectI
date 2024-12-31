@@ -1,6 +1,6 @@
 import { ArrowBackRounded } from "@mui/icons-material";
 import { CustomCSS } from "../../components/custom/CustomCSS";
-
+import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -65,7 +65,7 @@ const EditSingleClient = () => {
     }
   }, [previousClientData, id, clientId]);
 
-  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogo = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const formData = new FormData();
@@ -110,7 +110,7 @@ const EditSingleClient = () => {
         data: updatedClientData,
       }).unwrap();
       toast.success(`${data.name} Successfully Updated`);
-      navigate("/clients");
+      navigate("/admin/clients");
     } catch (error) {
       console.error(error);
       toast.error("Failed to update client");
@@ -118,77 +118,98 @@ const EditSingleClient = () => {
   };
 
   return (
-    <div className={CustomCSS.mainDiv}>
-      <div className="inline-flex justify-between w-full">
-        <CustomHeading heading="Edit Client" />
-
+    <div className="flex flex-col items-center justify-start px-6 pt-8">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="flex justify-between w-full items-center mb-8"
+      >
+        <h1 className="text-[#4A4BAC] font-extrabold text-2xl uppercase tracking-widest">
+          Edit Clients
+        </h1>
         <button
-          className="inline-flex items-center gap-2 py-2 px-3 rounded-[6px] shadow-md drop-shadow-md transition-all ease-in duration-100 bg-[#4B49AC] text-white hover:bg-[#7978E9] hover:ring-1 hover:ring-[#4B49AC] font-bold uppercase text-md outline-none tracking-[1px]"
-          onClick={() => navigate("/clients")}
+          className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white text-[#4A4BAC] hover:bg-indigo-200 font-bold uppercase text-lg shadow-md transition duration-300"
+          onClick={() => navigate("/admin/clients")}
         >
           <ArrowBackRounded />
           Back
         </button>
-      </div>
+      </motion.div>
 
-      <form onSubmit={handleSubmit}>
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-xl space-y-6"
+      >
         {logoUrl && (
-          <div className="text-center">
+          <div className="text-center mb-6">
             <img
               src={logoUrl}
-              alt="Client Profile"
-              className={CustomCSS.displayUploadedImage}
+              alt="Client Logo"
+              className="block mx-auto max-h-[400px] rounded-lg shadow-md transition-transform transform hover:scale-105"
             />
           </div>
         )}
 
-        <div className={`w-full my-8 `}>
-          <label className={CustomCSS.updateImageLabel}>
-            {logo ? logo.name : "Update Image"}
+        <div className={`w-full my-8 ${logoUrl ? "hidden" : ""}`}>
+          <label className="border-2 border-dashed border-indigo-300 p-6 block w-full text-center rounded-lg cursor-pointer font-semibold text-[#4A4BAC90] hover:bg-indigo-50 hover:border-indigo-400 transition duration-200">
+            {logo ? logo.name : "Upload logo"}
             <input
               type="file"
               accept="image/*"
-              onChange={handleImage}
+              onChange={handleLogo}
               className="hidden"
             />
           </label>
         </div>
 
-        <div className={CustomCSS.gridTwo}>
+        <div className="grid md:grid-cols-2 gap-8">
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="firstName">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="firstname"
+            >
               Enter First Name
             </label>
             <input
               type="text"
               id="firstName"
               placeholder="Enter Client First name"
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="lastName">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="lastname"
+            >
               Enter Last Name
             </label>
             <input
               type="text"
               id="lastName"
               placeholder="Enter Client Last name"
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="email">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="email"
+            >
               Enter Email
             </label>
             <input
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               type="email"
               id="email"
               placeholder="Enter Client Email"
@@ -198,11 +219,14 @@ const EditSingleClient = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="phone">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="phone"
+            >
               Enter Phone Number
             </label>
             <input
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               type="number"
               id="phone"
               placeholder="Enter Client Phone Number"
@@ -212,11 +236,14 @@ const EditSingleClient = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="location">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="location"
+            >
               Enter Location
             </label>
             <input
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               type="text"
               id="location"
               placeholder="Enter Client Location"
@@ -226,12 +253,15 @@ const EditSingleClient = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="endDate">
-              Select Contract End Date
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="endDate"
+            >
+              Enter Contract End Date
             </label>
             <input
-              className={CustomCSS.input}
-              type="datetime-local"
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
+              type="date"
               id="endDate"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
@@ -239,13 +269,16 @@ const EditSingleClient = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="priority">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="priority"
+            >
               Select Priority
             </label>
             <select
-              className={`${CustomCSS.select} bg-white`}
+              className="py-3 rounded-lg px-6 border w-full bg-white border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               id="priority"
-              value={priority || ""}
+              value={priority}
               onChange={(e) => setPriority(e.target.value)}
             >
               <option value="">--Select Client Priority--</option>
@@ -258,18 +291,21 @@ const EditSingleClient = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className={CustomCSS.label} htmlFor="category">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="category"
+            >
               Select Category
             </label>
             <select
-              className={`${CustomCSS.select} bg-white`}
+              className="py-3 rounded-lg px-6 border w-full bg-white border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               id="category"
               value={clientCategoryId || ""}
               onChange={(e) => {
                 setClientCategoryId(parseInt(e.target.value));
               }}
             >
-              <option value={""}>--Select Client Category--</option>
+              <option value="">--Select Client Category--</option>
               {existingCategories &&
                 existingCategories.map((option) => (
                   <option key={option.id} value={option.id}>
@@ -280,13 +316,16 @@ const EditSingleClient = () => {
           </div>
 
           <div className="flex flex-col col-span-full">
-            <label className={CustomCSS.label} htmlFor="clientDetails">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="clientDetails"
+            >
               Enter Client Details
             </label>
             <textarea
               id="clientDetails"
               value={details}
-              className={CustomCSS.input}
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
               onChange={(e) => setDetails(e.target.value)}
               rows={5}
               placeholder="Enter Client Details Here..."
@@ -294,16 +333,41 @@ const EditSingleClient = () => {
           </div>
         </div>
 
-        <div className="my-5">
+        <div className="my-6 text-center">
           <button
-            className={CustomCSS.submitButton}
+            className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg w-full transition-all duration-200"
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Updating..." : "Update"}
+            {isLoading ? (
+              <span className="flex justify-center items-center">
+                <svg
+                  className="animate-spin h-5 w-5 mr-3 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V2a10 10 0 00-10 10h2z"
+                  ></path>
+                </svg>
+                Registering...
+              </span>
+            ) : (
+              "Register"
+            )}
           </button>
         </div>
-      </form>
+      </motion.form>
     </div>
   );
 };

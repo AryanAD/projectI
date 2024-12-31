@@ -140,7 +140,7 @@ const Navigation = () => {
   );
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen h-full py-12">
       <CssBaseline />
 
       <AppBar

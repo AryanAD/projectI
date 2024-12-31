@@ -115,7 +115,7 @@ const AddClients = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start px-6 pt-8 mt-20">
+    <div className="flex flex-col items-center justify-start px-6 pt-8">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
