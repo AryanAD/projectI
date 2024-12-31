@@ -70,32 +70,69 @@ const CategoryTable = () => {
 
   return (
     <>
-      <Table className="mt-8">
+      <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
-            <TableCell sx={{ ...CustomCSS.tableCell, borderRadius: "6px 0 0" }}>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
               ID
             </TableCell>
-            <TableCell sx={CustomCSS.tableCell}>Category Name</TableCell>
             <TableCell
-              sx={{ ...CustomCSS.tableCell, borderRadius: "0 6px 0 0" }}
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
+            >
+              Category Name
+            </TableCell>
+            <TableCell
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bolder",
+                letterSpacing: "2px",
+                color: "white",
+              }}
             >
               Action
             </TableCell>
           </TableRow>
         </TableHead>
 
-        <TableBody>
-          {isLoading && <TableRow>Loading...</TableRow>}
+        <TableBody className="bg-[#f9f9f9]">
+          {isLoading && (
+            <TableRow>
+              <TableCell colSpan={3} className="text-center">
+                Loading...
+              </TableCell>
+            </TableRow>
+          )}
           {category?.map((data) => (
-            <TableRow key={data.id}>
+            <TableRow
+              className="transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-100"
+              key={data.id}
+            >
               <TableCell>{data.id}</TableCell>
               <TableCell>{data.name}</TableCell>
 
               <TableCell>
-                <Link to={`/edit-client-category/${data.id}`}>
+                <Link to={`/admin/edit-client-category/${data.id}`}>
                   <IconButton
-                    sx={{ ...CustomCSS.editIconButton, marginRight: 1 }}
+                    sx={{
+                      color: "#488ac7",
+                      "&:hover": {
+                        bgcolor: "#488ac7",
+                        color: "white",
+                      },
+                      transition: "all ease-in-out 0.2s",
+                    }}
                   >
                     <EditRounded />
                   </IconButton>
@@ -103,7 +140,14 @@ const CategoryTable = () => {
 
                 <IconButton
                   onClick={() => handleOpen(data.id)}
-                  sx={CustomCSS.deleteIconButton}
+                  sx={{
+                    color: "#db0f27",
+                    "&:hover": {
+                      bgcolor: "#db0f27",
+                      color: "white",
+                    },
+                    transition: "all ease-in-out 0.2s",
+                  }}
                 >
                   <DeleteRounded />
                 </IconButton>
@@ -113,29 +157,89 @@ const CategoryTable = () => {
         </TableBody>
       </Table>
 
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={CustomCSS.deleteModal}>
+      <Modal
+        open={open}
+        sx={{
+          transition: "opacity 0.3s ease-in-out",
+        }}
+        onClose={handleClose}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 450,
+            bgcolor: "background.paper",
+            borderRadius: "8px",
+            boxShadow: 24,
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 2,
+            transition: "transform 0.3s ease-in-out",
+          }}
+        >
           <Typography
-            fontWeight={500}
-            textTransform={"uppercase"}
-            mb={1}
             variant="h5"
+            fontWeight={600}
+            textTransform="uppercase"
+            color="text.primary"
+            align="center"
+            className="tracking-wider"
           >
-            Are you sure to delete this category?
+            Confirm Deletion
           </Typography>
 
-          <Alert sx={{ mb: 2 }} severity="error">
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            textAlign="center"
+            sx={{
+              mb: 2,
+              lineHeight: 1.6,
+            }}
+          >
+            Are you sure you want to delete this Category? This action cannot be
+            undone.
+          </Typography>
+
+          <Alert
+            severity="error"
+            sx={{
+              width: "100%",
+              fontSize: "0.9rem",
+              mb: 2,
+              justifyContent: "center",
+              "& .MuiAlert-message": {
+                textAlign: "center",
+              },
+            }}
+          >
             Deleted categories can't be recovered!
           </Alert>
-
-          <button
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className={`${CustomCSS.deleteButton} inline-flex gap-1`}
-          >
-            <DeleteRounded />
-            {isDeleting ? "Deleting..." : "Delete Category"}
-          </button>
+          <div className="flex gap-4 justify-center w-full">
+            <button
+              onClick={handleClose}
+              className="py-2 px-6 bg-gray-200 text-gray-800 font-semibold rounded hover:bg-gray-300 transition-all duration-200 ease-in-out"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className={`py-2 px-6 font-semibold rounded text-white transition-all duration-200 ease-in-out ${
+                isDeleting
+                  ? "bg-red-400 cursor-not-allowed"
+                  : "bg-[#db0f27] hover:bg-[#9A0B1B]"
+              }`}
+            >
+              <DeleteRounded />
+              {isDeleting ? "Deleting..." : "Delete Category"}
+            </button>
+          </div>
         </Box>
       </Modal>
     </>

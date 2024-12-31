@@ -52,7 +52,7 @@ const UsersTable = () => {
         toast.success(`Successfully deleted user with id: ${selectedUserId}`);
         handleClose();
       } catch (error: unknown) {
-        toast.error(error.message);
+        toast.error(error?.message);
       }
     }
   };
