@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { ArrowBackRounded } from "@mui/icons-material";
-import { Avatar, Divider, Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import CustomChip from "../../components/custom/CustomChip";
 import { useGetClientByIdQuery } from "../../redux/features/clients/clientApiSlice";
 

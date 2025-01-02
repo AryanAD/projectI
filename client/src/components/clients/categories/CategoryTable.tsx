@@ -20,7 +20,6 @@ import {
   useDeleteClientCategoryMutation,
   useGetClientCategoriesQuery,
 } from "../../../redux/features/clients/clientApiSlice";
-import { CustomCSS } from "../../custom/CustomCSS";
 
 interface Categories {
   id?: number;
