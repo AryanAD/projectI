@@ -20,7 +20,7 @@ const Projects = () => {
 
         <motion.button
           className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg inline-flex gap-2  items-center transition-all duration-200"
-          onClick={() => navigate("/admin/add-users")}
+          onClick={() => navigate("/admin/add-projects")}
           initial={{ scale: 0.95 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.9 }}
