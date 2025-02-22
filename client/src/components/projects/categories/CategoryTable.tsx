@@ -17,28 +17,21 @@ import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  useDeleteProjectCategoryMutation,
-  useGetProjectCategoriesQuery,
-} from "../../../redux/features/projects/projectApiSlice";
+  useDeleteProjectCategory,
+  useGetProjectCategories,
+} from "../../../api/projects/projects";
 import { CustomCSS } from "../../custom/CustomCSS";
-
-interface Categories {
-  id?: number;
-  name?: string;
-}
+import { Category } from "../../../types/projects";
 
 const CategoryTable = () => {
-  const [category, setCategory] = useState<Categories[] | undefined>(undefined);
+  const [category, setCategory] = useState<Category[] | undefined>(undefined);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
   const [open, setOpen] = useState(false);
 
-  const { data, isSuccess, error, isLoading } = useGetProjectCategoriesQuery();
-  console.log(data);
-
-  const [deleteProjectCategory, { isLoading: isDeleting }] =
-    useDeleteProjectCategoryMutation();
+  const { data, isSuccess, error, isLoading } = useGetProjectCategories();
+  const deleteProjectCategory = useDeleteProjectCategory();
 
   const handleOpen = (id: number) => {
     setSelectedCategoryId(id);
@@ -49,13 +42,15 @@ const CategoryTable = () => {
   const handleDelete = async () => {
     if (selectedCategoryId !== null) {
       try {
-        await deleteProjectCategory(selectedCategoryId).unwrap();
+        await deleteProjectCategory.mutateAsync(selectedCategoryId);
         toast.success(
           `Successfully deleted category with id: ${selectedCategoryId}`
         );
         handleClose();
       } catch (error: unknown) {
-        toast.error(error.message);
+        toast.error(
+          error instanceof Error ? error.message : "Failed to delete category."
+        );
       }
     }
   };
@@ -73,36 +68,9 @@ const CategoryTable = () => {
       <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg min-w-[50vw]">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              ID
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Category Name
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Action
-            </TableCell>
+            <TableCell sx={CustomCSS.tableCell}>ID</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Category Name</TableCell>
+            <TableCell sx={CustomCSS.tableCell}>Action</TableCell>
           </TableRow>
         </TableHead>
 
@@ -124,30 +92,14 @@ const CategoryTable = () => {
 
               <TableCell>
                 <Link to={`/admin/edit-project-category/${data.id}`}>
-                  <IconButton
-                    sx={{
-                      color: "#488ac7",
-                      "&:hover": {
-                        bgcolor: "#488ac7",
-                        color: "white",
-                      },
-                      transition: "all ease-in-out 0.2s",
-                    }}
-                  >
+                  <IconButton sx={CustomCSS.editIconButton}>
                     <EditRounded />
                   </IconButton>
                 </Link>
 
                 <IconButton
-                  onClick={() => handleOpen(data.id)}
-                  sx={{
-                    color: "#db0f27",
-                    "&:hover": {
-                      bgcolor: "#db0f27",
-                      color: "white",
-                    },
-                    transition: "all ease-in-out 0.2s",
-                  }}
+                  onClick={() => handleOpen(data.id!)}
+                  sx={CustomCSS.deleteIconButton}
                 >
                   <DeleteRounded />
                 </IconButton>
@@ -159,29 +111,10 @@ const CategoryTable = () => {
 
       <Modal
         open={open}
-        sx={{
-          transition: "opacity 0.3s ease-in-out",
-        }}
+        sx={{ transition: "opacity 0.3s ease-in-out" }}
         onClose={handleClose}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 450,
-            bgcolor: "background.paper",
-            borderRadius: "8px",
-            boxShadow: 24,
-            p: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-            transition: "transform 0.3s ease-in-out",
-          }}
-        >
+        <Box sx={CustomCSS.deleteModal}>
           <Typography
             variant="h5"
             fontWeight={600}
@@ -197,27 +130,13 @@ const CategoryTable = () => {
             variant="body1"
             color="text.secondary"
             textAlign="center"
-            sx={{
-              mb: 2,
-              lineHeight: 1.6,
-            }}
+            sx={{ mb: 2, lineHeight: 1.6 }}
           >
             Are you sure you want to delete this Category? This action cannot be
             undone.
           </Typography>
 
-          <Alert
-            severity="error"
-            sx={{
-              width: "100%",
-              fontSize: "0.9rem",
-              mb: 2,
-              justifyContent: "center",
-              "& .MuiAlert-message": {
-                textAlign: "center",
-              },
-            }}
-          >
+          <Alert severity="error" sx={CustomCSS.alertStyle}>
             Deleted categories can't be recovered!
           </Alert>
           <div className="flex gap-4 justify-center w-full">
@@ -229,15 +148,17 @@ const CategoryTable = () => {
             </button>
             <button
               onClick={handleDelete}
-              disabled={isDeleting}
+              disabled={deleteProjectCategory.isPending}
               className={`py-2 px-6 font-semibold rounded text-white transition-all duration-200 ease-in-out ${
-                isDeleting
+                deleteProjectCategory.isPending
                   ? "bg-red-400 cursor-not-allowed"
                   : "bg-[#db0f27] hover:bg-[#9A0B1B]"
               }`}
             >
               <DeleteRounded />
-              {isDeleting ? "Deleting..." : "Delete Category"}
+              {deleteProjectCategory.isPending
+                ? "Deleting..."
+                : "Delete Category"}
             </button>
           </div>
         </Box>

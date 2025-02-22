@@ -18,8 +18,12 @@ const ErrorDisplay = () => {
         Explore our Homepage in the meantime...
       </p>
       <Link to={"/"}>
-        <button className="outline outline-1 outline-blue-300 py-1 px-3 flex items-center justify-center gap-1 text-xl font-bold uppercase mt-8 rounded-md text-white animate-bounce transition-all">
-          <HomeRounded />
+        <button className="outline outline-1 outline-[#4B49AC] py-1 px-3 flex items-center justify-center gap-1 text-xl font-bold uppercase mt-8 rounded-md text-[#4B49AC] animate-bounce transition-all">
+          <HomeRounded
+            sx={{
+              color: "#4B49AC",
+            }}
+          />
           Homepage
         </button>
       </Link>

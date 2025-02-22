@@ -3,16 +3,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { ArrowBackRounded } from "@mui/icons-material";
-import {
-  useAddProjectMutation,
-  useGetProjectCategoriesQuery,
-} from "../../redux/features/projects/projectApiSlice";
-import { useGetAllUsersQuery } from "../../redux/features/users/userApiSlice";
-import CustomMultiSelect from "../../components/custom/CustomMultiSelect";
 import { Checkbox, ListItemText, MenuItem, Select } from "@mui/material";
+import { useGetAllUsers } from "../../api/users/users";
+import {
+  useAddProject,
+  useGetProjectCategories,
+} from "../../api/projects/projects";
 
-const ITEM_HEIGHT = 50;
-const ITEM_PADDING_TOP = 4;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -32,9 +29,9 @@ const MenuProps = {
 };
 
 const AddProjects = () => {
-  const [addProject, { isLoading }] = useAddProjectMutation();
-  const { data: existingCategories } = useGetProjectCategoriesQuery();
-  const { data: existingUsers } = useGetAllUsersQuery();
+  const { data: existingCategories } = useGetProjectCategories();
+  const { data: existingUsers } = useGetAllUsers();
+  const addProjectMutation = useAddProject();
 
   const [name, setName] = useState<string>("");
   const [projectCategoryId, setProjectCategoryId] = useState<number>();
@@ -45,8 +42,6 @@ const AddProjects = () => {
 
   const navigate = useNavigate();
 
-  console.log(projectCategoryId);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -55,43 +50,38 @@ const AddProjects = () => {
       return;
     }
 
-    if (
-      !name ||
-      !details ||
-      !status ||
-      !projectCategoryId ||
-      !assignedToIds ||
-      !deadline
-    ) {
+    if (!name || !details || !status || !projectCategoryId || !deadline) {
       toast.error("All fields are required");
       return;
     }
 
-    try {
-      const projectData = {
-        name,
-        details,
-        status: "doing",
-        projectCategoryId,
-        assignedToIds,
-        deadline,
-      };
-      const data = await addProject(projectData).unwrap();
-      toast.success(`${data.name} Successfully Created`);
-      navigate("/admin/projects");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to register Project");
-    }
+    const projectData = {
+      name,
+      details,
+      status,
+      projectCategoryId,
+      assignedToIds,
+      deadline,
+    };
+
+    addProjectMutation.mutate(projectData, {
+      onSuccess: (data) => {
+        toast.success(`${data.name} Successfully Created`);
+        navigate("/admin/projects");
+      },
+      onError: () => {
+        toast.error("Failed to register Project");
+      },
+    });
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[100vh-70px] px-6 pt-8 mt-20">
+    <div className="flex flex-col justify-center items-center min-h-[calc(100vh-65px)]">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="flex justify-between w-full items-center mb-8"
+        className="flex justify-between w-[60%] items-center mb-8"
       >
         <h1 className="text-[#4A4BAC] font-extrabold text-2xl uppercase tracking-widest">
           Add Projects
@@ -110,7 +100,7 @@ const AddProjects = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-xl space-y-6"
+        className="w-[60%] bg-white p-8 rounded-lg shadow-xl space-y-6"
       >
         <div className="grid md:grid-cols-2 gap-8">
           <div className="flex flex-col">
@@ -179,17 +169,14 @@ const AddProjects = () => {
               className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200 bg-white"
               id="category"
               value={projectCategoryId || ""}
-              onChange={(e) => {
-                setProjectCategoryId(parseInt(e.target.value));
-              }}
+              onChange={(e) => setProjectCategoryId(parseInt(e.target.value))}
             >
               <option value="">--Select Project Category--</option>
-              {existingCategories &&
-                existingCategories.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
+              {existingCategories?.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -212,31 +199,13 @@ const AddProjects = () => {
               }
               MenuProps={MenuProps}
             >
-              {existingUsers &&
-                existingUsers.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    <Checkbox checked={assignedToIds.indexOf(option.id) > -1} />
-                    <ListItemText primary={option.username} />
-                  </MenuItem>
-                ))}
+              {existingUsers?.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  <Checkbox checked={assignedToIds.indexOf(option.id) > -1} />
+                  <ListItemText primary={option.username} />
+                </MenuItem>
+              ))}
             </Select>
-            {/* <select
-              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200 bg-white"
-              id="assignedTo"
-              value={assignedToIds || ""}
-              onChange={(e) => {
-                const id = parseInt(e.target.value);
-                setAssignedToIds((prev) => [...prev, id]);
-              }}
-            >
-              <option value="">--Select Staffs Assigned--</option>
-              {existingUsers &&
-                existingUsers.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.username}
-                  </option>
-                ))}
-            </select> */}
           </div>
 
           <div className="flex flex-col col-span-full">
@@ -261,9 +230,9 @@ const AddProjects = () => {
           <button
             className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg w-full transition-all duration-200"
             type="submit"
-            disabled={isLoading}
+            disabled={addProjectMutation.isPending}
           >
-            {isLoading ? (
+            {addProjectMutation.isPending ? (
               <span className="flex justify-center items-center">
                 <svg
                   className="animate-spin h-5 w-5 mr-3 text-white"

@@ -59,23 +59,25 @@ const TaskAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
       >
         <List component="div" disablePadding>
           <ListItemButton
-            onClick={() => navigate("/tasks")}
+            onClick={() => navigate("/admin/tasks")}
             sx={{
               pl: 8,
-              backgroundColor:
-                currentPath === "/tasks" ? "#4B49AC" : "transparent",
-              color: currentPath === "/tasks" ? "white" : "black",
+              backgroundColor: currentPath.includes("/tasks")
+                ? "#4B49AC"
+                : "transparent",
+              color: currentPath.includes("/tasks") ? "white" : "black",
               "&:hover": {
-                backgroundColor:
-                  currentPath === "/tasks" ? "#4B49AC" : "transparent",
-                color: currentPath === "/tasks" ? "white" : "black",
+                backgroundColor: currentPath.includes("/tasks")
+                  ? "#4B49AC"
+                  : "transparent",
+                color: currentPath.includes("/tasks") ? "white" : "black",
               },
             }}
           >
             <ListItemIcon>
               <AddTaskRounded
                 sx={{
-                  color: currentPath === "/tasks" ? "white" : "",
+                  color: currentPath.includes("/tasks") ? "white" : "",
                 }}
               />
             </ListItemIcon>

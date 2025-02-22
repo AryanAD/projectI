@@ -1,36 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { useLoginMutation } from "../../redux/features/users/userApiSlice";
+import React, { useState } from "react";
+import { useLogin } from "../../api/users/users"; // Import the TanStack Query hook
 import { useLocation, useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials } from "../../redux/features/auth/authSlice";
 import { motion } from "framer-motion";
 
 const Login = () => {
   const [email, setEmail] = useState("admin@admin.admin");
   const [password, setPassword] = useState("admin");
-  const [login, { isLoading }] = useLoginMutation();
-  const { userInfo } = useSelector((state) => state.auth);
+  const [isPending, setIsPending] = useState(false);
+  // TanStack Query mutation for login
+  const { mutate: login } = useLogin();
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
-    }
-  }, [navigate, redirect, userInfo]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate(redirect);
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      login(
+        { email, password },
+        {
+          onSuccess: (data) => {
+            localStorage.setItem("userRole", data.role);
+            localStorage.setItem("token", data.token);
+
+            if (data.role === "admin") {
+              setIsPending(true);
+              setTimeout(() => {
+                setIsPending(false);
+                toast.success("Login successful!");
+                navigate(redirect);
+              }, 500);
+            } else {
+              toast.error("Error: User is not an admin.");
+            }
+          },
+          onError: (error) => {
+            toast.error(error.message || "Login failed. Please try again.");
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -109,11 +123,11 @@ const Login = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                disabled={isLoading}
+                disabled={isPending}
                 type="submit"
                 className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
-                {isLoading ? (
+                {isPending ? (
                   <div className="flex items-center justify-center">
                     <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin mr-2"></div>
                     Signing in...

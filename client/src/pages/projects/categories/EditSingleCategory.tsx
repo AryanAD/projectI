@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
-
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { ArrowBackRounded } from "@mui/icons-material";
 import {
-  useGetProjectCategoriesQuery,
-  useUpdateProjectCategoriesMutation,
-} from "../../../redux/features/projects/projectApiSlice";
+  useGetProjectCategories,
+  useUpdateProjectCategory,
+} from "../../../api/projects/projects";
 
 const EditSingleCategory = () => {
-  const [updateProjectCategory, { isLoading }] =
-    useUpdateProjectCategoriesMutation();
-  const { data: previousCategoryData } = useGetProjectCategoriesQuery();
+  const { mutateAsync: updateProjectCategory, isPending } =
+    useUpdateProjectCategory();
+  const { data: previousCategoryData } = useGetProjectCategories();
 
   const [name, setName] = useState<string>("");
-
   const navigate = useNavigate();
   const { id } = useParams();
+  const projectId = parseInt(id || "", 10);
 
   useEffect(() => {
     if (previousCategoryData && id) {
@@ -39,10 +38,7 @@ const EditSingleCategory = () => {
     }
 
     try {
-      const data = await updateProjectCategory({
-        id: parseInt(id),
-        name,
-      }).unwrap();
+      const data = await updateProjectCategory({ id: projectId, name });
       toast.success(`${data.name} Successfully Updated`);
       navigate("/admin/project-categories");
     } catch (error) {
@@ -60,7 +56,6 @@ const EditSingleCategory = () => {
         transition={{ duration: 0.5, ease: "easeInOut" }}
         className="flex flex-col w-[50vw] max-w-3xl mx-auto p-8"
       >
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <motion.h1
             initial={{ opacity: 0, x: -20 }}
@@ -81,7 +76,6 @@ const EditSingleCategory = () => {
           </motion.button>
         </div>
 
-        {/* Form */}
         <motion.form
           onSubmit={handleSubmit}
           initial={{ opacity: 0 }}
@@ -89,7 +83,6 @@ const EditSingleCategory = () => {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-xl space-y-6"
         >
-          {/* Input Field */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -112,7 +105,6 @@ const EditSingleCategory = () => {
             />
           </motion.div>
 
-          {/* Submit Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -121,50 +113,13 @@ const EditSingleCategory = () => {
           >
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isPending}
               className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg w-full transition-all duration-200"
             >
-              {isLoading ? (
-                <motion.svg
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1,
-                    ease: "linear",
-                  }}
-                  className="w-5 h-5 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C6.477 0 2 4.477 2 10s4.477 10 10 10v-4a6 6 0 01-6-6z"
-                  ></path>
-                </motion.svg>
-              ) : (
-                "Update"
-              )}
+              {isPending ? "Updating..." : "Update"}
             </button>
           </motion.div>
         </motion.form>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="flex items-center gap-3 mt-8 flex-wrap"
-        ></motion.div>
       </motion.div>
     </div>
   );

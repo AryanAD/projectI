@@ -33,8 +33,7 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
     if (
       currentPath.includes("/admin/edit-user") ||
       currentPath.includes("/admin/users") ||
-      currentPath === "/admin/add-users" ||
-      currentPath === "/admin/manage-users"
+      currentPath === "/admin/add-users"
     ) {
       setOpenUsers(true);
     } else {
@@ -65,30 +64,26 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
               backgroundColor:
                 currentPath.includes("/admin/edit-user") ||
                 currentPath.includes("/admin/users") ||
-                currentPath === "/admin/add-users" ||
-                currentPath === "/admin/manage-users"
+                currentPath === "/admin/add-users"
                   ? "#4B49AC"
                   : "transparent",
               color:
                 currentPath.includes("/admin/edit-user") ||
                 currentPath.includes("/admin/users") ||
-                currentPath === "/admin/add-users" ||
-                currentPath === "/admin/manage-users"
+                currentPath === "/admin/add-users"
                   ? "white"
                   : "black",
               "&:hover": {
                 backgroundColor:
                   currentPath.includes("/admin/edit-user") ||
                   currentPath.includes("/admin/users") ||
-                  currentPath === "/admin/add-users" ||
-                  currentPath === "/admin/manage-users"
+                  currentPath === "/admin/add-users"
                     ? "#4B49AC"
                     : "transparent",
                 color:
                   currentPath.includes("/admin/edit-user") ||
                   currentPath.includes("/admin/users") ||
-                  currentPath === "/admin/add-users" ||
-                  currentPath === "/admin/manage-users"
+                  currentPath === "/admin/add-users"
                     ? "white"
                     : "black",
               },
@@ -100,8 +95,7 @@ const UserAccordion = ({ sidebarCollapsed }: SidebarCollapseType) => {
                   color:
                     currentPath.includes("/admin/edit-user") ||
                     currentPath.includes("/admin/users") ||
-                    currentPath === "/admin/add-users" ||
-                    currentPath === "/admin/manage-users"
+                    currentPath === "/admin/add-users"
                       ? "white"
                       : "",
                 }}

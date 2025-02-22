@@ -3,34 +3,34 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { ArrowBackRounded } from "@mui/icons-material";
 import {
-  useAddClientCategoryMutation,
-  useGetClientCategoriesQuery,
-} from "../../../redux/features/clients/clientApiSlice";
+  useAddClientCategory,
+  useGetClientCategories,
+} from "../../../api/clients/clients";
 import { motion } from "framer-motion";
 
 const AddCategories = () => {
-  const [addClientCategory, { isLoading }] = useAddClientCategoryMutation();
-  const { data } = useGetClientCategoriesQuery();
+  const { data: clientCategories } = useGetClientCategories();
+  const { mutate: addClientCategory, isPending } = useAddClientCategory();
 
   const [name, setName] = useState<string>("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name) {
-      toast.error("All fields are required");
+    if (!name.trim()) {
+      toast.error("Category name is required");
       return;
     }
 
-    try {
-      const categoryData = { name };
-      const data = await addClientCategory(categoryData).unwrap();
-      toast.success(`${data.name} Successfully Created`);
-      navigate("/admin/client-categories");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to register category");
-    }
+    addClientCategory(name, {
+      onSuccess: (data) => {
+        toast.success(`"${data.name}" successfully created`);
+        navigate("/admin/client-categories");
+      },
+      onError: () => {
+        toast.error("Failed to create category");
+      },
+    });
   };
 
   return (
@@ -50,7 +50,7 @@ const AddCategories = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-2xl font-extrabold text-[#4A4BAC] uppercase tracking-wide"
           >
-            Add Categories
+            Add Category
           </motion.h1>
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -103,53 +103,27 @@ const AddCategories = () => {
           >
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isPending}
               className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg w-full transition-all duration-200"
             >
-              {isLoading ? (
-                <motion.svg
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1,
-                    ease: "linear",
-                  }}
-                  className="w-5 h-5 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C6.477 0 2 4.477 2 10s4.477 10 10 10v-4a6 6 0 01-6-6z"
-                  ></path>
-                </motion.svg>
-              ) : (
-                "Register"
-              )}
+              {isPending ? "Registering..." : "Register"}
             </button>
           </motion.div>
         </motion.form>
 
+        {/* Display Existing Categories */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
           className="flex items-center gap-3 mt-8 flex-wrap"
         >
-          {data?.map((data) => (
-            <h1 className="inline-flex items-center gap-2 py-2 px-4 rounded-3xl bg-white text-[#4A4BAC] font-bold uppercase text-lg shadow-md transition duration-300">
-              {data.name}
+          {clientCategories?.map((category) => (
+            <h1
+              key={category.id}
+              className="inline-flex items-center gap-2 py-2 px-4 rounded-3xl bg-white text-[#4A4BAC] font-bold uppercase text-lg shadow-md transition duration-300"
+            >
+              {category.name}
             </h1>
           ))}
         </motion.div>

@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
-import {
-  useDeleteUserByIdMutation,
-  useGetAllUsersQuery,
-} from "../../redux/features/users/userApiSlice";
 import {
   Alert,
+  Avatar,
   Box,
   IconButton,
   Modal,
@@ -15,168 +11,112 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { toast } from "react-toastify";
-
-interface Users {
-  id?: number;
-  username?: string;
-  email?: string;
-  phone?: string;
-  role?: string;
-  image?: string;
-}
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteUserById, useGetAllUsers } from "../../api/users/users";
 
 const UsersTable = () => {
-  const [userData, setUserData] = useState<Users[] | undefined>(undefined);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { data, isSuccess, error, isLoading } = useGetAllUsersQuery();
+  const queryClient = useQueryClient();
 
-  const [deleteUserById, { isLoading: isDeleting }] =
-    useDeleteUserByIdMutation();
+  const { data: users, isLoading, isError } = useGetAllUsers();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUserById();
 
   const handleOpen = (id: number) => {
     setSelectedUserId(id);
     setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (selectedUserId !== null) {
-      try {
-        await deleteUserById(selectedUserId).unwrap();
-        toast.success(`Successfully deleted user with id: ${selectedUserId}`);
-        handleClose();
-      } catch (error: unknown) {
-        toast.error(error?.message);
-      }
+      deleteUser(selectedUserId, {
+        onSuccess: () => {
+          toast.success(`Successfully deleted user with ID: ${selectedUserId}`);
+          queryClient.invalidateQueries({ queryKey: ["users"] });
+          handleClose();
+        },
+        onError: (error) => {
+          toast.error(error?.message || "Failed to delete user.");
+        },
+      });
     }
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      setUserData(data);
-    } else if (error) {
-      console.error(error);
-    }
-  }, [data, error, isSuccess]);
+  if (isLoading) return <div>Loading users...</div>;
+  if (isError) return <div>Failed to load users.</div>;
 
   return (
     <>
       <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              ID
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Username
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Email
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Phone Number
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Role
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Action
-            </TableCell>
+            {[
+              "ID",
+              "Avatar",
+              "Username",
+              "Email",
+              "Phone Number",
+              "Role",
+              "Action",
+            ].map((header) => (
+              <TableCell
+                key={header}
+                sx={{
+                  textTransform: "uppercase",
+                  fontWeight: "bolder",
+                  letterSpacing: "2px",
+                  color: "white",
+                }}
+              >
+                {header}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
 
         <TableBody className="bg-[#f9f9f9]">
-          {isLoading && (
-            <TableRow>
-              <TableCell colSpan={6} className="text-center">
-                Loading...
-              </TableCell>
-            </TableRow>
-          )}
-          {userData?.map((user) => (
+          {users?.map((user) => (
             <TableRow
               key={user.id}
               className="transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-100"
             >
               <TableCell>{user.id}</TableCell>
               <TableCell>
+                <Link to={`/admin/users/${user.id}`}>
+                  <Avatar src={user?.image} alt={user?.username} />
+                </Link>
+              </TableCell>
+              <TableCell>
                 <Link to={`/admin/users/${user.id}`}>{user.username}</Link>
               </TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
               <TableCell>{user.role}</TableCell>
+
               <TableCell>
-                <Link to={`/admin/edit-user/${user.id}`}>
+                <Link to={`/admin/edit-users/${user.id}`}>
                   <IconButton
                     sx={{
                       color: "#488ac7",
-                      "&:hover": {
-                        bgcolor: "#488ac7",
-                        color: "white",
-                      },
+                      "&:hover": { bgcolor: "#488ac7", color: "white" },
                       transition: "all ease-in-out 0.2s",
                     }}
                   >
                     <EditRounded />
                   </IconButton>
                 </Link>
-
                 <IconButton
                   onClick={() => handleOpen(user.id)}
                   sx={{
                     color: "#db0f27",
-                    "&:hover": {
-                      bgcolor: "#db0f27",
-                      color: "white",
-                    },
+                    "&:hover": { bgcolor: "#db0f27", color: "white" },
                     transition: "all ease-in-out 0.2s",
                   }}
                 >
@@ -191,9 +131,7 @@ const UsersTable = () => {
       <Modal
         open={open}
         onClose={handleClose}
-        sx={{
-          transition: "opacity 0.3s ease-in-out",
-        }}
+        sx={{ transition: "opacity 0.3s ease-in-out" }}
       >
         <Box
           sx={{
@@ -210,7 +148,6 @@ const UsersTable = () => {
             flexDirection: "column",
             alignItems: "center",
             gap: 2,
-            transition: "transform 0.3s ease-in-out",
           }}
         >
           <Typography
@@ -228,10 +165,7 @@ const UsersTable = () => {
             variant="body1"
             color="text.secondary"
             textAlign="center"
-            sx={{
-              mb: 2,
-              lineHeight: 1.6,
-            }}
+            sx={{ mb: 2, lineHeight: 1.6 }}
           >
             Are you sure you want to delete this user? This action cannot be
             undone.
@@ -244,9 +178,7 @@ const UsersTable = () => {
               fontSize: "0.9rem",
               mb: 2,
               justifyContent: "center",
-              "& .MuiAlert-message": {
-                textAlign: "center",
-              },
+              "& .MuiAlert-message": { textAlign: "center" },
             }}
           >
             Deleted users can't be recovered!

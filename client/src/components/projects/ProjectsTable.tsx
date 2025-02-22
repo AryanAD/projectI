@@ -16,10 +16,7 @@ import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import dayjs from "dayjs";
-import {
-  useDeleteProjectMutation,
-  useGetProjectQuery,
-} from "../../redux/features/projects/projectApiSlice";
+import { useGetProjects, useDeleteProject } from "../../api/projects/projects";
 
 const ProjectsTable = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
@@ -27,8 +24,8 @@ const ProjectsTable = () => {
   );
   const [open, setOpen] = useState(false);
 
-  const { data: projects, isSuccess, error, isLoading } = useGetProjectQuery();
-  const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation();
+  const { data: projects, isLoading } = useGetProjects();
+  const deleteProject = useDeleteProject();
 
   const handleOpen = (id: number) => {
     setSelectedProjectId(id);
@@ -39,18 +36,25 @@ const ProjectsTable = () => {
   const handleDelete = async () => {
     if (selectedProjectId !== null) {
       try {
-        await deleteProject(selectedProjectId).unwrap();
-        if (isSuccess) {
-          toast.success(
-            `Successfully deleted project with id: ${selectedProjectId}`
-          );
-        } else {
-          toast.error(`Error: ${error}`);
-        }
+        await deleteProject.mutateAsync(selectedProjectId);
+        toast.success(
+          `Successfully deleted project with id: ${selectedProjectId}`
+        );
         handleClose();
       } catch (err: unknown) {
-        toast.error(err.message || "Failed to delete project.");
+        toast.error((err as Error).message || "Failed to delete project.");
       }
+    }
+  };
+
+  // Function to display assigned users
+  const renderAssignedUsers = (users: { id: number; username: string }[]) => {
+    if (users.length === 0) {
+      return "Unassigned";
+    } else if (users.length === 1) {
+      return users[0].username;
+    } else {
+      return `${users[0].username} + ${users.length - 1}`;
     }
   };
 
@@ -58,7 +62,7 @@ const ProjectsTable = () => {
 
   return (
     <>
-      <Table className="mt-8">
+      <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
             <TableCell sx={{ ...CustomCSS.tableCell, borderRadius: "6px 0 0" }}>
@@ -77,24 +81,19 @@ const ProjectsTable = () => {
           </TableRow>
         </TableHead>
 
-        <TableBody>
+        <TableBody className="bg-[#f9f9f9]">
           {projects?.map((project) => (
             <TableRow key={project.id}>
               <TableCell>{project.id}</TableCell>
               <TableCell>
-                <Link
-                  to={`/projects/${project.id}`}
-                  className="hover:underline"
-                >
-                  {project.name}
-                </Link>
+                <Link to={`/admin/projects/${project.id}`}>{project.name}</Link>
               </TableCell>
               <TableCell>{project.status}</TableCell>
               <TableCell>{project.ProjectCategory.name}</TableCell>
               <TableCell>
-                {project.Users.length === 0
-                  ? project.Users[0].username
-                  : project.Users[0].username + project.Users.length - 1}
+                <span className="rounded-full border border-sky-100 text-sky-700 shadow-sm bg-sky-100 px-2 py-1">
+                  {renderAssignedUsers(project.Users)} {/* Fixed logic */}
+                </span>
               </TableCell>
               <TableCell>
                 {project.deadline
@@ -102,7 +101,7 @@ const ProjectsTable = () => {
                   : "N/A"}
               </TableCell>
               <TableCell>
-                <Link to={`/edit-projects/${project.id}`}>
+                <Link to={`/admin/edit-projects/${project.id}`}>
                   <IconButton
                     sx={{ ...CustomCSS.editIconButton, marginRight: 1 }}
                   >
@@ -139,11 +138,11 @@ const ProjectsTable = () => {
 
           <button
             onClick={handleDelete}
-            disabled={isDeleting}
+            disabled={deleteProject.isPending}
             className={`${CustomCSS.deleteButton} inline-flex gap-1`}
           >
             <DeleteRounded />
-            {isDeleting ? "Deleting..." : "Delete Projects"}
+            {deleteProject.isPending ? "Deleting..." : "Delete Project"}
           </button>
         </Box>
       </Modal>

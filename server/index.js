@@ -4,26 +4,31 @@ dotenv.config();
 import express from "express";
 const app = express();
 
-import { Server as SocketIOServer } from "socket.io";
-import http from "http";
-const server = http.createServer(app);
-const io = new SocketIOServer(server, { cors: { origin: "*" } });
+import cors from "cors";
+app.use(
+  cors({
+    credentials: true,
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 import path from "path";
 import cookieParser from "cookie-parser";
 import sequelize from "./config/database.js";
 
 // Routes
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/users/user.routes.js";
 
-import clientRoutes from "./routes/clientRoutes.js";
-import clientCategoryRoutes from "./routes/clientCategoryRoutes.js";
+import clientRoutes from "./routes/clients/client.routes.js";
+import clientCategoryRoutes from "./routes/clients/category.routes.js";
 
-import projectRoutes from "./routes/projectRoutes.js";
-import projectCategoryRoutes from "./routes/projectCategoryRoutes.js";
+import projectRoutes from "./routes/projects/project.routes.js";
+import projectCategoryRoutes from "./routes/projects/category.routes.js";
 
-import taskRoutes from "./routes/taskRoutes.js";
-import uploadRoutes from "../server/routes/uploadRoutes.js";
+import taskRoutes from "./routes/tasks/task.routes.js";
+
+import uploadRoutes from "./routes/uploads/upload.routes.js";
 
 // Associations
 import "./models/associations.js";
@@ -48,36 +53,16 @@ sequelize
   .catch((err) => console.log("Error: " + err));
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/clients", clientRoutes);
-app.use("/api/client-category", clientCategoryRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/project-category", projectCategoryRoutes);
-app.use("/api/tasks", taskRoutes);
-app.use("/api/uploads", uploadRoutes);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/clients", clientRoutes);
+app.use("/api/v1/client-category", clientCategoryRoutes);
+app.use("/api/v1/projects", projectRoutes);
+app.use("/api/v1/project-category", projectCategoryRoutes);
+app.use("/api/v1/tasks", taskRoutes);
+app.use("/api/v1/uploads", uploadRoutes);
 
 // Image Uploads
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-// Websocket Event Handlers
-io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
-  });
-});
-
-// Broad cast changes
-const broadcastTaskChange = (event, data) => {
-  io.emit("task-change", { event, data });
-};
-
-// Pass broadcast function to routes
-app.set("broadcastTaskChange", broadcastTaskChange);
-
-// Start Server with WebSocket Support
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

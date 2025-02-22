@@ -4,23 +4,21 @@ import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
-  useGetAllUsersQuery,
-  useUpdateUserByIdMutation,
-  useUploadUserImageMutation,
-} from "../../redux/features/users/userApiSlice";
-
-interface UploadImageResponse {
-  message: string;
-  image: string;
-}
+  useGetAllUsers,
+  useUpdateUserById,
+  useUploadUserImage,
+} from "../../api/users/users"; // Import TanStack Query hooks
 
 const EditSingleUser = () => {
-  const [updateUserById, { isLoading }] = useUpdateUserByIdMutation();
-  const [uploadUserImage] = useUploadUserImageMutation();
-  const { data: previousUserData } = useGetAllUsersQuery();
+  // TanStack Query hooks
+  const { data: previousUserData } = useGetAllUsers();
+  const { mutate: updateUserById, isPending: isUpdating } = useUpdateUserById();
+  const { mutate: uploadUserImage } = useUploadUserImage();
 
+  // State for form inputs
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -29,6 +27,7 @@ const EditSingleUser = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // Populate form with existing user data
   useEffect(() => {
     if (previousUserData && id) {
       const previousUser = previousUserData.find(
@@ -44,57 +43,72 @@ const EditSingleUser = () => {
     }
   }, [previousUserData, id]);
 
+  // Handle image upload
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const formData = new FormData();
       formData.append("image", file);
 
+      setIsUploading(true);
+
       try {
-        const res: UploadImageResponse =
-          await uploadUserImage(formData).unwrap();
-        setImage(file);
-        setImageUrl(res.image);
-      } catch (error: unknown) {
-        const err = error as { data?: { message?: string }; error?: string };
-        console.error(err);
-        toast.error(err?.data?.message || err?.error || "Upload failed");
+        uploadUserImage(formData, {
+          onSuccess: (res) => {
+            setImage(file);
+            setImageUrl(res.image);
+          },
+          onError: (error) => {
+            toast.error(error.message || "Image upload failed");
+          },
+          onSettled: () => {
+            setIsUploading(false);
+          },
+        });
+      } catch (error) {
+        console.error(error);
+        toast.error("Image upload failed");
       }
     }
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const role = "staff";
+    const updatedUserData = {
+      username,
+      email,
+      phone,
+      role,
+      ...(imageUrl && { image: imageUrl }),
+    };
 
-    try {
-      const updatedUserData = {
-        username,
-        email,
-        phone,
-        role,
-        ...(imageUrl && { image: imageUrl }),
-      };
-      const data = await updateUserById({
-        id: parseInt(id),
-        data: updatedUserData,
-      }).unwrap();
-      toast.success(`${data.username} Successfully Updated`);
-      navigate("/admin/users");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to register user");
-    }
+    console.log(updatedUserData);
+
+    updateUserById(
+      { id: parseInt(id!), data: updatedUserData },
+      {
+        onSuccess: (data) => {
+          toast.success(`${data.username} successfully updated`);
+          navigate("/admin/users");
+        },
+        onError: (error) => {
+          toast.error(error.message || "Failed to update user");
+        },
+      }
+    );
   };
 
+  const altRole = role === "admin" ? "staff" : role === "staff" ? "admin" : "";
+
   return (
-    <div className="flex flex-col items-center justify-start min-h-[100vh-70px] h-full px-6 pt-8 mt-20">
+    <div className="flex flex-col justify-center items-center min-h-[calc(100vh-65px)]">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="flex justify-between w-full items-center mb-8"
+        className="flex justify-between w-[60%] items-center mb-8"
       >
         <h1 className="text-[#4A4BAC] font-extrabold text-2xl uppercase tracking-widest">
           Edit User
@@ -113,7 +127,7 @@ const EditSingleUser = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-xl space-y-6"
+        className="w-[60%] bg-white p-8 rounded-lg shadow-xl space-y-6"
       >
         {imageUrl && (
           <div className="text-center mb-6">
@@ -125,14 +139,44 @@ const EditSingleUser = () => {
           </div>
         )}
 
-        <div className={`w-full my-8 ${imageUrl ? "hidden" : ""}`}>
+        <div className={`w-full my-8 ${imageUrl ? "block" : ""}`}>
           <label className="border-2 border-dashed border-indigo-300 p-6 block w-full text-center rounded-lg cursor-pointer font-semibold text-[#4A4BAC90] hover:bg-indigo-50 hover:border-indigo-400 transition duration-200">
-            {image ? image.name : "Upload Image"}
+            {!isUploading && (image ? image.name : "Upload Image")}
+
+            {isUploading && (
+              <div className="flex justify-center items-center">
+                <svg
+                  className="animate-spin h-6 w-6 text-[#4A4BAC]"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V2a10 10 0 00-10 10h2z"
+                  ></path>
+                </svg>
+                <span className="ml-2 text-[#4A4BAC] font-semibold">
+                  Uploading new image...
+                </span>
+              </div>
+            )}
+
             <input
               type="file"
               accept="image/*"
               onChange={handleImage}
               className="hidden"
+              disabled={isUploading}
             />
           </label>
         </div>
@@ -160,16 +204,16 @@ const EditSingleUser = () => {
               className="block text-sm font-bold text-[#4A4BAC90] mb-2"
               htmlFor="role"
             >
-              Enter Role
+              Select Role
             </label>
-            <input
+            <select
               className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200"
-              type="text"
               id="role"
-              placeholder="Enter User Role"
-              value={role}
               onChange={(e) => setRole(e.target.value)}
-            />
+            >
+              <option value={role}>{role}</option>
+              <option value={altRole}>{altRole}</option>
+            </select>
           </div>
 
           <div className="flex flex-col">
@@ -211,9 +255,9 @@ const EditSingleUser = () => {
           <button
             className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg w-full transition-all duration-200"
             type="submit"
-            disabled={isLoading}
+            disabled={isUpdating}
           >
-            {isLoading ? (
+            {isUpdating ? (
               <span className="flex justify-center items-center">
                 <svg
                   className="animate-spin h-5 w-5 mr-3 text-white"

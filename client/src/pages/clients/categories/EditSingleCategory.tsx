@@ -1,54 +1,55 @@
 import { useEffect, useState } from "react";
-
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { ArrowBackRounded } from "@mui/icons-material";
 import {
-  useGetClientCategoriesQuery,
-  useUpdateClientCategoriesMutation,
-} from "../../../redux/features/clients/clientApiSlice";
+  useGetClientCategories,
+  useUpdateClientCategory,
+} from "../../../api/clients/clients";
 
 const EditSingleCategory = () => {
-  const [updateClientCategory, { isLoading }] =
-    useUpdateClientCategoriesMutation();
-  const { data: previousCategoryData } = useGetClientCategoriesQuery();
-
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
   const [name, setName] = useState<string>("");
 
-  const navigate = useNavigate();
-  const { id } = useParams();
+  // Fetch existing category data
+  const { data: clientCategories } = useGetClientCategories();
 
+  // Mutation hook for updating categories
+  const updateCategoryMutation = useUpdateClientCategory();
+
+  // Set initial value when data is fetched
   useEffect(() => {
-    if (previousCategoryData && id) {
-      const previousCategory = previousCategoryData.find(
-        (element) => element.id === parseInt(id)
+    if (clientCategories && id) {
+      const category = clientCategories.find(
+        (cat: { id: number }) => cat.id === parseInt(id, 10)
       );
-      if (previousCategory) {
-        setName(previousCategory.name || "");
-      }
+      if (category) setName(category.name);
     }
-  }, [previousCategoryData, id]);
+  }, [clientCategories, id]);
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!name) {
-      toast.error("All fields are required");
+    if (!name.trim()) {
+      toast.error("Category name is required");
       return;
     }
 
-    try {
-      const data = await updateClientCategory({
-        id: parseInt(id),
-        name,
-      }).unwrap();
-      toast.success(`${data.name} Successfully Updated`);
-      navigate("/admin/client-categories");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to update category");
-    }
+    updateCategoryMutation.mutate(
+      { id: parseInt(id ?? "0", 10), name },
+      {
+        onSuccess: (data) => {
+          toast.success(`Category "${data.name}" updated successfully`);
+          navigate("/admin/client-categories");
+        },
+        onError: () => {
+          toast.error("Failed to update category");
+        },
+      }
+    );
   };
 
   return (
@@ -89,7 +90,6 @@ const EditSingleCategory = () => {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-xl space-y-6"
         >
-          {/* Input Field */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -112,7 +112,6 @@ const EditSingleCategory = () => {
             />
           </motion.div>
 
-          {/* Submit Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -121,50 +120,13 @@ const EditSingleCategory = () => {
           >
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={updateCategoryMutation.isPending}
               className="py-2 px-6 rounded-full bg-[#4A4BAC] text-white hover:bg-indigo-700 font-semibold text-lg w-full transition-all duration-200"
             >
-              {isLoading ? (
-                <motion.svg
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1,
-                    ease: "linear",
-                  }}
-                  className="w-5 h-5 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C6.477 0 2 4.477 2 10s4.477 10 10 10v-4a6 6 0 01-6-6z"
-                  ></path>
-                </motion.svg>
-              ) : (
-                "Update"
-              )}
+              {updateCategoryMutation.isPending ? "Updating..." : "Update"}
             </button>
           </motion.div>
         </motion.form>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="flex items-center gap-3 mt-8 flex-wrap"
-        ></motion.div>
       </motion.div>
     </div>
   );

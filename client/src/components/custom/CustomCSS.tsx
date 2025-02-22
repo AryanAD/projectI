@@ -89,4 +89,15 @@ export const CustomCSS = {
     boxShadow: 24,
     p: 4,
   },
+
+  // Alert
+  alertStyle: {
+    width: "100%",
+    fontSize: "0.9rem",
+    mb: 2,
+    justifyContent: "center",
+    "& .MuiAlert-message": {
+      textAlign: "center",
+    },
+  },
 };

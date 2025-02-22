@@ -1,9 +1,8 @@
-import Project from "./projectModel.js";
-import User from "./userModel.js";
+import Project from "./projects/project.model.js";
+import User from "./users/user.model.js";
 
-// Define the many-to-many relationship here
 User.belongsToMany(Project, {
-  through: "project_assigned_to", // Join table
+  through: "project_assigned_to",
   foreignKey: "userId",
 });
 

@@ -1,13 +1,14 @@
 import { Navigate, Outlet } from "react-router";
-import { useSelector } from "react-redux";
 
 const AdminRoutes = () => {
-  const { userInfo } = useSelector((state) => state.auth);
-  return userInfo && userInfo.role === "admin" ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  const token = localStorage.getItem("token");
+  const userRole = localStorage.getItem("userRole");
+
+  if (!token || !userRole) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default AdminRoutes;

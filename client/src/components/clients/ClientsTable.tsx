@@ -1,5 +1,6 @@
 import {
   Alert,
+  Avatar,
   Box,
   IconButton,
   Modal,
@@ -14,149 +15,89 @@ import { Link } from "react-router-dom";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import {
-  useDeleteClientMutation,
-  useGetClientsQuery,
-} from "../../redux/features/clients/clientApiSlice";
 import dayjs from "dayjs";
-// interface Client {
-//   id: number;
-//   name: string;
-//   email: string;
-//   phone: string;
-//   location: string;
-//   priority: "normal" | "high" | "very high";
-//   startDate: string;
-//   endDate: string;
-// }
+import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteClient, useGetClients } from "../../api/clients/clients";
 
 const ClientsTable = () => {
   const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
 
-  const { data: clients, isSuccess, error, isLoading } = useGetClientsQuery();
-  const [deleteClient, { isLoading: isDeleting }] = useDeleteClientMutation();
+  const { data: clients, isLoading, isError } = useGetClients();
+  const { mutate: deleteClient, isPending: isDeleting } = useDeleteClient();
 
   const handleOpen = (id: number) => {
     setSelectedClientId(id);
     setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (selectedClientId !== null) {
-      try {
-        await deleteClient(selectedClientId).unwrap();
-        if (isSuccess) {
+      deleteClient(selectedClientId, {
+        onSuccess: () => {
           toast.success(
-            `Successfully deleted client with id: ${selectedClientId}`
+            `Successfully deleted client with ID: ${selectedClientId}`
           );
-        } else {
-          toast.error(`Error: ${error}`);
-        }
-        handleClose();
-      } catch (err: unknown) {
-        toast.error(err.message || "Failed to delete client.");
-      }
+          queryClient.invalidateQueries({ queryKey: ["clients"] });
+          handleClose();
+        },
+        onError: (error) => {
+          toast.error(error?.message || "Failed to delete client.");
+        },
+      });
     }
   };
 
   if (isLoading) return <div>Loading clients...</div>;
+  if (isError) return <div>Failed to load clients.</div>;
 
   return (
     <>
       <Table className="mt-8 rounded-t-lg overflow-hidden shadow-lg">
         <TableHead className="bg-[#7978E9]">
           <TableRow>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              ID
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Company Name
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Email
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Phone Number
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Priority
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              End Date
-            </TableCell>
-            <TableCell
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "bolder",
-                letterSpacing: "2px",
-                color: "white",
-              }}
-            >
-              Action
-            </TableCell>
+            {[
+              "ID",
+              "Company",
+              "Email",
+              "Phone Number",
+              "Priority",
+              "End Date",
+              "Action",
+            ].map((header) => (
+              <TableCell
+                key={header}
+                sx={{
+                  textTransform: "uppercase",
+                  fontWeight: "bolder",
+                  letterSpacing: "2px",
+                  color: "white",
+                }}
+              >
+                {header}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
 
         <TableBody className="bg-[#f9f9f9]">
-          {isLoading && (
-            <TableRow>
-              <TableCell colSpan={9} className="text-center">
-                Loading...
-              </TableCell>
-            </TableRow>
-          )}
           {clients?.map((client) => (
             <TableRow
-              className="transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-100"
               key={client.id}
+              className="transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-100"
             >
               <TableCell>{client.id}</TableCell>
               <TableCell>
-                <Link to={`/admin/clients/${client.id}`}>{client.name}</Link>
+                <Link
+                  to={`/admin/clients/${client.id}`}
+                  className="flex items-center gap-2"
+                >
+                  <Avatar src={client.logo} alt={client.name} />
+                  {client.name}
+                </Link>
               </TableCell>
               <TableCell>{client.email}</TableCell>
               <TableCell>{client.phone}</TableCell>
@@ -171,25 +112,18 @@ const ClientsTable = () => {
                   <IconButton
                     sx={{
                       color: "#488ac7",
-                      "&:hover": {
-                        bgcolor: "#488ac7",
-                        color: "white",
-                      },
+                      "&:hover": { bgcolor: "#488ac7", color: "white" },
                       transition: "all ease-in-out 0.2s",
                     }}
                   >
                     <EditRounded />
                   </IconButton>
                 </Link>
-
                 <IconButton
                   onClick={() => handleOpen(client.id)}
                   sx={{
                     color: "#db0f27",
-                    "&:hover": {
-                      bgcolor: "#db0f27",
-                      color: "white",
-                    },
+                    "&:hover": { bgcolor: "#db0f27", color: "white" },
                     transition: "all ease-in-out 0.2s",
                   }}
                 >
@@ -204,9 +138,7 @@ const ClientsTable = () => {
       <Modal
         open={open}
         onClose={handleClose}
-        sx={{
-          transition: "opacity 0.3s ease-in-out",
-        }}
+        sx={{ transition: "opacity 0.3s ease-in-out" }}
       >
         <Box
           sx={{
@@ -223,7 +155,6 @@ const ClientsTable = () => {
             flexDirection: "column",
             alignItems: "center",
             gap: 2,
-            transition: "transform 0.3s ease-in-out",
           }}
         >
           <Typography
@@ -241,10 +172,7 @@ const ClientsTable = () => {
             variant="body1"
             color="text.secondary"
             textAlign="center"
-            sx={{
-              mb: 2,
-              lineHeight: 1.6,
-            }}
+            sx={{ mb: 2, lineHeight: 1.6 }}
           >
             Are you sure you want to delete this client? This action cannot be
             undone.
@@ -257,9 +185,7 @@ const ClientsTable = () => {
               fontSize: "0.9rem",
               mb: 2,
               justifyContent: "center",
-              "& .MuiAlert-message": {
-                textAlign: "center",
-              },
+              "& .MuiAlert-message": { textAlign: "center" },
             }}
           >
             Deleted clients can't be recovered!
