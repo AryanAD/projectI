@@ -27,6 +27,7 @@ import projectRoutes from "./routes/projects/project.routes.js";
 import projectCategoryRoutes from "./routes/projects/category.routes.js";
 
 import taskRoutes from "./routes/tasks/task.routes.js";
+import staffRoutes from "./routes/staff/staff.routes.js";
 
 import uploadRoutes from "./routes/uploads/upload.routes.js";
 
@@ -59,6 +60,7 @@ app.use("/api/v1/client-category", clientCategoryRoutes);
 app.use("/api/v1/projects", projectRoutes);
 app.use("/api/v1/project-category", projectCategoryRoutes);
 app.use("/api/v1/tasks", taskRoutes);
+app.use("/api/v1/staffs", staffRoutes);
 app.use("/api/v1/uploads", uploadRoutes);
 
 // Image Uploads

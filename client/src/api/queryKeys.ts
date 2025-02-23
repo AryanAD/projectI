@@ -14,4 +14,6 @@ export const QUERY_KEYS = {
   TASKS: "tasks",
   TASK_BY_ID: (taskId: number) => ["tasks", taskId],
   USER_TASKS: (userId: number) => ["tasks", "user", userId],
+
+  STAFF_TASKS: "staff-tasks",
 };

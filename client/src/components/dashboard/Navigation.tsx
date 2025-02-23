@@ -128,6 +128,9 @@ const Navigation = () => {
     if (!token || !userRole) {
       navigate("/login", { replace: true });
     }
+    if (userRole === "staff") {
+      navigate("/staff", { replace: true });
+    }
   }, [token, userRole, navigate]);
 
   const [open, setOpen] = useState(true);
@@ -216,14 +219,16 @@ const Navigation = () => {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               sx={{ mt: 1 }}
             >
-              <MenuItem
-                onClick={() => {
-                  handleCloseUserMenu();
-                  navigate("/profile");
-                }}
-              >
-                <Typography>Profile</Typography>
-              </MenuItem>
+              {userRole === "admin" ? (
+                <MenuItem
+                  onClick={() => {
+                    handleCloseUserMenu();
+                    navigate("/profile");
+                  }}
+                >
+                  <Typography>Profile</Typography>
+                </MenuItem>
+              ) : null}
               <MenuItem
                 onClick={() => {
                   handleCloseUserMenu();
@@ -266,13 +271,23 @@ const Navigation = () => {
 
         <List component="nav" sx={{ px: 1 }}>
           <StyledListItemButton
-            onClick={() => navigate("/")}
-            selected={location.pathname === "/"}
+            onClick={
+              userRole === "staff"
+                ? () => navigate("/staff")
+                : () => navigate("/")
+            }
+            selected={
+              location.pathname.includes("staff") || location.pathname === "/"
+            }
           >
             <ListItemIcon>
               <HomeRounded
                 sx={{
-                  color: location.pathname === "/" ? "#4B49AC" : "inherit",
+                  color:
+                    location.pathname === "/" ||
+                    location.pathname.includes("staff")
+                      ? "#4B49AC"
+                      : "inherit",
                 }}
               />
             </ListItemIcon>
@@ -280,16 +295,22 @@ const Navigation = () => {
               <ListItemText
                 primary="Home"
                 primaryTypographyProps={{
-                  fontWeight: location.pathname === "/" ? 600 : 400,
+                  fontWeight:
+                    location.pathname === "/" ||
+                    location.pathname.includes("staff")
+                      ? 600
+                      : 400,
                 }}
               />
             )}
           </StyledListItemButton>
 
-          <UserAccordion sidebarCollapsed={!open} />
-          <ClientAccordion sidebarCollapsed={!open} />
-          <ProjectAccordion sidebarCollapsed={!open} />
-          <TaskAccordion sidebarCollapsed={!open} />
+          {userRole === "admin" && <UserAccordion sidebarCollapsed={!open} />}
+          {userRole === "admin" && <ClientAccordion sidebarCollapsed={!open} />}
+          {userRole === "admin" && (
+            <ProjectAccordion sidebarCollapsed={!open} />
+          )}
+          {userRole === "admin" && <TaskAccordion sidebarCollapsed={!open} />}
         </List>
       </Drawer>
 

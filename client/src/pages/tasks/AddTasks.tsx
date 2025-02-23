@@ -6,7 +6,6 @@ import { ArrowBackRounded } from "@mui/icons-material";
 import { Checkbox, ListItemText, MenuItem, Select } from "@mui/material";
 import { useGetAllUsers } from "../../api/users/users";
 import { useGetProjects } from "../../api/projects/projects";
-import { useGetClients } from "../../api/clients/clients";
 import { useAssignProjectToUser } from "../../api/tasks/tasks";
 
 const MenuProps = {
@@ -30,15 +29,15 @@ const MenuProps = {
 const AddTask = () => {
   const { data: existingUsers } = useGetAllUsers();
   const { data: existingProjects } = useGetProjects();
-  const { data: existingClients } = useGetClients();
   const addTaskMutation = useAssignProjectToUser();
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [status, setStatus] = useState<string>("todo");
+  const [priority, setPriority] = useState<string>("low");
+  const [dueDate, setDueDate] = useState<string>("");
   const [userIds, setUserIds] = useState<number[]>([]);
   const [projectId, setProjectId] = useState<number>();
-  const [clientId, setClientId] = useState<number>();
 
   const navigate = useNavigate();
 
@@ -50,7 +49,14 @@ const AddTask = () => {
       return;
     }
 
-    if (!title || !description || !status || !projectId || !clientId) {
+    if (
+      !title ||
+      !description ||
+      !status ||
+      !projectId ||
+      !dueDate ||
+      !priority
+    ) {
       toast.error("All fields are required");
       return;
     }
@@ -61,7 +67,8 @@ const AddTask = () => {
       status,
       userIds,
       projectId,
-      clientId,
+      dueDate,
+      priority,
     };
 
     addTaskMutation.mutate(taskData, {
@@ -164,26 +171,23 @@ const AddTask = () => {
           <div className="flex flex-col">
             <label
               className="block text-sm font-bold text-[#4A4BAC90] mb-2"
-              htmlFor="client"
+              htmlFor="priority"
             >
-              Select Client
+              Select Priority
             </label>
             <select
               className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200 bg-white"
-              id="client"
-              value={clientId || ""}
-              onChange={(e) => setClientId(parseInt(e.target.value))}
+              id="priority"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
             >
-              <option value="">--Select Client--</option>
-              {existingClients?.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.name}
-                </option>
-              ))}
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
             </select>
           </div>
 
-          <div className="flex flex-col col-span-full">
+          <div className="flex flex-col">
             <label
               className="block text-sm font-bold text-[#4A4BAC90] mb-2"
               htmlFor="assignedTo"
@@ -209,6 +213,22 @@ const AddTask = () => {
                 </MenuItem>
               ))}
             </Select>
+          </div>
+
+          <div className="flex flex-col">
+            <label
+              className="block text-sm font-bold text-[#4A4BAC90] mb-2"
+              htmlFor="dueDate"
+            >
+              Select Deadline
+            </label>
+            <input
+              className="py-3 rounded-lg px-6 border w-full border-indigo-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200 bg-white"
+              id="dueDate"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
           </div>
 
           <div className="flex flex-col col-span-full">

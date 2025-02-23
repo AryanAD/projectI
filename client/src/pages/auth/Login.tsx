@@ -18,6 +18,7 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) return toast.error("Please fill in all fields.");
     try {
       login(
         { email, password },
@@ -25,26 +26,27 @@ const Login = () => {
           onSuccess: (data) => {
             localStorage.setItem("userRole", data.role);
             localStorage.setItem("token", data.token);
+            localStorage.setItem("userId", data.id.toString());
 
-            if (data.role === "admin") {
-              setIsPending(true);
-              setTimeout(() => {
-                setIsPending(false);
-                toast.success("Login successful!");
-                navigate(redirect);
-              }, 500);
-            } else {
-              toast.error("Error: User is not an admin.");
-            }
+            // if (data.role === "admin") {
+            setIsPending(true);
+            setTimeout(() => {
+              setIsPending(false);
+              toast.success("Login successful!");
+              navigate(redirect);
+            }, 1000);
+            // } else {
+            //   toast.error("Error: User is not an admin.");
+            // }
           },
-          onError: (error) => {
-            toast.error(error.message || "Login failed. Please try again.");
+          onError: () => {
+            toast.error("Login failed. Please try again.");
           },
         }
       );
     } catch (error) {
       console.error(error);
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error("An unexpected error occurred.");
     }
   };
 

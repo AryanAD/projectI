@@ -2,7 +2,6 @@ import { DataTypes } from "sequelize";
 import sequelize from "../../config/database.js";
 import User from "../users/user.model.js";
 import Project from "../projects/project.model.js";
-import Client from "../clients/client.model.js";
 
 const Task = sequelize.define(
   "Task",
@@ -28,17 +27,18 @@ const Task = sequelize.define(
         key: "id",
       },
     },
-    clientId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: Client,
-        key: "id",
-      },
-    },
     status: {
       type: DataTypes.ENUM("todo", "doing", "done"),
       defaultValue: "todo",
+      allowNull: false,
+    },
+    dueDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    priority: {
+      type: DataTypes.ENUM("low", "medium", "high"),
+      defaultValue: "low",
       allowNull: false,
     },
   },
@@ -84,8 +84,5 @@ User.belongsToMany(Task, { through: TaskUsers, foreignKey: "userId" });
 
 Task.belongsTo(Project, { foreignKey: "projectId", onDelete: "CASCADE" });
 Project.hasMany(Task, { foreignKey: "projectId" });
-
-Task.belongsTo(Client, { foreignKey: "clientId", onDelete: "CASCADE" });
-Client.hasMany(Task, { foreignKey: "clientId" });
 
 export { Task, TaskUsers };

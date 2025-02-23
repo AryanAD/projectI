@@ -9,5 +9,6 @@ export const PROJECTS_URL = "projects";
 export const PROJECT_CATEGORY_URL = "project-category";
 
 export const TASKS_URL = "tasks";
+export const STAFF_TASKS_URL = "staffs";
 
 export const UPLOADS_URL = "uploads";

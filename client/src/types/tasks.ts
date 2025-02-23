@@ -4,6 +4,8 @@ export interface Task {
   description: string;
   projectId: number;
   clientId?: number;
+  dueDate: string;
+  priority: "low" | "medium" | "high";
   status: "todo" | "doing" | "done";
   createdAt: string;
   updatedAt: string;

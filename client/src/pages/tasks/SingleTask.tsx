@@ -48,7 +48,7 @@ const SingleTask = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-4xl mx-auto"
+        className="max-w-5xl mx-auto"
       >
         <motion.div
           className="bg-white rounded-2xl shadow-xl overflow-hidden"
@@ -123,41 +123,53 @@ const SingleTask = () => {
                 </div>
 
                 <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                  <Building className="text-[#4B49AC]" />
+                  <Calendar className="text-[#4B49AC]" />
                   <div>
-                    <p className="text-sm text-gray-600">Client</p>
+                    <p className="text-sm text-gray-600">Deadline</p>
                     <div className="flex items-center gap-2">
                       <p className="font-medium">
-                        {singleTask.Client && singleTask.Client.name}
+                        {singleTask.dueDate.slice(0, 10)}
                       </p>
-                      <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
-                        {singleTask.Client && singleTask.Client.priority}
-                      </span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Team Members */}
-              <motion.div
-                variants={itemVariants}
-                className="p-4 bg-gray-50 rounded-lg space-y-3"
-              >
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Users size={18} />
-                  <span className="font-medium">Assigned Team Members</span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {singleTask.Users?.map((user) => (
-                    <span
-                      key={user.id}
-                      className="px-3 py-1 bg-white rounded-full text-gray-700 text-sm shadow-sm"
-                    >
-                      {user.username}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <motion.div
+                  variants={itemVariants}
+                  className="p-4 bg-gray-50 rounded-lg space-y-3"
+                >
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Users size={18} />
+                    <span className="font-medium">Assigned Team Members</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {singleTask.Users?.map((user) => (
+                      <span
+                        key={user.id}
+                        className="px-3 py-1 bg-white rounded-full text-gray-700 text-sm shadow-sm"
+                      >
+                        {user.username}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="p-4 bg-gray-50 rounded-lg space-y-3"
+                >
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Building size={18} />
+                    <span className="font-medium">Priority</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {singleTask.priority}
+                  </div>
+                </motion.div>
+              </div>
 
               {/* Dates */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

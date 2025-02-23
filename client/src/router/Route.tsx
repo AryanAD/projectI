@@ -40,6 +40,8 @@ import SingleTask from "../pages/tasks/SingleTask";
 import AddTask from "../pages/tasks/AddTasks";
 import EditSingleTask from "../pages/tasks/EditSingleTask";
 import Navigation from "../components/dashboard/Navigation";
+import Staffs from "../pages/staff";
+import StaffRoutes from "../pages/auth/staff/StaffRoutes";
 
 export const router = createBrowserRouter(
   createRoutesFromElements([
@@ -48,6 +50,11 @@ export const router = createBrowserRouter(
     <Route path="/" element={<Navigation />}>
       <Route index path="" element={<Homepage />} />
       <Route path="profile" element={<Profile />} />
+
+      <Route path="/staff" element={<StaffRoutes />}>
+        <Route index path="" element={<Staffs />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
 
       <Route path="/admin" element={<AdminRoutes />}>
         <Route path="users" element={<Users />} />

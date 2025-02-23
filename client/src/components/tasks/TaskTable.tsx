@@ -72,9 +72,9 @@ const TasksTable = () => {
               "Title",
               "Assigned Users",
               "Project",
-              "Client",
               "Status",
-              "Created At",
+              "Priority",
+              "Deadline",
               "Action",
             ].map((header) => (
               <TableCell
@@ -108,15 +108,9 @@ const TasksTable = () => {
                   {task.Project?.name || "N/A"}
                 </Link>
               </TableCell>
-              <TableCell>
-                <Link to={`/admin/clients/${task.clientId}`}>
-                  {task.Client?.name || "N/A"}
-                </Link>
-              </TableCell>
-              <TableCell>{task.status}</TableCell>
-              <TableCell>
-                {dayjs(task.createdAt).format("MM/DD/YYYY")}
-              </TableCell>
+              <TableCell>{task.status || "N/A"}</TableCell>
+              <TableCell>{task.priority}</TableCell>
+              <TableCell>{dayjs(task.dueDate).format("MM/DD/YYYY")}</TableCell>
               <TableCell>
                 <Link to={`/admin/edit-tasks/${task.id}`}>
                   <IconButton

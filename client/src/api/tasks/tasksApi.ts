@@ -35,6 +35,8 @@ export const assignProjectToUser = async (data: {
   description: string;
   status: string;
   userIds: number[];
+  dueDate: string;
+  priority: string;
   projectId: number;
   clientId?: number;
 }): Promise<Task> => {

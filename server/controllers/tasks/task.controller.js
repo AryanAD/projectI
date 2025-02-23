@@ -1,18 +1,19 @@
 import asyncHandler from "../../middlewares/asyncHandler.js";
-import Client from "../../models/clients/client.model.js";
 import Project from "../../models/projects/project.model.js";
 import { Task, TaskUsers } from "../../models/tasks/task.model.js";
 import User from "../../models/users/user.model.js";
 
 const assignProjectToUser = asyncHandler(async (req, res) => {
-  const { title, description, status, userIds, projectId, clientId } = req.body;
+  const { title, description, status, userIds, projectId, dueDate, priority } =
+    req.body;
 
   const task = await Task.create({
     title,
     description,
     status,
     projectId,
-    clientId,
+    dueDate,
+    priority,
   });
 
   await Promise.all(
@@ -40,7 +41,6 @@ const getTaskById = asyncHandler(async (req, res) => {
     include: [
       { model: User, attributes: ["id", "username", "email"] },
       { model: Project, attributes: ["id", "name", "status"] },
-      { model: Client, attributes: ["id", "name", "priority"] },
     ],
   });
 
@@ -57,7 +57,6 @@ const getAllTasks = asyncHandler(async (req, res) => {
     include: [
       { model: User, attributes: ["id", "username", "email"] },
       { model: Project, attributes: ["id", "name", "status"] },
-      { model: Client, attributes: ["id", "name", "priority"] },
     ],
   });
 
@@ -66,7 +65,8 @@ const getAllTasks = asyncHandler(async (req, res) => {
 
 const updateTask = asyncHandler(async (req, res) => {
   const { taskId } = req.params;
-  const { title, description, status, userIds, projectId, clientId } = req.body;
+  const { title, description, status, userIds, projectId, dueDate, priority } =
+    req.body;
 
   const task = await Task.findByPk(taskId);
   if (!task) {
@@ -78,7 +78,8 @@ const updateTask = asyncHandler(async (req, res) => {
   task.description = description || task.description;
   task.status = status || task.status;
   task.projectId = projectId || task.projectId;
-  task.clientId = clientId || task.clientId;
+  task.dueDate = dueDate || task.dueDate;
+  task.priority = priority || task.priority;
 
   if (userIds && Array.isArray(userIds)) {
     await task.setUsers(userIds);
