@@ -64,7 +64,7 @@ const ClientsTable = () => {
               "Company",
               "Email",
               "Phone Number",
-              "Priority",
+              "Category",
               "End Date",
               "Action",
             ].map((header) => (
@@ -101,7 +101,7 @@ const ClientsTable = () => {
               </TableCell>
               <TableCell>{client.email}</TableCell>
               <TableCell>{client.phone}</TableCell>
-              <TableCell>{client.priority}</TableCell>
+              <TableCell>{client.ClientCategory.name}</TableCell>
               <TableCell>
                 {client.endDate
                   ? dayjs(client.endDate).format("MM/DD/YYYY")

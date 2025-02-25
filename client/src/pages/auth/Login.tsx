@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLogin } from "../../api/users/users"; // Import the TanStack Query hook
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
@@ -12,9 +12,6 @@ const Login = () => {
   const { mutate: login } = useLogin();
 
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const sp = new URLSearchParams(search);
-  const redirect = sp.get("redirect") || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,16 +25,15 @@ const Login = () => {
             localStorage.setItem("token", data.token);
             localStorage.setItem("userId", data.id.toString());
 
-            // if (data.role === "admin") {
             setIsPending(true);
             setTimeout(() => {
               setIsPending(false);
               toast.success("Login successful!");
-              navigate(redirect);
+              if (localStorage.getItem("userRole") === "admin") {
+                navigate("/");
+                window.location.reload();
+              } else navigate("/staff");
             }, 1000);
-            // } else {
-            //   toast.error("Error: User is not an admin.");
-            // }
           },
           onError: () => {
             toast.error("Login failed. Please try again.");

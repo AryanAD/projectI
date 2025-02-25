@@ -40,7 +40,7 @@ const Homepage = () => {
       type: "donut" as const,
     },
     colors: ["#FF4560", "#FEB019", "#00E396"],
-    labels: ["To Do", "Doing", "Completed"],
+    labels: ["To Do", "Doing", "Done"],
     legend: {
       position: "bottom" as const,
     },
@@ -107,7 +107,7 @@ const Homepage = () => {
   };
 
   // Client Priority Distribution
-  const clientPriorityData = {
+  const taskPriorityData = {
     options: {
       chart: {
         type: "bar" as const,
@@ -126,16 +126,16 @@ const Homepage = () => {
         enabled: false,
       },
       xaxis: {
-        categories: ["Very High", "High", "Normal"],
+        categories: ["High", "Medium", "Low"],
       },
     },
     series: [
       {
-        name: "Clients",
+        name: "Tasks",
         data: [
-          clients?.filter((c) => c.priority === "very high").length || 0,
-          clients?.filter((c) => c.priority === "high").length || 0,
-          clients?.filter((c) => c.priority === "normal").length || 0,
+          tasks?.filter((t) => t.priority === "high").length || 0,
+          tasks?.filter((t) => t.priority === "medium").length || 0,
+          tasks?.filter((t) => t.priority === "low").length || 0,
         ],
       },
     ],
@@ -290,18 +290,18 @@ const Homepage = () => {
             />
           </motion.div>
 
-          {/* Client Priority Distribution */}
+          {/* Task Priority Distribution */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-lg shadow-md p-6 lg:col-span-2"
           >
             <h3 className="text-lg font-medium text-gray-800 mb-4">
-              Client Priority Distribution
+              Task Priority Distribution
             </h3>
             <ReactApexChart
-              options={clientPriorityData.options}
-              series={clientPriorityData.series}
+              options={taskPriorityData.options}
+              series={taskPriorityData.series}
               type="bar"
               height={350}
             />

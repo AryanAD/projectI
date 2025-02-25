@@ -18,6 +18,12 @@ import dayjs from "dayjs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAllTasks, useDeleteTask } from "../../api/tasks/tasks";
 
+const priorityColors = {
+  high: "bg-red-100 text-red-700",
+  medium: "bg-yellow-100 text-yellow-700",
+  low: "bg-green-100 text-green-700",
+};
+
 const TasksTable = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
@@ -109,7 +115,14 @@ const TasksTable = () => {
                 </Link>
               </TableCell>
               <TableCell>{task.status || "N/A"}</TableCell>
-              <TableCell>{task.priority}</TableCell>
+              <TableCell>
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-semibold ${priorityColors[task.priority]}`}
+                >
+                  {task.priority.charAt(0).toUpperCase() +
+                    task.priority.slice(1)}
+                </span>
+              </TableCell>
               <TableCell>{dayjs(task.dueDate).format("MM/DD/YYYY")}</TableCell>
               <TableCell>
                 <Link to={`/admin/edit-tasks/${task.id}`}>

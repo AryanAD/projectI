@@ -12,6 +12,12 @@ import {
 } from "lucide-react";
 import CustomLoader from "../../components/custom/CustomLoader";
 
+const priorityColors = {
+  high: "bg-red-100 text-red-700",
+  medium: "bg-yellow-100 text-yellow-700",
+  low: "bg-green-100 text-green-700",
+};
+
 const SingleTask = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -122,17 +128,18 @@ const SingleTask = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                  <Calendar className="text-[#4B49AC]" />
-                  <div>
-                    <p className="text-sm text-gray-600">Deadline</p>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">
-                        {singleTask.dueDate.slice(0, 10)}
-                      </p>
-                    </div>
+                <motion.div
+                  variants={itemVariants}
+                  className={`p-4 bg-gray-50 rounded-lg space-y-3 ${priorityColors[singleTask.priority]}`}
+                >
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Building size={18} />
+                    <span className="font-medium">Priority</span>
                   </div>
-                </div>
+                  <div className={`flex flex-wrap gap-2`}>
+                    {singleTask.priority}
+                  </div>
+                </motion.div>
               </div>
 
               {/* Team Members */}
@@ -157,18 +164,17 @@ const SingleTask = () => {
                   </div>
                 </motion.div>
 
-                <motion.div
-                  variants={itemVariants}
-                  className="p-4 bg-gray-50 rounded-lg space-y-3"
-                >
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Building size={18} />
-                    <span className="font-medium">Priority</span>
+                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                  <Calendar className="text-[#4B49AC]" />
+                  <div>
+                    <p className="text-sm text-gray-600">Deadline</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">
+                        {singleTask.dueDate.slice(0, 10)}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {singleTask.priority}
-                  </div>
-                </motion.div>
+                </div>
               </div>
 
               {/* Dates */}

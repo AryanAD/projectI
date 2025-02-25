@@ -18,6 +18,12 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import { useGetProjects, useDeleteProject } from "../../api/projects/projects";
 
+const statusColors = {
+  todo: "bg-red-100 text-red-700",
+  doing: "bg-yellow-100 text-yellow-700",
+  done: "bg-green-100 text-green-700",
+};
+
 const ProjectsTable = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     null
@@ -88,7 +94,13 @@ const ProjectsTable = () => {
               <TableCell>
                 <Link to={`/admin/projects/${project.id}`}>{project.name}</Link>
               </TableCell>
-              <TableCell>{project.status}</TableCell>
+              <TableCell>
+                <span
+                  className={`rounded-full px-3 py-1 ${statusColors[project.status]}`}
+                >
+                  {project.status}
+                </span>
+              </TableCell>
               <TableCell>{project.ProjectCategory.name}</TableCell>
               <TableCell>
                 <span className="rounded-full border border-sky-100 text-sky-700 shadow-sm bg-sky-100 px-2 py-1">

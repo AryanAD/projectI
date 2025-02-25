@@ -8,24 +8,9 @@ import {
   MapPin,
   Calendar,
   Boxes,
-  AlertCircle,
+  Building,
 } from "lucide-react";
 import CustomLoader from "../../components/custom/CustomLoader";
-
-const priorityColors = {
-  "very high": { bg: "bg-red-100", text: "text-red-700", icon: "text-red-500" },
-  high: {
-    bg: "bg-orange-100",
-    text: "text-orange-700",
-    icon: "text-orange-500",
-  },
-  medium: {
-    bg: "bg-yellow-100",
-    text: "text-yellow-700",
-    icon: "text-yellow-500",
-  },
-  low: { bg: "bg-green-100", text: "text-green-700", icon: "text-green-500" },
-};
 
 const SingleClient = () => {
   const { id } = useParams<{ id: string }>();
@@ -52,10 +37,6 @@ const SingleClient = () => {
     },
   };
   if (!clientData || isLoading) return <CustomLoader />;
-
-  const priorityStyle =
-    priorityColors[clientData.priority as keyof typeof priorityColors] ||
-    priorityColors.medium;
 
   return (
     <div className="min-h-screen p-4 sm:p-6 md:p-8">
@@ -117,17 +98,8 @@ const SingleClient = () => {
                     variants={itemVariants}
                     className="px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-medium inline-flex items-center gap-2"
                   >
-                    <Boxes size={16} />
+                    <Building size={16} />
                     {clientData.ClientCategory?.name}
-                  </motion.div>
-                  <motion.div
-                    variants={itemVariants}
-                    className={`px-4 py-2 rounded-full ${priorityStyle.bg} ${priorityStyle.text} font-medium inline-flex items-center gap-2`}
-                  >
-                    <AlertCircle size={16} />
-                    {clientData.priority.charAt(0).toUpperCase() +
-                      clientData.priority.slice(1)}{" "}
-                    Priority
                   </motion.div>
                 </div>
               </motion.div>
